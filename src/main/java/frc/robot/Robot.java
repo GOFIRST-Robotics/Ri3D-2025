@@ -21,6 +21,7 @@ import frc.robot.commands.autonomous.SquareAutonomous;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.CoralElevatorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
@@ -36,7 +37,8 @@ import frc.robot.subsystems.VisionSubsystem;
  */
 public class Robot extends TimedRobot {
 
-  Command m_autonomousCommand;
+  public static CoralElevatorSubsystem m_CoralElevatorSubsystem;
+Command m_autonomousCommand;
 	SendableChooser<Command> autonChooser = new SendableChooser<Command>(); // Create a chooser to select an autonomous command
 
   public static final GenericHID controller = new GenericHID(Constants.CONTROLLER_USB_PORT_ID); // Instantiate our controller at the specified USB port
@@ -189,5 +191,8 @@ public class Robot extends TimedRobot {
     // Intake Controls //
     new Trigger(() -> controller.getRawButton(Constants.RIGHT_BUMPER)).whileTrue(new IntakeCommand(false)); // Intake
     new Trigger(() -> controller.getRawButton(Constants.LEFT_BUMPER)).whileTrue(new IntakeCommand(true)); // Outtake
+
+    // Elevator Controls //
+    new Trigger(() -> controller.getRawButton(Constants.)).whileTrue(new IntakeCommand(false)); // Intake
   }
 }

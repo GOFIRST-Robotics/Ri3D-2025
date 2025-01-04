@@ -44,6 +44,10 @@ public final class Constants {
     public static final int LOWER_INTAKE_BAR_MOTOR_ID = 5;
     public static final int UPPER_INTAKE_BAR_MOTOR_ID = 3;
     public static final int CLIMBER_MOTOR_ID_SPARK = 10;
+    public static final int ELEVATOR_CLIMB_MOTOR_ID_SPARK = 6;
+
+    // Servo IDs //
+    public static final int ELEVATOR_DROP_MOTOR_ID = 0;
 
     // PWM Ports //
     public static final int LED_PWM_ID = 4;
@@ -74,6 +78,10 @@ public final class Constants {
     // Climber Constants //
     public static final boolean CLIMBER_INVERT = false;
     public static final double CLIMBER_SPEED = 0.6;
+
+    // Elevator Constants //
+    public static final boolean ELEVATOR_INVERT = false;
+    public static final double ELEVATOR_SPEED = 0.5;
 
     // REV PH Channels //
     // Example: public static final int EXTENSION_SOLENOID_ID = 0;

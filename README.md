@@ -8,6 +8,8 @@ Official code from the UMN Robotics team for the 2025 Ri3D/FRC season!
  4) **Vision:** We are running a Photonvision pipeline on a Raspberry Pi 3 B+ to detect Apriltags, and we can track and follow either the nearest Apriltag or an Apriltag with a specific ID.
  5) **LED Subsystem:** We wrote code for controlling RGB LED strips using a REV Blinkin LED driver to add some extra bling to our robot!
  6) **Power Subsystem:** This subsystem is for reading data from the REV PDH, such as the current draw of specific channels.
+ 7) **Coral Elevator:** This subsystem controls two motors, one is responsisble for moving a "coral" to the top of the elevator
+ at which point the other motor (a servo) will drop the coral into place.
  
 How to get set up for FRC programming:
 1) Install the latest 2025 release of WPILib and the latest 2025 release of the NI FRC Game tools.
