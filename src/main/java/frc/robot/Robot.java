@@ -14,11 +14,8 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import frc.robot.commands.autonomous.AutonomousMode_Default;
 import frc.robot.commands.autonomous.Drive1MeterAuto;
-import frc.robot.commands.autonomous.DriveBack;
 import frc.robot.commands.autonomous.SquareAutonomous;
-import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -48,6 +45,8 @@ public class Robot extends TimedRobot {
   public static final VisionSubsystem m_visionSubsystem = new VisionSubsystem(); // Subsystem for interacting with Photonvision
   public static final LEDSubsystem m_LEDSubsystem = new LEDSubsystem(); // Subsytem for controlling the REV Blinkin LED module
   
+  double goalAngle;
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -57,14 +56,10 @@ public class Robot extends TimedRobot {
     configureButtonBindings(); // Bind our commands to physical buttons on a controller
 
     // Add our Autonomous Routines to the chooser //
-		autonChooser.setDefaultOption("Default Auto", new AutonomousMode_Default());
-    autonChooser.addOption("Do Nothing", new InstantCommand());
-    autonChooser.addOption("Drive Back", new DriveBack());
+		autonChooser.setDefaultOption("Do Nothing", new InstantCommand());
     autonChooser.addOption("Drive 1 Meter", new Drive1MeterAuto());
     autonChooser.addOption("Square Autonomous", new SquareAutonomous());
 		SmartDashboard.putData("Auto Mode", autonChooser);
-
-    m_driveSubsystem.setDefaultCommand(new DriveCommand());
 
     // Zero the gyroscope and reset the drive encoders
     m_driveSubsystem.zeroGyro();
@@ -142,6 +137,8 @@ public class Robot extends TimedRobot {
 
     // Set the LED pattern for teleop mode
     m_LEDSubsystem.setLEDMode(LEDMode.TELEOP);
+
+    goalAngle = m_driveSubsystem.getGyroAngle();
   }
 
   /** This function is called periodically during operator control. */
@@ -160,6 +157,28 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putNumber("Controller: Left Joystick Y Axis", controller.getRawAxis(Constants.LEFT_VERTICAL_JOYSTICK_AXIS));
     // SmartDashboard.putNumber("Controller: Right Joystick X Axis", controller.getRawAxis(Constants.RIGHT_HORIZONTAL_JOYSTICK_AXIS));
     // SmartDashboard.putNumber("Controller: Right Joystick Y Axis", controller.getRawAxis(Constants.RIGHT_VERTICAL_JOYSTICK_AXIS));
+  
+    double ySpeed = controller.getRawAxis(Constants.RIGHT_VERTICAL_JOYSTICK_AXIS);
+		double xSpeed = controller.getRawAxis(Constants.RIGHT_HORIZONTAL_JOYSTICK_AXIS);
+		double zSpeed = controller.getRawAxis(Constants.LEFT_HORIZONTAL_JOYSTICK_AXIS);
+
+    if (Math.abs(zSpeed) > 0.01) { // If we are telling the robot to rotate, then let it rotate
+			m_driveSubsystem.driveCartesian(ySpeed, xSpeed, zSpeed, m_driveSubsystem.getRotation2d());
+			goalAngle = m_driveSubsystem.getGyroAngle();
+		}
+		else { // Otherwise, use the gyro to maintain our current angle
+			double error = goalAngle - m_driveSubsystem.getGyroAngle();
+			
+			double correction = Constants.GYRO_TURN_KP * error;
+      if (Math.abs(correction) > 0.75) { // Maximum drive value we want
+        correction = Math.copySign(0.75, correction);
+      }
+      if (Math.abs(correction) < 0.15) { // Minimum drive value we want
+        correction = Math.copySign(0.15, correction);
+      }
+			
+			m_driveSubsystem.driveCartesian(ySpeed, xSpeed, -1 * correction, m_driveSubsystem.getRotation2d());
+		}
   }
 
   @Override
@@ -179,9 +198,6 @@ public class Robot extends TimedRobot {
    * or {@link XboxController}), and then passing it to a {@link edu.wpi.first.wpilibj2.command.button.Trigger}.
    */
   private void configureButtonBindings() {
-    // Drivetrain Controls //
-    new Trigger(() -> controller.getRawButton(Constants.Y_BUTTON)).whileTrue(new InstantCommand(() -> m_driveSubsystem.toggleDirection())); // Toggle the "front" (direction) of the drivetrain
-
     // Climber Controls //
     new POVButton(controller, 0).whileTrue(new StartEndCommand(() -> m_climbSubsystem.setPower(Constants.CLIMBER_SPEED), () -> m_climbSubsystem.stop())); // Climber up
     new POVButton(controller, 180).whileTrue(new StartEndCommand(() -> m_climbSubsystem.setPower(-1 * Constants.CLIMBER_SPEED), () -> m_climbSubsystem.stop())); // Climber down

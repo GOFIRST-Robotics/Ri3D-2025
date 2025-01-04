@@ -40,7 +40,7 @@ public class TurnToTrackedTargetCommand extends Command {
       error = m_VisionSubsystem.getBestTarget().getYaw(); // calculate error based off Yaw value of our current best target
       double value = -Math.min(error*kp, 1); // calculate motor percentage value
 
-      m_DriveSubsystem.drive(-value, value); // write values to motors, negative and positive value in order for turning to occur
+      m_DriveSubsystem.driveCartesian(0, 0, -1 * value);
     } else {
       m_DriveSubsystem.stop(); // otherwise, don't do anything
     }

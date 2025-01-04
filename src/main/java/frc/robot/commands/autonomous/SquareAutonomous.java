@@ -1,22 +1,22 @@
 // Author: UMN Robotics Ri3D
-// Last Updated: January 2023
+// Last Updated: January 2025
 
 package frc.robot.commands.autonomous;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.DriveForDistanceCommand;
-import frc.robot.commands.GyroTurnToAngleCommand;
+import frc.robot.commands.Drivetrain_GyroStraight;
+import frc.robot.commands.Drivetrain_GyroTurn;
 
 // This autonomous routine drives in a square!
 public class SquareAutonomous extends SequentialCommandGroup{
     public SquareAutonomous(){
-    addCommands(new DriveForDistanceCommand(0.5, 0.2)); // Drive straight
-    addCommands(new GyroTurnToAngleCommand(90)); // Turn 90 degrees
-    addCommands(new DriveForDistanceCommand(0.5, 0.2)); // Drive straight
-    addCommands(new GyroTurnToAngleCommand(90)); // Turn 90 degrees
-    addCommands(new DriveForDistanceCommand(0.5, 0.2)); // Drive straight
-    addCommands(new GyroTurnToAngleCommand(90)); // Turn 90 degrees
-    addCommands(new DriveForDistanceCommand(0.5, 0.2)); // Drive straight
-    addCommands(new GyroTurnToAngleCommand(90)); // Turn 90 degrees
+    addCommands(new Drivetrain_GyroStraight(0.5, 0.2)); // Drive straight
+    addCommands(new Drivetrain_GyroTurn(90)); // Turn 90 degrees
+    addCommands(new Drivetrain_GyroStraight(0.5, 0.2)); // Drive straight
+    addCommands(new Drivetrain_GyroTurn(90)); // Turn 90 degrees
+    addCommands(new Drivetrain_GyroStraight(0.5, 0.2)); // Drive straight
+    addCommands(new Drivetrain_GyroTurn(90)); // Turn 90 degrees
+    addCommands(new Drivetrain_GyroStraight(0.5, 0.2)); // Drive straight
+    addCommands(new Drivetrain_GyroTurn(90)); // Turn 90 degrees
     }
 }
