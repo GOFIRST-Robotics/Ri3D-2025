@@ -18,23 +18,23 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class IntakeSubsystem extends SubsystemBase {
   
   // Intake Motor Controllers
-  private SparkMax m_lowerIntakeBar; // NEO 550 motor
-  private SparkMax m_upperIntakeBar; // NEO 550 motor
+  private SparkMax m_IntakeBar; // NEO 550 motor
+  private SparkMax m_DeployIntake; // NEO 550 motor
 
-  private double lowerIntakeBarRPM, upperIntakeBarRPM;
+  private double IntakeBarRPM;
+  private double DeployPosition;
+
+  private boolean deployed;
 
   /** Subsystem for controlling the Intake */
   public IntakeSubsystem() {
     // Instantiate the Intake motor controllers
-    m_lowerIntakeBar = new SparkMax(Constants.LOWER_INTAKE_BAR_MOTOR_ID, MotorType.kBrushless);
-    m_upperIntakeBar = new SparkMax(Constants.UPPER_INTAKE_BAR_MOTOR_ID, MotorType.kBrushless);
-
+    m_IntakeBar = new SparkMax(Constants.INTAKE_BAR_MOTOR_ID, MotorType.kBrushless);
+    m_DeployIntake = new SparkMax(Constants.DEPLOY_INTAKE_MOTOR_ID, MotorType.kBrushless);
     // Configure the Spark MAX motor controllers using the new 2025 method
-    configureSparkMAX(m_lowerIntakeBar, Constants.LOWER_INTAKE_BAR_INVERT);
-    configureSparkMAX(m_upperIntakeBar, Constants.UPPER_INTAKE_BAR_INVERT);
+    configureSparkMAX(m_IntakeBar, Constants.INTAKE_BAR_INVERT);
 
-    SmartDashboard.putNumber("Upper Intake Bar Speed", Constants.UPPER_INTAKE_BAR_SPEED);
-    SmartDashboard.putNumber("Lower Intake Bar Speed", Constants.LOWER_INTAKE_BAR_SPEED);
+    SmartDashboard.putNumber("Intake Bar Speed", Constants.INTAKE_BAR_SPEED);
   }
 
   private void configureSparkMAX(SparkMax max, boolean reverse) {
@@ -43,31 +43,47 @@ public class IntakeSubsystem extends SubsystemBase {
     max.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 	}
 
-  /* Set power to the intake motors */
-  public void setPower(double upperPower, double lowerPower) {
-    m_upperIntakeBar.set(upperPower);
-    m_lowerIntakeBar.set(lowerPower);
+  /* Set power to the intake motor */
+  public void setPower(double Power) {
+    m_IntakeBar.set(Power);
   }
   public void stop() {
-    m_lowerIntakeBar.set(0);
-    m_upperIntakeBar.set(0);
+    m_IntakeBar.set(0);
   }
 
-  /* Read the speed of the intake motors */
-  public double getLowerIntakeBarRPM() {
-    return lowerIntakeBarRPM;
+  /* Read the speed of the intake motor */
+  public double getIntakeBarRPM() {
+    return IntakeBarRPM;
   }
-  public double getUpperIntakeBarRPM() {
-    return upperIntakeBarRPM;
+  /* toggle the intake in or out */
+  public void deployToggle() {
+    deployed = !deployed;
   }
+
+  /* get position */
+  public double getPosition() {
+    return DeployPosition;
+  }
+
+  public boolean goToPosition(double speed) {
+    if(deployed && DeployPosition < Constants.INTAKE_DEPLOYED_POS) {
+      m_DeployIntake.set(speed);
+      return false;
+    } else if(!deployed && DeployPosition > Constants.INTAKE_RETURNED_POS) {
+      m_DeployIntake.set(-speed);
+      return false;
+    } else {
+      m_DeployIntake.stopMotor();
+      return true;
+    }
+  } 
 
   @Override
   public void periodic() {
-    lowerIntakeBarRPM = m_lowerIntakeBar.getEncoder().getVelocity();
-    upperIntakeBarRPM = m_upperIntakeBar.getEncoder().getVelocity();
+    IntakeBarRPM = m_IntakeBar.getEncoder().getVelocity();
+    DeployPosition = m_DeployIntake.getEncoder().getPosition();
 
     // Add intake bar RPM readingss to SmartDashboard for the sake of datalogging
-    SmartDashboard.putNumber("Lower Intake Bar RPM", lowerIntakeBarRPM);
-    SmartDashboard.putNumber("Upper Intake Bar RPM", upperIntakeBarRPM);
+    SmartDashboard.putNumber("Intake Bar RPM", IntakeBarRPM);
   }
 }

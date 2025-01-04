@@ -41,8 +41,8 @@ public final class Constants {
     public static final int RIGHT_FRONT_DRIVE_MOTOR_ID = 1;
     public static final int LEFT_REAR_DRIVE_MOTOR_ID = 3;
     public static final int RIGHT_REAR_DRIVE_MOTOR_ID = 2;
-    public static final int LOWER_INTAKE_BAR_MOTOR_ID = 5;
-    public static final int UPPER_INTAKE_BAR_MOTOR_ID = 3;
+    public static final int INTAKE_BAR_MOTOR_ID = 3;
+    public static final int DEPLOY_INTAKE_MOTOR_ID = 9;
     public static final int CLIMBER_MOTOR_ID_SPARK = 10;
 
     // PWM Ports //
@@ -66,10 +66,11 @@ public final class Constants {
     public static final double DRIVE_TURNING_THRESHOLD_DEGREES = 3;
 
     // Intake Constants //
-    public static final boolean LOWER_INTAKE_BAR_INVERT = false;
-    public static final double LOWER_INTAKE_BAR_SPEED = 0.8;
-    public static final boolean UPPER_INTAKE_BAR_INVERT = true;
-    public static final double UPPER_INTAKE_BAR_SPEED = 0.4;
+    public static final boolean INTAKE_BAR_INVERT = true;
+    public static final double INTAKE_BAR_SPEED = 0.4;
+    public static final double DEPLOY_SPEED =   0.1;
+    public static final double INTAKE_DEPLOYED_POS = 1.0;
+    public static final double INTAKE_RETURNED_POS = 0.01;
 
     // Climber Constants //
     public static final boolean CLIMBER_INVERT = false;
@@ -83,7 +84,6 @@ public final class Constants {
     public static final int RIGHT_FRONT_DRIVE_MOTOR_PDH_CHANNEL = 10;
     public static final int LEFT_REAR_DRIVE_MOTOR_PDH_CHANNEL = 12;
     public static final int RIGHT_REAR_DRIVE_MOTOR_PDH_CHANNEL = 13;
-    public static final int LOWER_INTAKE_MOTOR_PDH_CHANNEL = 14;
     public static final int FLY_WHEEL_MOTOR_PDH_CHANNEL = 16;
     public static final int CLIMBER_MOTOR_PDH_CHANNEL = 17;
 
