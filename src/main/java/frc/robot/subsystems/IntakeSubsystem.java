@@ -65,16 +65,11 @@ public class IntakeSubsystem extends SubsystemBase {
     return DeployPosition;
   }
 
-  public boolean goToPosition(double speed) {
-    if(deployed && DeployPosition < Constants.INTAKE_DEPLOYED_POS) {
-      m_DeployIntake.set(speed);
-      return false;
-    } else if(!deployed && DeployPosition > Constants.INTAKE_RETURNED_POS) {
-      m_DeployIntake.set(-speed);
-      return false;
+  public void goToPosition() {
+    if(deployed) {
+      m_DeployIntake.getEncoder().setPosition(Constants.INTAKE_DEPLOYED_POS);
     } else {
-      m_DeployIntake.stopMotor();
-      return true;
+      m_DeployIntake.getEncoder().setPosition(Constants.INTAKE_RETURNED_POS);
     }
   } 
 

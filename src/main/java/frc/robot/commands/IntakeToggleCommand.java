@@ -27,18 +27,17 @@ public class IntakeToggleCommand extends Command {
   @Override
   public void initialize() {
     m_intakeSubsystem.deployToggle();
+    m_intakeSubsystem.goToPosition();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    m_intakeSubsystem.goToPosition(Constants.DEPLOY_SPEED);
-  }
+  public void execute() {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_intakeSubsystem.goToPosition(Constants.DEPLOY_SPEED);
+    return true;
   }
 
   // Called once the command ends or is interrupted.
