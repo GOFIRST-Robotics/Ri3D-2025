@@ -60,6 +60,10 @@ public class IntakeSubsystem extends SubsystemBase {
     deployed = !deployed;
   }
 
+  /* get whether the intake is in or out */
+  public boolean getDeployed() {
+    return deployed;
+  }
   /* get position */
   public double getPosition() {
     return DeployPosition;

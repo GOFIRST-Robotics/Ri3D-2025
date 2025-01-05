@@ -13,14 +13,12 @@ import frc.robot.subsystems.IntakeSubsystem;
 public class IntakeToggleCommand extends Command {
   private IntakeSubsystem m_intakeSubsystem;
 
-  private boolean reverse;
 
   /** Creates a new IntakeCommand. */
-  public IntakeToggleCommand(boolean reverse) {
+  public IntakeToggleCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
     m_intakeSubsystem = Robot.m_intakeSubsystem;
     addRequirements(m_intakeSubsystem);
-    this.reverse = reverse;
   }
 
   // Called when the command is initially scheduled.
