@@ -38,10 +38,10 @@ public class MotorPositionControlTest extends Command {
     this.error = positionGoal - motor.getEncoder().getPosition();
     double output = kP * error;
     if (Math.abs(output) > 0.5) { // Maximum power we want to allow
-      output = Math.copySign(0.75, output);
+      output = Math.copySign(0.5, output);
     }
     if (Math.abs(output) < 0.05) { // Minimum power we want to allow
-      output = Math.copySign(0.15, output);
+      output = Math.copySign(0.05, output);
     }
     motor.set(output);
     System.out.println(motor.getEncoder().getPosition());
