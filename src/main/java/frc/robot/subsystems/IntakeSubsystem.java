@@ -1,9 +1,10 @@
 // Author: UMN Robotics Ri3D
-// Last Updated: December 2024
+// Last Updated: January 2025
 
 package frc.robot.subsystems;
 
 import frc.robot.Constants;
+import frc.robot.commands.IntakeSetPosition;
 
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
@@ -71,18 +72,18 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void goToPosition() {
     if(deployed) {
-      m_DeployIntake.getEncoder().setPosition(Constants.INTAKE_DEPLOYED_POS);
+      (new IntakeSetPosition(Constants.INTAKE_DEPLOYED_POS)).schedule();
     } else {
-      m_DeployIntake.getEncoder().setPosition(Constants.INTAKE_RETURNED_POS);
-    }
-  } 
+      (new IntakeSetPosition(Constants.INTAKE_RETURNED_POS)).schedule();
+    } 
+  }
 
   @Override
   public void periodic() {
     IntakeBarRPM = m_IntakeBar.getEncoder().getVelocity();
     DeployPosition = m_DeployIntake.getEncoder().getPosition();
 
-    // Add intake bar RPM readingss to SmartDashboard for the sake of datalogging
+    // Add intake bar RPM readings to SmartDashboard for the sake of data logging
     SmartDashboard.putNumber("Intake Bar RPM", IntakeBarRPM);
   }
 }

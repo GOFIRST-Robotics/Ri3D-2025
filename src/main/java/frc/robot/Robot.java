@@ -21,6 +21,7 @@ import frc.robot.commands.autonomous.SquareAutonomous;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeToggleCommand;
+import frc.robot.commands.MotorPositionControlTest;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -108,7 +109,7 @@ public class Robot extends TimedRobot {
 
     m_autonomousCommand = autonChooser.getSelected();
     
-    // Zero the gyrodcope and reset the drive encoders
+    // Zero the gyroscope and reset the drive encoders
     m_driveSubsystem.zeroGyro();
     m_driveSubsystem.resetEncoders();
 
@@ -176,7 +177,7 @@ public class Robot extends TimedRobot {
 
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
-   * instantiating a {@link GenericHID} or onse of its subclasses ({@link edu.wpi.first.wpilibj.Joystick} 
+   * instantiating a {@link GenericHID} or one of its subclasses ({@link edu.wpi.first.wpilibj.Joystick} 
    * or {@link XboxController}), and then passing it to a {@link edu.wpi.first.wpilibj2.command.button.Trigger}.
    */
   private void configureButtonBindings() {
@@ -187,9 +188,11 @@ public class Robot extends TimedRobot {
     new POVButton(controller, 0).whileTrue(new StartEndCommand(() -> m_climbSubsystem.setPower(Constants.CLIMBER_SPEED), () -> m_climbSubsystem.stop())); // Climber up
     new POVButton(controller, 180).whileTrue(new StartEndCommand(() -> m_climbSubsystem.setPower(-1 * Constants.CLIMBER_SPEED), () -> m_climbSubsystem.stop())); // Climber down
 
-    // Intake Controls //\
-    
+    // Intake Controls //
     new Trigger(() -> controller.getRawButton(Constants.RIGHT_BUMPER)).whileTrue(new IntakeCommand()); // Intake or Outake depending on position
     new Trigger(() -> controller.getRawButton(Constants.B_BUTTON)).whileTrue(new IntakeToggleCommand()); // Deploy or Retract Intake
+
+    // Motor Position Control Test //
+    new Trigger(() -> controller.getRawButton(Constants.X_BUTTON)).onTrue(new MotorPositionControlTest());
   }
 }

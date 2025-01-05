@@ -3,7 +3,6 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
-import frc.robot.Constants;
 import frc.robot.Robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -40,7 +39,5 @@ public class IntakeToggleCommand extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    m_intakeSubsystem.stop();
-  }
+  public void end(boolean interrupted) {}
 }
