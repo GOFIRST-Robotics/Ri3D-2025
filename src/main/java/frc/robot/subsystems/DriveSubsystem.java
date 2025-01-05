@@ -71,8 +71,8 @@ public class DriveSubsystem extends SubsystemBase {
 
 	SparkMax leftFront = new SparkMax(Constants.LEFT_FRONT_DRIVE_MOTOR_ID, MotorType.kBrushless);
 	SparkMax rightFront = new SparkMax(Constants.RIGHT_FRONT_DRIVE_MOTOR_ID, MotorType.kBrushless);
-	SparkMax leftBack = new SparkMax(Constants.LEFT_BACK_DRIVE_MOTOR_ID, MotorType.kBrushless);
-	SparkMax rightBack = new SparkMax(Constants.RIGHT_BACK_DRIVE_MOTOR_ID, MotorType.kBrushless);	
+	SparkMax leftBack = new SparkMax(Constants.LEFT_REAR_DRIVE_MOTOR_ID, MotorType.kBrushless);
+	SparkMax rightBack = new SparkMax(Constants.RIGHT_REAR_DRIVE_MOTOR_ID, MotorType.kBrushless);	
 
 	MecanumDrive robotDrive = new MecanumDrive(leftFront, rightFront, leftBack, rightBack);
 
@@ -83,8 +83,8 @@ public class DriveSubsystem extends SubsystemBase {
     // Instantiate the Drivetrain motor controllers
     m_leftFrontMotor = new SparkMax(Constants.LEFT_FRONT_DRIVE_MOTOR_ID, MotorType.kBrushless);
     m_rightFrontMotor = new SparkMax(Constants.RIGHT_FRONT_DRIVE_MOTOR_ID, MotorType.kBrushless);
-    m_leftBackMotor = new SparkMax(Constants.LEFT_BACK_DRIVE_MOTOR_ID, MotorType.kBrushless);
-    m_rightBackMotor = new SparkMax(Constants.RIGHT_BACK_DRIVE_MOTOR_ID, MotorType.kBrushless);
+    m_leftBackMotor = new SparkMax(Constants.LEFT_REAR_DRIVE_MOTOR_ID, MotorType.kBrushless);
+    m_rightBackMotor = new SparkMax(Constants.RIGHT_REAR_DRIVE_MOTOR_ID, MotorType.kBrushless);
 
     // Configure the Spark MAX motor controllers using the new 2025 method
     configureSparkMAX(m_leftFrontMotor, Constants.REVERSE_LEFT_FRONT_MOTOR);

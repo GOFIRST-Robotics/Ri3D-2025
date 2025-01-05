@@ -15,10 +15,10 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
     // Physical Robot Constants //
-    public static final double WHEEL_DIAMETER = Units.inchesToMeters(6); // Convert from inches to meters // TODO: Update this for 2025
+    public static final double WHEEL_DIAMETER = Units.inchesToMeters(6); // Convert from inches to meters
     public static final double WHEEL_CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER; // Measured in meters
-	public static final double TRACK_WIDTH = Units.inchesToMeters(21.75); // Distance between centers of right and left wheels on robot (in meters) // TODO: Update this for 2025
-    public static final double WHEEL_BASE = Units.inchesToMeters(27.5); // Distance between centers of front and back wheels on robot (in meters) // TODO: Update this for 2025
+	public static final double TRACK_WIDTH = Units.inchesToMeters(21); // Distance between centers of right and left wheels on robot (in meters)
+    public static final double WHEEL_BASE = Units.inchesToMeters(16.75); // Distance between centers of front and back wheels on robot (in meters)
 
     // Controller Input Axes //
     public static final int CONTROLLER_USB_PORT_ID = 0; // USB port that the controller is plugged in to
@@ -61,7 +61,7 @@ public final class Constants {
     // Example: public static final int LEFT_ENCODER_CHANNEL_B = 3;
 
     // Drivetrain Constants //
-    public static final double DRIVE_GEAR_RATIO = 10.0; // TODO: Update this for 2025
+    public static final double DRIVE_GEAR_RATIO = 10;
     public static final boolean REVERSE_LEFT_FRONT_MOTOR = false;
     public static final boolean REVERSE_LEFT_BACK_MOTOR = false;
     public static final boolean REVERSE_RIGHT_FRONT_MOTOR = false;
