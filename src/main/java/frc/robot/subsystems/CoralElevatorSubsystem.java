@@ -27,9 +27,9 @@ public class CoralElevatorSubsystem extends SubsystemBase {
     /** Subsystem for controlling the coral elevator */
     public CoralElevatorSubsystem() {
       // Configure the Spark MAX motor controller using the new 2025 method
-      m_elevator_climb = new SparkMax(Constants.ELEVATOR_CLIMB_MOTOR_ID_SPARK, MotorType.kBrushless);
+      m_elevator_climb = new SparkMax(Constants.ELEVATOR_STAGE_1_MOTOR_ID, MotorType.kBrushless);
       configureSparkMAX(m_elevator_climb, Constants.ELEVATOR_INVERT);
-      m_elevator_lower = new SparkMax(Constants.ELEVATOR_LOWER_MOTOR_ID_SPARK, MotorType.kBrushless);
+      m_elevator_lower = new SparkMax(Constants.ELEVATOR_STAGE_2_MOTOR_ID, MotorType.kBrushless);
       configureSparkMAX(m_elevator_climb, Constants.ELEVATOR_INVERT);
       
       m_elevator_finger = new Servo(Constants.ELEVATOR_DROP_MOTOR_ID);

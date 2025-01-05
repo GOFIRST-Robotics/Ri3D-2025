@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.commands.autonomous.AutonomousMode_Default;
 import frc.robot.commands.autonomous.Drive1MeterAuto;
 import frc.robot.commands.autonomous.DriveBack;
@@ -23,6 +22,7 @@ import frc.robot.commands.CoralElevatorGrabCommand;
 import frc.robot.commands.CoralElevatorMoveCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.MotorPositionControlTest;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CoralElevatorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -201,5 +201,8 @@ Command m_autonomousCommand;
     new POVButton(controller, 90).whileTrue(new CoralElevatorGrabCommand()); // Grab Coral
     new POVButton(controller, 180).whileTrue(new CoralElevatorMoveCommand(Constants.ELEVATOR_DOWN)); // Elevator down 
     new POVButton(controller, 270).whileTrue(new CoralElevatorDropCommand()); // Drop Coral
+    
+    // Motor Position Control Test //
+    new Trigger(() -> controller.getRawButton(Constants.X_BUTTON)).onTrue(new MotorPositionControlTest());
   }
 }
