@@ -20,6 +20,7 @@ import frc.robot.commands.autonomous.DriveBack;
 import frc.robot.commands.autonomous.SquareAutonomous;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.MotorPositionControlTest;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CoralElevatorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -194,5 +195,8 @@ Command m_autonomousCommand;
 
     // Elevator Controls //
     new Trigger(() -> controller.getRawButton(Constants.)).whileTrue(new IntakeCommand(false)); // Intake
+    
+    // Motor Position Control Test //
+    new Trigger(() -> controller.getRawButton(Constants.X_BUTTON)).onTrue(new MotorPositionControlTest());
   }
 }
