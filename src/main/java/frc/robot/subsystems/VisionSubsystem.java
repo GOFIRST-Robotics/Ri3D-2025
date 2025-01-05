@@ -17,12 +17,17 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class VisionSubsystem extends SubsystemBase {
     PhotonCamera camera = new PhotonCamera(Constants.USB_CAMERA_NAME); // Declare the name of the camera used in the pipeline
     boolean hasTarget; // Stores whether or not a target is detected
-    PhotonPipelineResult result; // Stores all the data that Photonvision returns
+    List<PhotonPipelineResult> results; // Stores all the data that Photonvision returns
+    
+    PhotonPipelineResult result; // Stores the latest data that Photonvision returns
 
     @Override
     public void periodic() {
-        // PhotonPipelineResult result = camera.getLatestResult(); // Query the latest result from PhotonVision
-        // hasTarget = result.hasTargets(); // If the camera has detected an apriltag target, the hasTarget boolean will be true
+        results = camera.getAllUnreadResults(); // Query the all unread result from PhotonVision
+        if (!results.isEmpty()) {
+            result = results.get(0);
+        }
+        hasTarget = result.hasTargets(); // If the camera has detected an apriltag target, the hasTarget boolean will be true
     }
     
     public PhotonTrackedTarget getTargetWithID(int id) { // Returns the apriltag target with the specified ID (if it exists)
