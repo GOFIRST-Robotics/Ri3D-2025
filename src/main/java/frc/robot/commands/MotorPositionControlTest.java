@@ -21,7 +21,7 @@ public class MotorPositionControlTest extends Command {
   private double goalThreshold = 5;
   private SparkMax motor = new SparkMax(4, MotorType.kBrushless);
 
-  /** Creates a new MotorPositionControlTest. */
+  /** This command is for testing position control on a NEO / NEO 550 motor. */
   public MotorPositionControlTest() {
     SparkMaxConfig config = new SparkMaxConfig();
     config.inverted(false).idleMode(IdleMode.kBrake);
