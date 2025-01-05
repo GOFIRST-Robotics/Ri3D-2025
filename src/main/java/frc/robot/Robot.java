@@ -192,6 +192,6 @@ public class Robot extends TimedRobot {
     new Trigger(() -> controller.getRawButton(Constants.LEFT_BUMPER)).whileTrue(new IntakeCommand(true)); // Outtake
 
     // Motor Position Control Test //
-    new Trigger(() -> controller.getRawButton(Constants.X_BUTTON)).whileTrue(new MotorPositionControlTest());
+    new Trigger(() -> controller.getRawButton(Constants.X_BUTTON)).onTrue(new MotorPositionControlTest());
   }
 }

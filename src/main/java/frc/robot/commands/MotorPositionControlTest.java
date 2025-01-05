@@ -17,9 +17,9 @@ public class MotorPositionControlTest extends Command {
 
   private double error;
   private double kP = 0.1;
-  private double positionGoal = 1000;
-  private double goalThreshold = 10;
-  private SparkMax motor = new SparkMax(10, MotorType.kBrushless);
+  private double positionGoal = 100;
+  private double goalThreshold = 5;
+  private SparkMax motor = new SparkMax(4, MotorType.kBrushless);
 
   /** Creates a new MotorPositionControlTest. */
   public MotorPositionControlTest() {
@@ -37,13 +37,14 @@ public class MotorPositionControlTest extends Command {
   public void execute() {
     this.error = positionGoal - motor.getEncoder().getPosition();
     double output = kP * error;
-    if (Math.abs(output) > 0.75) { // Maximum power we want to allow
+    if (Math.abs(output) > 0.5) { // Maximum power we want to allow
       output = Math.copySign(0.75, output);
     }
-    if (Math.abs(output) < 0.15) { // Minimum power we want to allow
+    if (Math.abs(output) < 0.05) { // Minimum power we want to allow
       output = Math.copySign(0.15, output);
     }
     motor.set(output);
+    System.out.println(motor.getEncoder().getPosition());
   }
 
   // Returns true when the command should end.
