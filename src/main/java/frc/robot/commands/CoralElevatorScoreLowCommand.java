@@ -10,12 +10,12 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.subsystems.CoralElevatorSubsystem;
 
-// This command causes the Coral held by the End Effector to be dropped
-public class CoralElevatorDropCommand extends Command {
+// This command activates the Score Low Elevator/End Effector preset
+public class CoralElevatorScoreLowCommand extends Command {
   private CoralElevatorSubsystem m_subsystem;
 
-  /** D Pad left command, causes End Effector to drop held Coral */
-  public CoralElevatorDropCommand() {
+  /** D Pad left command, sets height to Neutral and arm to Intake */
+  public CoralElevatorScoreLowCommand() {
     m_subsystem = Robot.m_CoralElevatorSubsystem;
     addRequirements(m_subsystem);
   }
@@ -23,8 +23,8 @@ public class CoralElevatorDropCommand extends Command {
   // Called once when the command is initially scheduled.
   @Override
   public void initialize() {
-    (new CoralElevatorSetPositionLowerCommand(0.25)).schedule();
-    m_subsystem.setAngleFinger(0);
+    m_subsystem.climbLowGoal();
+    m_subsystem.lowerDrop();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -36,7 +36,7 @@ public class CoralElevatorDropCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    (new CoralElevatorSetPositionLowerCommand(0)).schedule();
+    // -
   }
 
   // Returns true when the command should end.

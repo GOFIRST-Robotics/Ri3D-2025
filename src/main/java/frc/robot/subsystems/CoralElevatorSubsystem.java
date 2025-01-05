@@ -4,6 +4,8 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants;
+import frc.robot.commands.CoralElevatorSetPositionClimbCommand;
+import frc.robot.commands.CoralElevatorSetPositionLowerCommand;
 
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
@@ -21,9 +23,7 @@ public class CoralElevatorSubsystem extends SubsystemBase {
     private SparkMax m_elevator_climb; // NEO motor
     private SparkMax m_elevator_lower; // NEO motor
     private Servo m_elevator_finger; // Servo motor
-    // TODO: Implement SetPosition for Climb motor
-    // TODO: Implement preset heights for Climb motor
-  
+
     /** Subsystem for controlling the coral elevator */
     public CoralElevatorSubsystem() {
       // Configure the Spark MAX motor controller using the new 2025 method
@@ -54,8 +54,38 @@ public class CoralElevatorSubsystem extends SubsystemBase {
   
   /* Gets position of the elevator climb motor */
   public double getPositionClimb() {
-      // Spark Max getEncoder().getPosition() method
-      return m_elevator_climb.getEncoder().getPosition();
+    // Spark Max getEncoder().getPosition() method
+    return m_elevator_climb.getEncoder().getPosition();
+  }
+
+  /* Sets position of elevator climb to Neutral preset */
+  public void climbNeutral() {
+    // Calls CoralElevatorSetPositionClimbCommand()
+    (new CoralElevatorSetPositionClimbCommand(0)).schedule(); // TODO: TUNE THIS
+  }
+
+  /* Sets position of elevator climb to Player Intake preset */
+  public void climbPlayerIntake() {
+    // Calls CoralElevatorSetPositionClimbCommand()
+    (new CoralElevatorSetPositionClimbCommand(2* 12 * Constants.ELEVATOR_ROTATIONS_PER_INCH)).schedule(); // TODO: TUNE THIS
+  }
+
+  /* Sets position of elevator climb to low Goal preset */
+  public void climbLowGoal() {
+    // Calls CoralElevatorSetPositionClimbCommand()
+    (new CoralElevatorSetPositionClimbCommand(4* 12 * Constants.ELEVATOR_ROTATIONS_PER_INCH)).schedule(); // TODO: TUNE THIS
+  }
+
+  /* Sets position of elevator climb to Mid Goal preset */
+  public void climbMidGoal() {
+    // Calls CoralElevatorSetPositionClimbCommand()
+    (new CoralElevatorSetPositionClimbCommand(6* 12 * Constants.ELEVATOR_ROTATIONS_PER_INCH)).schedule(); // TODO: TUNE THIS
+  }
+
+  /* Sets position of elevator climb to High Goal preset */
+  public void climbHighGoal() {
+    // Calls CoralElevatorSetPositionClimbCommand()
+    (new CoralElevatorSetPositionClimbCommand(8* 12 * Constants.ELEVATOR_ROTATIONS_PER_INCH)).schedule(); // TODO: TUNE THIS
   }
 
   // Lower Motor Methods -------------------------------------------------------------------------------
@@ -70,6 +100,24 @@ public class CoralElevatorSubsystem extends SubsystemBase {
   public double getPositionLower() {
     // Spark Max getEncoder().getPosition() method
     return m_elevator_lower.getEncoder().getPosition();
+  }
+
+  /* Sets position of elevator Lower to Drop preset */
+  public void lowerDrop() {
+    // Calls CoralElevatorSetPositionLowerCommand()
+    (new CoralElevatorSetPositionLowerCommand(0.25)).schedule(); // TODO: TUNE THIS
+  }
+
+  /* Sets position of elevator Lower to Intake preset */
+  public void lowerIntake() {
+    // Calls CoralElevatorSetPositionLowerCommand()
+    (new CoralElevatorSetPositionLowerCommand(0)).schedule(); // TODO: TUNE THIS
+  }
+
+  /* Sets position of elevator Lower to Vertical preset */
+  public void lowerVertical() {
+    // Calls CoralElevatorSetPositionLowerCommand()
+    (new CoralElevatorSetPositionLowerCommand(-0.125)).schedule(); // TODO: TUNE THIS
   }
 
   // Finger Motor Methods ------------------------------------------------------------------------------

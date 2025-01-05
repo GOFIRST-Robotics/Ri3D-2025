@@ -17,9 +17,13 @@ import frc.robot.commands.autonomous.AutonomousMode_Default;
 import frc.robot.commands.autonomous.Drive1MeterAuto;
 import frc.robot.commands.autonomous.DriveBack;
 import frc.robot.commands.autonomous.SquareAutonomous;
-import frc.robot.commands.CoralElevatorDropCommand;
-import frc.robot.commands.CoralElevatorGrabCommand;
+import frc.robot.commands.CoralElevatorFingerToggleCommand;
 import frc.robot.commands.CoralElevatorMoveCommand;
+import frc.robot.commands.CoralElevatorNeutralCommand;
+import frc.robot.commands.CoralElevatorPlayerIntakeCommand;
+import frc.robot.commands.CoralElevatorScoreHighCommand;
+import frc.robot.commands.CoralElevatorScoreLowCommand;
+import frc.robot.commands.CoralElevatorScoreMidCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.MotorPositionControlTest;
@@ -193,14 +197,18 @@ Command m_autonomousCommand;
     // new POVButton(controller, 180).whileTrue(new StartEndCommand(() -> m_climbSubsystem.setPower(-1 * Constants.CLIMBER_SPEED), () -> m_climbSubsystem.stop())); // Climber down
 
     // Intake Controls //
-    new Trigger(() -> controller.getRawButton(Constants.RIGHT_BUMPER)).whileTrue(new IntakeCommand(false)); // Intake
-    new Trigger(() -> controller.getRawButton(Constants.LEFT_BUMPER)).whileTrue(new IntakeCommand(true)); // Outtake
+    new Trigger(() -> controller.getRawButton(Constants.RIGHT_TRIGGER_BUTTON)).whileTrue(new IntakeCommand(false)); // Intake
+    new Trigger(() -> controller.getRawButton(Constants.LEFT_TRIGGER_BUTTON)).whileTrue(new IntakeCommand(true)); // Outtake
 
     // Coral Elevator Controls //
-    new POVButton(controller, 0).whileTrue(new CoralElevatorMoveCommand(Constants.ELEVATOR_UP)); // Elevator up
-    new POVButton(controller, 90).whileTrue(new CoralElevatorGrabCommand()); // Grab Coral
-    new POVButton(controller, 180).whileTrue(new CoralElevatorMoveCommand(Constants.ELEVATOR_DOWN)); // Elevator down 
-    new POVButton(controller, 270).whileTrue(new CoralElevatorDropCommand()); // Drop Coral
+    new Trigger(() -> controller.getRawButton(Constants.RIGHT_BUMPER)).whileTrue(new CoralElevatorMoveCommand(Constants.ELEVATOR_UP)); // Elevator up
+    new Trigger(() -> controller.getRawButton(Constants.LEFT_BUMPER)).whileTrue(new CoralElevatorMoveCommand(Constants.ELEVATOR_DOWN)); // Elevator down
+    new Trigger(() -> controller.getRawButton(Constants.RIGHT_STICK_BUTTON)).whileTrue(new CoralElevatorPlayerIntakeCommand()); // Player Position Preset
+    new POVButton(controller, 0).whileTrue(new CoralElevatorScoreMidCommand()); // Score Mid Preset
+    new POVButton(controller, 90).whileTrue(new CoralElevatorScoreHighCommand()); // Score High Preset
+    new POVButton(controller, 180).whileTrue(new CoralElevatorNeutralCommand()); // Neutral Preset
+    new POVButton(controller, 270).whileTrue(new CoralElevatorScoreLowCommand()); // Score Low Preset
+    new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).whileTrue(new CoralElevatorFingerToggleCommand()); // Finger Toggle
     
     // Motor Position Control Test //
     new Trigger(() -> controller.getRawButton(Constants.X_BUTTON)).onTrue(new MotorPositionControlTest());
