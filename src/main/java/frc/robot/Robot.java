@@ -18,6 +18,9 @@ import frc.robot.commands.autonomous.AutonomousMode_Default;
 import frc.robot.commands.autonomous.Drive1MeterAuto;
 import frc.robot.commands.autonomous.DriveBack;
 import frc.robot.commands.autonomous.SquareAutonomous;
+import frc.robot.commands.CoralElevatorDropCommand;
+import frc.robot.commands.CoralElevatorGrabCommand;
+import frc.robot.commands.CoralElevatorMoveCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -49,6 +52,7 @@ Command m_autonomousCommand;
   public static final PowerSubsystem m_powerSubsystem = new PowerSubsystem(); // Power subsystem for interacting with the Rev PDH
   public static final VisionSubsystem m_visionSubsystem = new VisionSubsystem(); // Subsystem for interacting with Photonvision
   public static final LEDSubsystem m_LEDSubsystem = new LEDSubsystem(); // Subsytem for controlling the REV Blinkin LED module
+  public static final CoralElevatorSubsystem m_coralElevatorSubsystem = new CoralElevatorSubsystem(); // Subsystem for controling Elevator and End Effector
   
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -185,14 +189,17 @@ Command m_autonomousCommand;
     new Trigger(() -> controller.getRawButton(Constants.Y_BUTTON)).whileTrue(new InstantCommand(() -> m_driveSubsystem.toggleDirection())); // Toggle the "front" (direction) of the drivetrain
 
     // Climber Controls //
-    new POVButton(controller, 0).whileTrue(new StartEndCommand(() -> m_climbSubsystem.setPower(Constants.CLIMBER_SPEED), () -> m_climbSubsystem.stop())); // Climber up
-    new POVButton(controller, 180).whileTrue(new StartEndCommand(() -> m_climbSubsystem.setPower(-1 * Constants.CLIMBER_SPEED), () -> m_climbSubsystem.stop())); // Climber down
+    // new POVButton(controller, 0).whileTrue(new StartEndCommand(() -> m_climbSubsystem.setPower(Constants.CLIMBER_SPEED), () -> m_climbSubsystem.stop())); // Climber up
+    // new POVButton(controller, 180).whileTrue(new StartEndCommand(() -> m_climbSubsystem.setPower(-1 * Constants.CLIMBER_SPEED), () -> m_climbSubsystem.stop())); // Climber down
 
     // Intake Controls //
     new Trigger(() -> controller.getRawButton(Constants.RIGHT_BUMPER)).whileTrue(new IntakeCommand(false)); // Intake
     new Trigger(() -> controller.getRawButton(Constants.LEFT_BUMPER)).whileTrue(new IntakeCommand(true)); // Outtake
 
-    // Elevator Controls //
-    new Trigger(() -> controller.getRawButton(Constants.)).whileTrue(new IntakeCommand(false)); // Intake
+    // Coral Elevator Controls //
+    new POVButton(controller, 0).whileTrue(new CoralElevatorMoveCommand(Constants.ELEVATOR_UP)); // Elevator up
+    new POVButton(controller, 90).whileTrue(new CoralElevatorGrabCommand()); // Grab Coral
+    new POVButton(controller, 180).whileTrue(new CoralElevatorMoveCommand(Constants.ELEVATOR_DOWN)); // Elevator down 
+    new POVButton(controller, 270).whileTrue(new CoralElevatorDropCommand()); // Drop Coral
   }
 }

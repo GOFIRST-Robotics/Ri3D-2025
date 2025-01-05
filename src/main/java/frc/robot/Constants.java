@@ -18,6 +18,7 @@ public final class Constants {
     public static final double WHEEL_DIAMETER = Units.inchesToMeters(6); // Convert from inches to meters // TODO: Update this for 2025
     public static final double WHEEL_CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER; // Measured in meters
 	public static final double TRACK_WIDTH = Units.inchesToMeters(21.75); // Distance between centers of right and left wheels on robot (in meters) // TODO: Update this for 2025
+    public static final int ELEVATOR_ROTATIONS_PER_INCH = 13; // number of rotations elevator climb motor must complete to raise/lower elevator by one inch
 
     // Controller Input Axes //
     public static final int CONTROLLER_USB_PORT_ID = 0; // USB port that the controller is plugged in to
@@ -45,6 +46,7 @@ public final class Constants {
     public static final int UPPER_INTAKE_BAR_MOTOR_ID = 3;
     public static final int CLIMBER_MOTOR_ID_SPARK = 10;
     public static final int ELEVATOR_CLIMB_MOTOR_ID_SPARK = 6;
+    public static final int ELEVATOR_LOWER_MOTOR_ID_SPARK = 7;
 
     // Servo IDs //
     public static final int ELEVATOR_DROP_MOTOR_ID = 0;
@@ -79,9 +81,12 @@ public final class Constants {
     public static final boolean CLIMBER_INVERT = false;
     public static final double CLIMBER_SPEED = 0.6;
 
-    // Elevator Constants //
+    // Coral Elevator Constants //
     public static final boolean ELEVATOR_INVERT = false;
-    public static final double ELEVATOR_SPEED = 0.5;
+    public static final double ELEVATOR_SPEED = 0.5; // TODO: Tune this
+    public static final double LOWERING_SPEED = 0.2; // TODO: Tune this
+    public static final boolean ELEVATOR_UP = true;
+    public static final boolean ELEVATOR_DOWN = false;
 
     // REV PH Channels //
     // Example: public static final int EXTENSION_SOLENOID_ID = 0;

@@ -17,68 +17,85 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class CoralElevatorSubsystem extends SubsystemBase {
   
-  // Coral Elevator Motor Controllers
-  private SparkMax m_elevator_climb; // NEO motor
-  private Servo m_elevator_drop; // Servo motor
+    // Coral Elevator Motor Controllers
+    private SparkMax m_elevator_climb; // NEO motor
+    private SparkMax m_elevator_lower; // NEO motor
+    private Servo m_elevator_finger; // Servo motor
+    // TODO: Implement SetPosition for Climb motor
+    // TODO: Implement preset heights for Climb motor
+  
+    /** Subsystem for controlling the coral elevator */
+    public CoralElevatorSubsystem() {
+      // Configure the Spark MAX motor controller using the new 2025 method
+      m_elevator_climb = new SparkMax(Constants.ELEVATOR_CLIMB_MOTOR_ID_SPARK, MotorType.kBrushless);
+      configureSparkMAX(m_elevator_climb, Constants.ELEVATOR_INVERT);
+      m_elevator_lower = new SparkMax(Constants.ELEVATOR_LOWER_MOTOR_ID_SPARK, MotorType.kBrushless);
+      configureSparkMAX(m_elevator_climb, Constants.ELEVATOR_INVERT);
+      
+      m_elevator_finger = new Servo(Constants.ELEVATOR_DROP_MOTOR_ID);
+  
+      // Put the default speed on SmartDashboard if needed
+      // SmartDashboard.putNumber("Elevator Speed", Constants.ELEVATOR_SPEED);
+    }
+  
+    private void configureSparkMAX(SparkMax max, boolean reverse) {
+      SparkMaxConfig config = new SparkMaxConfig();
+      config.inverted(reverse).idleMode(IdleMode.kBrake);
+      max.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    }
+  
+  // Climb Motor Methods --------------------------------------------------------------------------------
 
-  /** Subsystem for controlling the coral elevator */
-  public CoralElevatorSubsystem() {
-    // Configure the Spark MAX motor controller using the new 2025 method
-    m_elevator_climb = new SparkMax(Constants.ELEVATOR_CLIMB_MOTOR_ID_SPARK, MotorType.kBrushless);
-    configureSparkMAX(m_elevator_climb, Constants.ELEVATOR_INVERT);
-    
-    m_elevator_drop = new Servo(Constants.ELEVATOR_DROP_MOTOR_ID);
-
-    // Put the default speed on SmartDashboard if needed
-    // SmartDashboard.putNumber("Elevator Speed", Constants.ELEVATOR_SPEED);
+  /* Set speed of the elevator climb */
+  public void setSpeedClimb(double speed) {
+    // Spark Max .set() method
+    m_elevator_climb.set(speed);
   }
-
-  private void configureSparkMAX(SparkMax max, boolean reverse) {
-		SparkMaxConfig config = new SparkMaxConfig();
-    config.inverted(reverse).idleMode(IdleMode.kBrake);
-    max.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-	}
-
-  /* Set position of the elevator climb motor */
-  public void setPositionClimb(double pos) {
-    // Spark Max getEncoder().getPosition() method
-    m_elevator_climb.getEncoder().setPosition(pos);
-  }
-
+  
   /* Gets position of the elevator climb motor */
   public double getPositionClimb() {
-    // Spark Max getEncoder().getPosition() method
-    return m_elevator_climb.getEncoder().getPosition();
+      // Spark Max getEncoder().getPosition() method
+      return m_elevator_climb.getEncoder().getPosition();
   }
 
+  // Lower Motor Methods -------------------------------------------------------------------------------
+
+  /* Sets speed of the elevator lowering motor */
+  public void setSpeedLower(double speed) {
+    // Spark Max set() method
+    m_elevator_lower.set(speed);
+  }
+
+  /* Gets position of the elevator lowering motor */
+  public double getPositionLower() {
+    // Spark Max getEncoder().getPosition() method
+    return m_elevator_lower.getEncoder().getPosition();
+  }
+
+  // Finger Motor Methods ------------------------------------------------------------------------------
+
   /* Set position to the elevator drop motor. Input between 0.0 and 1.0 */
-  public void setPos(double pos) {
+  public void setPositionFinger(double pos) {
     // Servo set method
-    m_elevator_drop.set(pos);
+    m_elevator_finger.set(pos);
   }
 
   /* Gets current position of elevator drop motor. Output between 0.0 and 1.0 */
-  public double getPos() {
+  public double getPositionFinger() {
     // Servo get method
-    return m_elevator_drop.get();
+    return m_elevator_finger.get();
   }
 
   /* Set position of the elevator drop motor in terms of an angle */
-  public void setAngle(double angle) {
+  public void setAngleFinger(double angle) {
     // Servo setAngle method
-    m_elevator_drop.setAngle(angle);
+    m_elevator_finger.setAngle(angle);
   }
 
   /* Get position of the elevator drop motor in terms of an angle */
-  public double getAngle() {
+  public double getAngleFinger() {
     // Servo getAngle method
-    return m_elevator_drop.getAngle();
-  }
-
-  /* Resets climb and drop motors positions to initial (0) */
-  public void reset() {
-    setPositionClimb(0);
-    setAngle(0);
+    return m_elevator_finger.getAngle();
   }
 
   @Override
