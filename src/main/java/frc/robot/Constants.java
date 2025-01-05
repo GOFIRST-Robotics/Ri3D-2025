@@ -18,6 +18,7 @@ public final class Constants {
     public static final double WHEEL_DIAMETER = Units.inchesToMeters(6); // Convert from inches to meters // TODO: Update this for 2025
     public static final double WHEEL_CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER; // Measured in meters
 	public static final double TRACK_WIDTH = Units.inchesToMeters(21.75); // Distance between centers of right and left wheels on robot (in meters) // TODO: Update this for 2025
+    public static final double WHEEL_BASE = Units.inchesToMeters(27.5); // Distance between centers of front and back wheels on robot (in meters) // TODO: Update this for 2025
 
     // Controller Input Axes //
     public static final int CONTROLLER_USB_PORT_ID = 0; // USB port that the controller is plugged in to
@@ -39,10 +40,12 @@ public final class Constants {
     // Spark MAX CAN IDs //
     public static final int LEFT_FRONT_DRIVE_MOTOR_ID = 0;
     public static final int RIGHT_FRONT_DRIVE_MOTOR_ID = 1;
+
     public static final int LEFT_REAR_DRIVE_MOTOR_ID = 3;
     public static final int RIGHT_REAR_DRIVE_MOTOR_ID = 2;
     public static final int INTAKE_BAR_MOTOR_ID = 3;
     public static final int DEPLOY_INTAKE_MOTOR_ID = 9;
+
     public static final int CLIMBER_MOTOR_ID_SPARK = 10;
 
     // PWM Ports //
@@ -55,15 +58,27 @@ public final class Constants {
     // Example: public static final int LEFT_ENCODER_CHANNEL_B = 3;
 
     // Drivetrain Constants //
-    public static final double DRIVE_GEAR_RATIO = 10.71; // TODO: Update this for 2025
-    public static final boolean DRIVE_INVERT_LEFT = false; // Whether to reverse the left drivetrain motors or not
-    public static final boolean DRIVE_INVERT_RIGHT = true; // Whether to reverse the right drivetrain motors or not
+    public static final double DRIVE_GEAR_RATIO = 10.0; // TODO: Update this for 2025
+    public static final boolean REVERSE_LEFT_FRONT_MOTOR = false;
+    public static final boolean REVERSE_LEFT_BACK_MOTOR = false;
+    public static final boolean REVERSE_RIGHT_FRONT_MOTOR = false;
+    public static final boolean REVERSE_RIGHT_BACK_MOTOR = false;
     public static final double GYRO_TURN_KP = 0.007; // P (Proportional) constant of a PID loop
     public static final double TRACKED_TAG_ROATION_KP = 0.0175;
     public static final double TRACKED_TAG_DISTANCE_DRIVE_KP = 0.3; // P (Proportional) constant of a PID loop
     public static final double TRACKED_TAG_AREA_DRIVE_KP = 0.2; // P (Proportional) constant of a PID loop
     public static final double APRILTAG_POWER_CAP = 0.75;
-    public static final double DRIVE_TURNING_THRESHOLD_DEGREES = 3;
+    public static final double TURNING_THRESHOLD_DEGREES = 3;
+    public static final double MAX_POWER_GYRO = 0.4;
+    public static final double kP_FRONT_RIGHT_VELOCITY = 0.0010269; // TODO: Update this for 2025
+	public static final double kP_FRONT_LEFT_VELOCITY = 0.0010269; // TODO: Update this for 2025
+	public static final double kP_BACK_RIGHT_VELOCITY = 0.0010269; // TODO: Update this for 2025
+	public static final double kP_BACK_LEFT_VELOCITY = 0.0010269; // TODO: Update this for 2025
+	public static final double kP_X_CONTROLLER = 9.6421; // TODO: Update this for 2025
+    public static final double kP_Y_CONTROLLER = 9.6421; // TODO: Update this for 2025
+    public static final double kP_THETA_CONTROLLER = 9.6421; // TODO: Update this for 2025
+	public static final double kMAX_ANGULAR_SPEED_RADIANS_PER_SECOND = 2*Math.PI; // TODO: Update this for 2025
+	public static final double kMAX_ANGULAR_ACCELERATION_RADIANS_PER_SECOND_SQUARED = 2*Math.PI; // TODO: Update this for 2025
 
     // Intake Constants //
     public static final boolean INTAKE_BAR_INVERT = true;
@@ -82,8 +97,10 @@ public final class Constants {
     // Rev PDH Constants //
     public static final int LEFT_FRONT_DRIVE_MOTOR_PDH_CHANNEL = 11;
     public static final int RIGHT_FRONT_DRIVE_MOTOR_PDH_CHANNEL = 10;
+
     public static final int LEFT_REAR_DRIVE_MOTOR_PDH_CHANNEL = 12;
     public static final int RIGHT_REAR_DRIVE_MOTOR_PDH_CHANNEL = 13;
+
     public static final int FLY_WHEEL_MOTOR_PDH_CHANNEL = 16;
     public static final int CLIMBER_MOTOR_PDH_CHANNEL = 17;
 
