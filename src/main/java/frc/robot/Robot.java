@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.commands.autonomous.Drive1MeterAuto;
 import frc.robot.commands.autonomous.SquareAutonomous;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.MotorPositionControlTest;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -205,5 +206,8 @@ public class Robot extends TimedRobot {
     // Intake Controls //
     new Trigger(() -> controller.getRawButton(Constants.RIGHT_BUMPER)).whileTrue(new IntakeCommand(false)); // Intake
     new Trigger(() -> controller.getRawButton(Constants.LEFT_BUMPER)).whileTrue(new IntakeCommand(true)); // Outtake
+
+    // Motor Position Control Test //
+    new Trigger(() -> controller.getRawButton(Constants.X_BUTTON)).onTrue(new MotorPositionControlTest());
   }
 }
