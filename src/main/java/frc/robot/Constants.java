@@ -21,20 +21,22 @@ public final class Constants {
 
     // Controller Input Axes //
     public static final int CONTROLLER_USB_PORT_ID = 0; // USB port that the controller is plugged in to
-    public static final int RIGHT_VERTICAL_JOYSTICK_AXIS = 5;
-    public static final int RIGHT_HORIZONTAL_JOYSTICK_AXIS = 4;
+    public static final int RIGHT_VERTICAL_JOYSTICK_AXIS = 3;
+    public static final int RIGHT_HORIZONTAL_JOYSTICK_AXIS = 2;
     public static final int LEFT_VERTICAL_JOYSTICK_AXIS = 1;
     public static final int LEFT_HORIZONTAL_JOYSTICK_AXIS = 0;
-    public static final int X_BUTTON = 3;
-    public static final int A_BUTTON = 1;
-    public static final int B_BUTTON = 2;
+    public static final int X_BUTTON = 1;
+    public static final int A_BUTTON = 2;
+    public static final int B_BUTTON = 3;
     public static final int Y_BUTTON = 4;
     public static final int LEFT_BUMPER = 5;
     public static final int RIGHT_BUMPER = 6;
-    public static final int LEFT_TRIGGER_AXIS = 2;
-    public static final int RIGHT_TRIGGER_AXIS = 3;
+    public static final int LEFT_TRIGGER_BUTTON = 7;
+    public static final int RIGHT_TRIGGER_BUTTON = 8;
     public static final int PREV_BUTTON = 9;
     public static final int START_BUTTON = 10;
+    public static final int LEFT_STICK_BUTTON = 11;
+    public static final int RIGHT_STICK_BUTTON = 12;
 
     // Spark MAX CAN IDs //
     public static final int LEFT_FRONT_DRIVE_MOTOR_ID = 0;

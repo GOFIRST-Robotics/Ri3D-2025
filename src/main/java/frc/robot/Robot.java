@@ -21,6 +21,7 @@ import frc.robot.commands.autonomous.SquareAutonomous;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeToggleCommand;
+import frc.robot.commands.MotorPositionControlTest;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -190,5 +191,8 @@ public class Robot extends TimedRobot {
     // Intake Controls //
     new Trigger(() -> controller.getRawButton(Constants.RIGHT_BUMPER)).whileTrue(new IntakeCommand()); // Intake or Outake depending on position
     new Trigger(() -> controller.getRawButton(Constants.B_BUTTON)).whileTrue(new IntakeToggleCommand()); // Deploy or Retract Intake
+
+    // Motor Position Control Test //
+    new Trigger(() -> controller.getRawButton(Constants.X_BUTTON)).onTrue(new MotorPositionControlTest());
   }
 }
