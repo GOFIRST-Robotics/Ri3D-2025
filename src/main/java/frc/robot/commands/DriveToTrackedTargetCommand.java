@@ -14,7 +14,6 @@ import frc.robot.subsystems.VisionSubsystem;
 
 // This command rotates the robot to the best (nearest) field april tag
 public class DriveToTrackedTargetCommand extends Command {
-
   private DriveSubsystem m_drivetrainSubsystem;
   private VisionSubsystem m_visionSubsystem;
 
@@ -65,31 +64,17 @@ public class DriveToTrackedTargetCommand extends Command {
         
         distance = m_visionSubsystem.getDistanceToTarget(trackedTarget); // Stores the distance 
 
+        // Calcualte powers of driving to fix error
         double rotationValue = -rotationalError * Constants.TRACKED_TAG_ROATION_KP;
         double forwardValue = -forwardError * Constants.TRACKED_TAG_DISTANCE_DRIVE_KP*3;
-        double leftValue = -leftError * Constants.TRACKED_TAG_DISTANCE_DRIVE_KP;
+        double leftValue = -leftError * Constants.TRACKED_TAG_DISTANCE_DRIVE_KP*3;
         
-        // If the robot is too close to the target, drive backwards
-        double forwardDriveRate;
-        double strafeDriveRate;
-        double rotationDriveRate;
+        // Limit the power of the drive rate directions 
+        double rotationDriveRate = limit(rotationValue, Constants.APRILTAG_POWER_CAP);
+        double forwardDriveRate = limit(forwardValue, Constants.APRILTAG_POWER_CAP);
+        double strafeDriveRate = limit(leftValue, Constants.APRILTAG_POWER_CAP);
 
-
-
-        // if (leftPower > Constants.APRILTAG_POWER_CAP || rightPower > Constants.APRILTAG_POWER_CAP) {
-        //   double max = Math.max(Math.abs(leftPower), Math.abs(rightPower));
-        //   leftDriveRate = Math.copySign(leftPower/max, leftPower);
-        //   rightDriveRate = Math.copySign(rightPower/max, rightPower);
-        // } else if (leftPower < -Constants.APRILTAG_POWER_CAP || rightPower < -Constants.APRILTAG_POWER_CAP) {
-        //     double min = Math.max(Math.abs(leftPower), Math.abs(rightPower));
-        //     leftDriveRate = Math.copySign(leftPower/min, leftPower);
-        //     rightDriveRate = Math.copySign(rightPower/min, rightPower);
-        // } else {
-        //   leftDriveRate = leftPower;
-        //   rightDriveRate = rightPower;
-        // }
-
-        // m_drivetrainSubsystem.driveCartesian(leftDriveRate, rightDriveRate, rotationValue);
+        m_drivetrainSubsystem.driveCartesian(forwardDriveRate, strafeDriveRate, rotationDriveRate);
 
         // Print out all the variables for debugging
         System.out.println("Target Area: " + desiredDistanceToTarget);
@@ -100,9 +85,9 @@ public class DriveToTrackedTargetCommand extends Command {
         System.out.println("Rotational Value: " + rotationValue);
         System.out.println("Forward Value: " + forwardValue);
         System.out.println("Left Value: " + leftValue);
-        // System.out.println("forwardDriveRate: " + forwardDriveRate);
-        // System.out.println("strafeDriveRate: " + strafeDriveRate); 
-        // System.out.println("rotationDriveRate: " + rotationDriveRate); 
+        System.out.println("forwardDriveRate: " + forwardDriveRate);
+        System.out.println("strafeDriveRate: " + strafeDriveRate); 
+        System.out.println("rotationDriveRate: " + rotationDriveRate); 
       }
     } else {
       m_drivetrainSubsystem.stop();
@@ -119,5 +104,9 @@ public class DriveToTrackedTargetCommand extends Command {
   @Override
   public boolean isFinished() {
     return distance <= 0.2;
+  }
+
+  public double limit(double value, double limit) {
+    return Math.copySign(Math.min(Math.abs(value), limit), value);
   }
 }
