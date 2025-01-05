@@ -40,16 +40,16 @@ public final class Constants {
     public static final int RIGHT_STICK_BUTTON = 12;
 
     // Spark MAX CAN IDs //
-    public static final int LEFT_FRONT_DRIVE_MOTOR_ID = 2; // NEO motor
-    public static final int RIGHT_FRONT_DRIVE_MOTOR_ID = 3; // NEO motor
-    public static final int LEFT_REAR_DRIVE_MOTOR_ID = 4; // NEO motor
-    public static final int RIGHT_REAR_DRIVE_MOTOR_ID = 5; // NEO motor
+    public static final int LEFT_FRONT_DRIVE_MOTOR_ID = 3; // NEO motor
+    public static final int RIGHT_FRONT_DRIVE_MOTOR_ID = 2; // NEO motor
+    public static final int LEFT_REAR_DRIVE_MOTOR_ID = 11; // NEO motor
+    public static final int RIGHT_REAR_DRIVE_MOTOR_ID = 4; // NEO motor
     public static final int INTAKE_BAR_MOTOR_ID = 8; // NEO 550 motor
     public static final int DEPLOY_INTAKE_MOTOR_ID = 6; // NEO motor
     public static final int ELEVATOR_STAGE_1_MOTOR_ID = 7; // NEO motor
     public static final int ELEVATOR_STAGE_2_MOTOR_ID = 9; // NEO 550 motor
     public static final int FINGER_MOTOR_ID = 10; // NEO 550 motor
-    public static final int CLIMBER_MOTOR_ID_SPARK = 11; // TODO: Do we need this or no?
+    public static final int CLIMBER_MOTOR_ID_SPARK = 5; // TODO: Do we need this or no?
 
     // PWM Ports //
     public static final int LED_PWM_ID = 4;
@@ -62,8 +62,8 @@ public final class Constants {
 
     // Drivetrain Constants //
     public static final double DRIVE_GEAR_RATIO = 10;
-    public static final boolean REVERSE_LEFT_FRONT_MOTOR = false;
-    public static final boolean REVERSE_LEFT_BACK_MOTOR = false;
+    public static final boolean REVERSE_LEFT_FRONT_MOTOR = true;
+    public static final boolean REVERSE_LEFT_BACK_MOTOR = true;
     public static final boolean REVERSE_RIGHT_FRONT_MOTOR = false;
     public static final boolean REVERSE_RIGHT_BACK_MOTOR = false;
     public static final double GYRO_TURN_KP = 0.007; // P (Proportional) constant of a PID loop

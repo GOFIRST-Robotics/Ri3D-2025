@@ -35,10 +35,10 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 public class DriveSubsystem extends SubsystemBase {
   
 	// Drivetrain Motor Controllers
-	private SparkMax m_leftFrontMotor; // NEO motor
-	private SparkMax m_rightFrontMotor; // NEO motor
-	private SparkMax m_leftBackMotor; // NEO motor
-	private SparkMax m_rightBackMotor; // NEO motor
+	private static SparkMax m_leftFrontMotor; // NEO motor
+	private static SparkMax m_rightFrontMotor; // NEO motor
+	private static SparkMax m_leftBackMotor; // NEO motor
+	private static SparkMax m_rightBackMotor; // NEO motor
 
 	SlewRateLimiter rightFilter;
 	SlewRateLimiter leftFilter;
@@ -69,14 +69,8 @@ public class DriveSubsystem extends SubsystemBase {
 								   new Translation2d(-WHEEL_BASE / 2, TRACK_WIDTH / 2), 
 								   new Translation2d(-WHEEL_BASE / 2, -TRACK_WIDTH / 2));
 
-	SparkMax leftFront = new SparkMax(Constants.LEFT_FRONT_DRIVE_MOTOR_ID, MotorType.kBrushless);
-	SparkMax rightFront = new SparkMax(Constants.RIGHT_FRONT_DRIVE_MOTOR_ID, MotorType.kBrushless);
-	SparkMax leftBack = new SparkMax(Constants.LEFT_REAR_DRIVE_MOTOR_ID, MotorType.kBrushless);
-	SparkMax rightBack = new SparkMax(Constants.RIGHT_REAR_DRIVE_MOTOR_ID, MotorType.kBrushless);	
-
-	MecanumDrive robotDrive = new MecanumDrive(leftFront, rightFront, leftBack, rightBack);
-
-	MecanumDriveOdometry odometry = new MecanumDriveOdometry(kDriveKinematics, navx.getRotation2d(), getWheelPositions());	
+	private static MecanumDrive robotDrive;
+	private static MecanumDriveOdometry odometry;
   
   /** Subsystem for controlling the Drivetrain and accessing the NavX Gyroscope */
   public DriveSubsystem() {
@@ -85,6 +79,9 @@ public class DriveSubsystem extends SubsystemBase {
     m_rightFrontMotor = new SparkMax(Constants.RIGHT_FRONT_DRIVE_MOTOR_ID, MotorType.kBrushless);
     m_leftBackMotor = new SparkMax(Constants.LEFT_REAR_DRIVE_MOTOR_ID, MotorType.kBrushless);
     m_rightBackMotor = new SparkMax(Constants.RIGHT_REAR_DRIVE_MOTOR_ID, MotorType.kBrushless);
+
+	robotDrive = new MecanumDrive(m_leftFrontMotor, m_leftBackMotor, m_rightFrontMotor, m_rightBackMotor);
+	odometry = new MecanumDriveOdometry(kDriveKinematics, navx.getRotation2d(), getWheelPositions());	
 
     // Configure the Spark MAX motor controllers using the new 2025 method
     configureSparkMAX(m_leftFrontMotor, Constants.REVERSE_LEFT_FRONT_MOTOR);
@@ -119,10 +116,10 @@ public class DriveSubsystem extends SubsystemBase {
 	}
 
 	public void stop() {
-		leftFront.set(0);
-		rightFront.set(0);
-		leftBack.set(0);
-		rightBack.set(0);
+		m_leftFrontMotor.set(0);
+		m_rightFrontMotor.set(0);
+		m_leftBackMotor.set(0);
+		m_rightBackMotor.set(0);
 	}
 
 	// NavX Gyroscope Methods //
@@ -242,10 +239,10 @@ public class DriveSubsystem extends SubsystemBase {
 		final double backRightOutput =
 			backRightPIDController.calculate(speedToMeters(getRightBackSpeed()), speeds.rearRightMetersPerSecond);
 
-		leftFront.setVoltage(frontLeftOutput + frontLeftFeedforward);
-		rightFront.setVoltage(frontRightOutput + frontRightFeedforward);
-		leftBack.setVoltage(backLeftOutput + backLeftFeedforward);
-		rightBack.setVoltage(backRightOutput + backRightFeedforward);
+		m_leftFrontMotor.setVoltage(frontLeftOutput + frontLeftFeedforward);
+		m_rightFrontMotor.setVoltage(frontRightOutput + frontRightFeedforward);
+		m_leftBackMotor.setVoltage(backLeftOutput + backLeftFeedforward);
+		m_rightBackMotor.setVoltage(backRightOutput + backRightFeedforward);
   }
 
   // Methods for getting the speeds and positions of the drivetrain wheels
