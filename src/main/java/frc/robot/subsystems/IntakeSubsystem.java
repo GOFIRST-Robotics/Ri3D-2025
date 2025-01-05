@@ -1,5 +1,5 @@
 // Author: UMN Robotics Ri3D
-// Last Updated: December 2024
+// Last Updated: January 2025
 
 package frc.robot.subsystems;
 
@@ -18,23 +18,19 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class IntakeSubsystem extends SubsystemBase {
   
   // Intake Motor Controllers
-  private SparkMax m_lowerIntakeBar; // NEO 550 motor
-  private SparkMax m_upperIntakeBar; // NEO 550 motor
+  private SparkMax intakeBar; // NEO 550 motor
 
-  private double lowerIntakeBarRPM, upperIntakeBarRPM;
+  private double intakeBarRPM;
 
   /** Subsystem for controlling the Intake */
   public IntakeSubsystem() {
     // Instantiate the Intake motor controllers
-    m_lowerIntakeBar = new SparkMax(Constants.LOWER_INTAKE_BAR_MOTOR_ID, MotorType.kBrushless);
-    m_upperIntakeBar = new SparkMax(Constants.UPPER_INTAKE_BAR_MOTOR_ID, MotorType.kBrushless);
+    intakeBar = new SparkMax(Constants.INTAKE_BAR_MOTOR_ID, MotorType.kBrushless);
 
     // Configure the Spark MAX motor controllers using the new 2025 method
-    configureSparkMAX(m_lowerIntakeBar, Constants.LOWER_INTAKE_BAR_INVERT);
-    configureSparkMAX(m_upperIntakeBar, Constants.UPPER_INTAKE_BAR_INVERT);
+    configureSparkMAX(intakeBar, Constants.INTAKE_BAR_INVERT);
 
-    SmartDashboard.putNumber("Upper Intake Bar Speed", Constants.UPPER_INTAKE_BAR_SPEED);
-    SmartDashboard.putNumber("Lower Intake Bar Speed", Constants.LOWER_INTAKE_BAR_SPEED);
+    SmartDashboard.putNumber("Intake Bar Speed", Constants.INTAKE_BAR_SPEED);
   }
 
   private void configureSparkMAX(SparkMax max, boolean reverse) {
@@ -44,30 +40,23 @@ public class IntakeSubsystem extends SubsystemBase {
 	}
 
   /* Set power to the intake motors */
-  public void setPower(double upperPower, double lowerPower) {
-    m_upperIntakeBar.set(upperPower);
-    m_lowerIntakeBar.set(lowerPower);
+  public void setPower(double power) {
+    intakeBar.set(power);
   }
   public void stop() {
-    m_lowerIntakeBar.set(0);
-    m_upperIntakeBar.set(0);
+    intakeBar.set(0);
   }
 
-  /* Read the speed of the intake motors */
-  public double getLowerIntakeBarRPM() {
-    return lowerIntakeBarRPM;
-  }
-  public double getUpperIntakeBarRPM() {
-    return upperIntakeBarRPM;
+  /* Read the speed of the intake motor */
+  public double getIntakeBarRPM() {
+    return intakeBarRPM;
   }
 
   @Override
   public void periodic() {
-    lowerIntakeBarRPM = m_lowerIntakeBar.getEncoder().getVelocity();
-    upperIntakeBarRPM = m_upperIntakeBar.getEncoder().getVelocity();
+    intakeBarRPM = intakeBar.getEncoder().getVelocity();
 
     // Add intake bar RPM readingss to SmartDashboard for the sake of datalogging
-    SmartDashboard.putNumber("Lower Intake Bar RPM", lowerIntakeBarRPM);
-    SmartDashboard.putNumber("Upper Intake Bar RPM", upperIntakeBarRPM);
+    SmartDashboard.putNumber("Intake Bar RPM", intakeBarRPM);
   }
 }
