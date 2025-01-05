@@ -41,8 +41,8 @@ public final class Constants {
     public static final int RIGHT_FRONT_DRIVE_MOTOR_ID = 1;
     public static final int LEFT_REAR_DRIVE_MOTOR_ID = 3;
     public static final int RIGHT_REAR_DRIVE_MOTOR_ID = 2;
-    public static final int INTAKE_BAR_MOTOR_ID = 3;
-    public static final int DEPLOY_INTAKE_MOTOR_ID = 9;
+    public static final int INTAKE_BAR_MOTOR_ID = 8;
+    public static final int DEPLOY_INTAKE_MOTOR_ID = 6;
     public static final int CLIMBER_MOTOR_ID_SPARK = 10;
 
     // PWM Ports //
