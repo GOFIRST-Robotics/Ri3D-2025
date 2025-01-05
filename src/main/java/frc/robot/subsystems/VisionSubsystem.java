@@ -25,7 +25,7 @@ public class VisionSubsystem extends SubsystemBase {
     public void periodic() {
         results = camera.getAllUnreadResults(); // Query the all unread result from PhotonVision
         if (!results.isEmpty()) {
-            result = results.get(0);
+            result = results.get(results.size()-1); // Get the latest result from the list of PhotonVision results
         }
         hasTarget = result.hasTargets(); // If the camera has detected an apriltag target, the hasTarget boolean will be true
     }
@@ -42,12 +42,13 @@ public class VisionSubsystem extends SubsystemBase {
     
     public PhotonTrackedTarget getBestTarget() {
         if (hasTarget) {
-        return result.getBestTarget(); // Returns the best (closest) target
+            return result.getBestTarget(); // Returns the best (closest) target
         }
         else {
             return null; // Otherwise, returns null if no targets are currently found
         }
     }
+
     public boolean getHasTarget() {
         return hasTarget; // Returns whether or not a target was found
     }
@@ -77,15 +78,15 @@ public class VisionSubsystem extends SubsystemBase {
         PhotonTrackedTarget bestTarget = getBestTarget();
         double distanceToTarget  = getDistanceToTarget(bestTarget);
         double angleToTarget = bestTarget.getYaw(); // Assuming yaw gives the angle
-        // double skewTarget = bestTarget.getSkew();
+        double skewTarget = bestTarget.getSkew();
 
         //boolean inRange = Math.abs(distanceToTarget) <= distanceThreshold && Math.abs(angleToTarget) <= angleThreshold;
         boolean inRange = Math.abs(Math.abs(distanceToTarget) - distanceThreshold) >= distanceThresholdRange && Math.abs(Math.abs(angleToTarget) - angleThreshold) >= angleThresholdRange;
         
-        // SmartDashboard.putNumber("t_distance", distanceToTarget);
-        // SmartDashboard.putNumber("t_angle", angleToTarget);
-        // SmartDashboard.putNumber("t_skew", skewTarget);
-        // SmartDashboard.putBoolean("InRange", inRange);
+        SmartDashboard.putNumber("t_distance", distanceToTarget);
+        SmartDashboard.putNumber("t_angle", angleToTarget);
+        SmartDashboard.putNumber("t_skew", skewTarget);
+        SmartDashboard.putBoolean("InRange", inRange);
     
         return inRange;
     }
