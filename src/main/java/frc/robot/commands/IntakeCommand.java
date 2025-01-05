@@ -26,7 +26,7 @@ public class IntakeCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_intakeSubsystem.setPower(this.reverse ? -1 * Constants.UPPER_INTAKE_BAR_SPEED : Constants.UPPER_INTAKE_BAR_SPEED, this.reverse ? -1 * Constants.LOWER_INTAKE_BAR_SPEED : Constants.LOWER_INTAKE_BAR_SPEED);
+    m_intakeSubsystem.setPower(this.reverse ? -1 * Constants.INTAKE_BAR_SPEED : Constants.INTAKE_BAR_SPEED);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
