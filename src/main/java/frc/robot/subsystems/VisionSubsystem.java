@@ -16,13 +16,18 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class VisionSubsystem extends SubsystemBase {
     PhotonCamera camera = new PhotonCamera(Constants.USB_CAMERA_NAME); // Declare the name of the camera used in the pipeline
+    List<PhotonPipelineResult> results; // Stores all the data that Photonvision returns
+    PhotonPipelineResult result; // Stores the latest data that Photonvision returns
     boolean hasTarget; // Stores whether or not a target is detected
-    PhotonPipelineResult result; // Stores all the data that Photonvision returns
 
     @Override
     public void periodic() {
-        // PhotonPipelineResult result = camera.getLatestResult(); // Query the latest result from PhotonVision
-        // hasTarget = result.hasTargets(); // If the camera has detected an apriltag target, the hasTarget boolean will be true
+        results = camera.getAllUnreadResults(); // Query the all unread result from PhotonVision
+        if (!results.isEmpty()) {
+            result = results.get(results.size()-1); // Get the latest result from the list of PhotonVision results
+            hasTarget = result.hasTargets(); // If the camera has detected an apriltag target, the hasTarget boolean will be true
+        }
+        SmartDashboard.putBoolean("HasTarget", hasTarget);
     }
     
     public PhotonTrackedTarget getTargetWithID(int id) { // Returns the apriltag target with the specified ID (if it exists)
@@ -37,12 +42,13 @@ public class VisionSubsystem extends SubsystemBase {
     
     public PhotonTrackedTarget getBestTarget() {
         if (hasTarget) {
-        return result.getBestTarget(); // Returns the best (closest) target
+            return result.getBestTarget(); // Returns the best (closest) target
         }
         else {
             return null; // Otherwise, returns null if no targets are currently found
         }
     }
+
     public boolean getHasTarget() {
         return hasTarget; // Returns whether or not a target was found
     }
@@ -72,15 +78,15 @@ public class VisionSubsystem extends SubsystemBase {
         PhotonTrackedTarget bestTarget = getBestTarget();
         double distanceToTarget  = getDistanceToTarget(bestTarget);
         double angleToTarget = bestTarget.getYaw(); // Assuming yaw gives the angle
-        // double skewTarget = bestTarget.getSkew();
+        double skewTarget = bestTarget.getSkew();
 
         //boolean inRange = Math.abs(distanceToTarget) <= distanceThreshold && Math.abs(angleToTarget) <= angleThreshold;
         boolean inRange = Math.abs(Math.abs(distanceToTarget) - distanceThreshold) >= distanceThresholdRange && Math.abs(Math.abs(angleToTarget) - angleThreshold) >= angleThresholdRange;
         
-        // SmartDashboard.putNumber("t_distance", distanceToTarget);
-        // SmartDashboard.putNumber("t_angle", angleToTarget);
-        // SmartDashboard.putNumber("t_skew", skewTarget);
-        // SmartDashboard.putBoolean("InRange", inRange);
+        SmartDashboard.putNumber("t_distance", distanceToTarget);
+        SmartDashboard.putNumber("t_angle", angleToTarget);
+        SmartDashboard.putNumber("t_skew", skewTarget);
+        SmartDashboard.putBoolean("InRange", inRange);
     
         return inRange;
     }
