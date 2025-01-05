@@ -22,7 +22,7 @@ public class ClimberSubsystem extends SubsystemBase {
   /** Subsystem for controlling the climber */
   public ClimberSubsystem() {
     // Configure the Spark MAX motor controller using the new 2025 method
-    m_climber = new SparkMax(Constants.CLIMBER_MOTOR_ID_SPARK, MotorType.kBrushed);
+    m_climber = new SparkMax(Constants.CLIMBER_MOTOR_ID_SPARK, MotorType.kBrushless);
     configureSparkMAX(m_climber, Constants.CLIMBER_INVERT);
 
     // Put the default speed on SmartDashboard if needed
