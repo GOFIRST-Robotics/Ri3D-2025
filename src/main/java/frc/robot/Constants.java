@@ -15,9 +15,10 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
     // Physical Robot Constants //
-    public static final double WHEEL_DIAMETER = Units.inchesToMeters(6); // Convert from inches to meters // TODO: Update this for 2025
+    public static final double WHEEL_DIAMETER = Units.inchesToMeters(6); // Convert from inches to meters
     public static final double WHEEL_CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER; // Measured in meters
-	public static final double TRACK_WIDTH = Units.inchesToMeters(21.75); // Distance between centers of right and left wheels on robot (in meters) // TODO: Update this for 2025
+	public static final double TRACK_WIDTH = Units.inchesToMeters(21); // Distance between centers of right and left wheels on robot (in meters)
+    public static final double WHEEL_BASE = Units.inchesToMeters(16.75); // Distance between centers of front and back wheels on robot (in meters)
 
     // Controller Input Axes //
     public static final int CONTROLLER_USB_PORT_ID = 0; // USB port that the controller is plugged in to
@@ -39,16 +40,16 @@ public final class Constants {
     public static final int RIGHT_STICK_BUTTON = 12;
 
     // Spark MAX CAN IDs //
-    public static final int LEFT_FRONT_DRIVE_MOTOR_ID = 2; // NEO motor
-    public static final int RIGHT_FRONT_DRIVE_MOTOR_ID = 3; // NEO motor
-    public static final int LEFT_REAR_DRIVE_MOTOR_ID = 4; // NEO motor
-    public static final int RIGHT_REAR_DRIVE_MOTOR_ID = 5; // NEO motor
+    public static final int LEFT_FRONT_DRIVE_MOTOR_ID = 3; // NEO motor
+    public static final int RIGHT_FRONT_DRIVE_MOTOR_ID = 2; // NEO motor
+    public static final int LEFT_REAR_DRIVE_MOTOR_ID = 11; // NEO motor
+    public static final int RIGHT_REAR_DRIVE_MOTOR_ID = 4; // NEO motor
     public static final int INTAKE_BAR_MOTOR_ID = 8; // NEO 550 motor
     public static final int DEPLOY_INTAKE_MOTOR_ID = 6; // NEO motor
     public static final int ELEVATOR_STAGE_1_MOTOR_ID = 7; // NEO motor
     public static final int ELEVATOR_STAGE_2_MOTOR_ID = 9; // NEO 550 motor
     public static final int FINGER_MOTOR_ID = 10; // NEO 550 motor
-    public static final int CLIMBER_MOTOR_ID_SPARK = 11; // TODO: Do we need this or no?
+    public static final int CLIMBER_MOTOR_ID_SPARK = 5; // TODO: Do we need this or no?
 
     // PWM Ports //
     public static final int LED_PWM_ID = 4;
@@ -60,15 +61,27 @@ public final class Constants {
     // Example: public static final int LEFT_ENCODER_CHANNEL_B = 3;
 
     // Drivetrain Constants //
-    public static final double DRIVE_GEAR_RATIO = 10.71; // TODO: Update this for 2025
-    public static final boolean DRIVE_INVERT_LEFT = false; // Whether to reverse the left drivetrain motors or not
-    public static final boolean DRIVE_INVERT_RIGHT = true; // Whether to reverse the right drivetrain motors or not
+    public static final double DRIVE_GEAR_RATIO = 10;
+    public static final boolean REVERSE_LEFT_FRONT_MOTOR = true;
+    public static final boolean REVERSE_LEFT_BACK_MOTOR = true;
+    public static final boolean REVERSE_RIGHT_FRONT_MOTOR = false;
+    public static final boolean REVERSE_RIGHT_BACK_MOTOR = false;
     public static final double GYRO_TURN_KP = 0.007; // P (Proportional) constant of a PID loop
     public static final double TRACKED_TAG_ROATION_KP = 0.0175;
     public static final double TRACKED_TAG_DISTANCE_DRIVE_KP = 0.3; // P (Proportional) constant of a PID loop
     public static final double TRACKED_TAG_AREA_DRIVE_KP = 0.2; // P (Proportional) constant of a PID loop
     public static final double APRILTAG_POWER_CAP = 0.75;
-    public static final double DRIVE_TURNING_THRESHOLD_DEGREES = 3;
+    public static final double TURNING_THRESHOLD_DEGREES = 3;
+    public static final double MAX_POWER_GYRO = 0.4;
+    public static final double kP_FRONT_RIGHT_VELOCITY = 0.0010269; // TODO: Update this for 2025
+	public static final double kP_FRONT_LEFT_VELOCITY = 0.0010269; // TODO: Update this for 2025
+	public static final double kP_BACK_RIGHT_VELOCITY = 0.0010269; // TODO: Update this for 2025
+	public static final double kP_BACK_LEFT_VELOCITY = 0.0010269; // TODO: Update this for 2025
+	public static final double kP_X_CONTROLLER = 9.6421; // TODO: Update this for 2025
+    public static final double kP_Y_CONTROLLER = 9.6421; // TODO: Update this for 2025
+    public static final double kP_THETA_CONTROLLER = 9.6421; // TODO: Update this for 2025
+	public static final double kMAX_ANGULAR_SPEED_RADIANS_PER_SECOND = 2*Math.PI; // TODO: Update this for 2025
+	public static final double kMAX_ANGULAR_ACCELERATION_RADIANS_PER_SECOND_SQUARED = 2*Math.PI; // TODO: Update this for 2025
 
     // Intake Constants //
     public static final double DEPLOY_SPEED = 0.1;
@@ -87,8 +100,9 @@ public final class Constants {
     // Rev PDH Constants //
     public static final int LEFT_FRONT_DRIVE_MOTOR_PDH_CHANNEL = 11;
     public static final int RIGHT_FRONT_DRIVE_MOTOR_PDH_CHANNEL = 10;
-    public static final int LEFT_REAR_DRIVE_MOTOR_PDH_CHANNEL = 12;
-    public static final int RIGHT_REAR_DRIVE_MOTOR_PDH_CHANNEL = 13;
+    public static final int LEFT_BACK_DRIVE_MOTOR_PDH_CHANNEL = 12;
+    public static final int RIGHT_BACK_DRIVE_MOTOR_PDH_CHANNEL = 13;
+    public static final int LOWER_INTAKE_MOTOR_PDH_CHANNEL = 14;
     public static final int FLY_WHEEL_MOTOR_PDH_CHANNEL = 16;
     public static final int CLIMBER_MOTOR_PDH_CHANNEL = 17;
 
