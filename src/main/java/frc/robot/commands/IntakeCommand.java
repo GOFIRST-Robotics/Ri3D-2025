@@ -16,11 +16,11 @@ public class IntakeCommand extends Command {
   private boolean reverse;
 
   /** Creates a new IntakeCommand. */
-  public IntakeCommand(boolean reverse) {
+  public IntakeCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
     m_intakeSubsystem = Robot.m_intakeSubsystem;
     addRequirements(m_intakeSubsystem);
-    this.reverse = reverse;
+    this.reverse = m_intakeSubsystem.getDeployed();
   }
 
   // Called when the command is initially scheduled.
@@ -36,7 +36,7 @@ public class IntakeCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return (reverse != m_intakeSubsystem.getDeployed());
   }
 
   // Called once the command ends or is interrupted.
