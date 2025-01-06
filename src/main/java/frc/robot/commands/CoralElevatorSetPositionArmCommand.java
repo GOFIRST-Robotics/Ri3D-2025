@@ -5,6 +5,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
+import frc.robot.Constants;
 import frc.robot.subsystems.CoralElevatorSubsystem;
 
 // This is a custom Set Position command for the Arm motor
@@ -33,6 +34,11 @@ public class CoralElevatorSetPositionArmCommand extends Command {
   public void execute() {
     this.error = position - m_subsystem.getPositionArm();
     double output = kP * error;
+    if(error > m_subsystem.getPositionArm()) {
+      output += Constants.GRAVITY_CONST;
+    } else if (error < m_subsystem.getPositionArm()){
+      output -= Constants.GRAVITY_CONST;
+    }
     if (Math.abs(output) > 0.75) { // Max power we want to allow // TODO: Tune this
       output = Math.copySign(0.75, output);
     }
