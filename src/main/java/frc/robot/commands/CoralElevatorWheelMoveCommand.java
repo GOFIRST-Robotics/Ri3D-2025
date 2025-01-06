@@ -24,7 +24,6 @@ public class CoralElevatorWheelMoveCommand extends Command {
   @Override
   public void initialize() {
     m_subsystem.setSpeedWheel(this.direction ? -1 * Constants.WHEEL_SPEED : Constants.WHEEL_SPEED);
-    m_subsystem.setSpeedWheel(this.direction ? -1 * Constants.WHEEL_SPEED : Constants.WHEEL_SPEED);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -36,8 +35,7 @@ public class CoralElevatorWheelMoveCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_subsystem.setSpeedWheel(0);
-    m_subsystem.setSpeedWheel(0);
+    m_subsystem.stopWheel();
   }
 
   // Returns true when the command should end.

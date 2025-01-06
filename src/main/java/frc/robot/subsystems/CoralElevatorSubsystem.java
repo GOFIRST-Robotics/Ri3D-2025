@@ -24,6 +24,14 @@ public class CoralElevatorSubsystem extends SubsystemBase {
     private SparkMax m_elevator_arm; // NEO motor
     private SparkMax m_elevator_wheel; // NEO motor
 
+    // Coral Elevator limiters
+    public double climb_max_1 = 3; // TODO: TUNE THIS
+    public double climb_max_2 = 3; // TODO: TUNE THIS
+    public double climb_min_1 = 0; // TODO: TUNE THIS
+    public double climb_min_2 = 0; // TODO: TUNE THIS
+    public double arm_max = 3; // TODO: TUNE THIS
+    public double arm_min = 0; // TODO: TUNE THIS
+
     /** Subsystem for controlling the coral elevator */
     public CoralElevatorSubsystem() {
       // Configure the Spark MAX motor controller using the new 2025 method
@@ -48,10 +56,16 @@ public class CoralElevatorSubsystem extends SubsystemBase {
   
   // Climb Motors Methods --------------------------------------------------------------------------------
 
-  /* Set speed of the elevator climb motor one */
+  /* Sets speed of the elevator CLimb motor one. Inbuilt limiters */
   public void setSpeedClimbOne(double speed) {
-    // Spark Max .set() method
-    m_elevator_climb_1.set(speed);
+    // Spark Max set() method with inbuilt limiters
+    if ((speed > 0) && (getPositionClimbOne() > climb_max_1)) {
+      m_elevator_climb_1.set(0);
+    } else if ((speed < 0) && (getPositionClimbOne() < climb_min_1))  {
+      m_elevator_climb_1.set(0);
+    } else {
+      m_elevator_climb_1.set(speed);
+    }
   }
   
   /* Gets position of the elevator climb motor one */
@@ -60,10 +74,21 @@ public class CoralElevatorSubsystem extends SubsystemBase {
     return m_elevator_climb_1.getEncoder().getPosition();
   }
 
-  /* Set speed of the elevator climb motor two */
+  /* Set climb motor one speed to 0 */
+  public void stopClimbOne() {
+    setSpeedClimbOne(0);
+  }
+
+  /* Sets speed of the elevator CLimb motor two. Inbuilt limiters */
   public void setSpeedClimbTwo(double speed) {
-    // Spark Max .set() method
-    m_elevator_climb_2.set(speed);
+    // Spark Max set() method with inbuilt limiters
+    if ((speed > 0) && (getPositionClimbTwo() > climb_max_2)) {
+      m_elevator_climb_2.set(0);
+    } else if ((speed < 0) && (getPositionClimbTwo() < climb_min_2))  {
+      m_elevator_climb_2.set(0);
+    } else {
+      m_elevator_climb_2.set(speed);
+    }
   }
   
   /* Gets position of the elevator climb motor two */
@@ -72,19 +97,28 @@ public class CoralElevatorSubsystem extends SubsystemBase {
     return m_elevator_climb_2.getEncoder().getPosition();
   }
 
+  /* Set Climb motor two speed to 0 */
+  public void stopClimbTwo() {
+    setSpeedClimbTwo(0);
+  }
+
+  /* Set speed of both climb motors at once */
+  public void setSpeedClimb(double speed_1, double speed_2) {
+    setSpeedClimbOne(speed_1);
+    setSpeedClimbTwo(speed_2);
+  }
+
+  /* Set both Climb motor speeds to 0 */
+  public void stopClimb() {
+    setSpeedClimbOne(0);
+    setSpeedClimbTwo(0);
+  }
+
   /* Sets position of elevator climb to Neutral preset */
   public void climbNeutral() {
     // Calls CoralElevatorSetPositionClimbCommand()
     (new CoralElevatorSetPositionClimbCommand(0, 0)).schedule();
   }
-
-  // OBSOLETE, USAGE REPLACED BY "NEUTRAL"
-  // MAY USE AGAIN IN THE FUTURE
-  /* Sets position of elevator climb to Player Intake preset */
-  // public void climbPlayerIntake() {
-    // Calls CoralElevatorSetPositionClimbCommand()
-    // (new CoralElevatorSetPositionClimbCommand(2 * 12 * Constants.ELEVATOR_ROTATIONS_PER_INCH)).schedule();
-  // }
 
   /* Sets position of elevator climb to low Goal preset */
   public void climbLowGoal() {
@@ -106,10 +140,16 @@ public class CoralElevatorSubsystem extends SubsystemBase {
 
   // Arm Motor Methods -------------------------------------------------------------------------------
 
-  /* Sets speed of the elevator Arm motor */
+  /* Sets speed of the elevator Arm motor. Inbuilt limiters */
   public void setSpeedArm(double speed) {
-    // Spark Max set() method
-    m_elevator_arm.set(speed);
+    // Spark Max set() method with inbuilt limiters
+    if ((speed > 0) && (getPositionArm() > arm_max)) {
+      m_elevator_arm.set(0);
+    } else if ((speed < 0) && (getPositionArm() < arm_min))  {
+      m_elevator_arm.set(0);
+    } else {
+      m_elevator_arm.set(speed);
+    }
   }
 
   /* Gets position of the elevator Arm motor */
@@ -118,28 +158,39 @@ public class CoralElevatorSubsystem extends SubsystemBase {
     return m_elevator_arm.getEncoder().getPosition();
   }
 
+  /* Set Arm speed to 0 */
+  public void stopArm() {
+    setSpeedArm(0);
+  }
+
   /* Sets position of elevator Arm to Drop preset */
   public void armDrop() {
     // Calls CoralElevatorSetPositionArmCommand()
-    (new CoralElevatorSetPositionArmCommand(0.25)).schedule(); // TODO: TUNE THIS
+    (new CoralElevatorSetPositionArmCommand(0.75)).schedule(); // TODO: TUNE THIS
   }
 
   /* Sets position of elevator Arm to Intake preset */
   public void armPlayerIntake() {
     // Calls CoralElevatorSetPositionArmCommand()
-    (new CoralElevatorSetPositionArmCommand(0)).schedule(); // TODO: TUNE THIS
+    (new CoralElevatorSetPositionArmCommand(0.4)).schedule(); // TODO: TUNE THIS
   }
 
   /* Sets position of elevator Arm to Horizontal preset */
   public void armHorizontalIntake() {
     // Calls CoralElevatorSetPositionArmCommand()
-    (new CoralElevatorSetPositionArmCommand(0.125)).schedule(); // TODO: TUNE THIS
+    (new CoralElevatorSetPositionArmCommand(0.5)).schedule(); // TODO: TUNE THIS
   }
 
   /* Sets position of elevator Arm to Vertical preset */
   public void armVertical() {
     // Calls CoralElevatorSetPositionArmCommand()
-    (new CoralElevatorSetPositionArmCommand(-0.125)).schedule(); // TODO: TUNE THIS
+    (new CoralElevatorSetPositionArmCommand(0.25)).schedule(); // TODO: TUNE THIS
+  }
+
+  /* Sets position of elevator Arm to Initial preset */
+  public void armInitial() {
+    // Calls CoralElevatorSetPositionArmCommand()
+    (new CoralElevatorSetPositionArmCommand(0)).schedule(); // TODO: TUNE THIS
   }
 
   // Wheel Motor Methods ------------------------------------------------------------------------------
@@ -154,6 +205,11 @@ public class CoralElevatorSubsystem extends SubsystemBase {
   public double getPositionWheel() {
     // Spark Max getEncoder().getPosition() method
     return m_elevator_wheel.getEncoder().getPosition();
+  }
+
+  /* Sets speed of wheel motor to 0 */
+  public void stopWheel() {
+    setSpeedWheel(0);
   }
 
   @Override
