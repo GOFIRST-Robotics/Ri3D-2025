@@ -23,34 +23,19 @@ public class CoralElevatorMoveCommand extends Command {
   // Called once when the command is initially scheduled.
   @Override
   public void initialize() {
-    if ((m_subsystem.getPositionClimbOne() <= m_subsystem.climb_max_1) && (m_subsystem.getPositionClimbOne() >= m_subsystem.climb_min_1)) {
-      m_subsystem.setSpeedClimbOne(this.direction ? -1 * Constants.ELEVATOR_SPEED : Constants.ELEVATOR_SPEED);
-    } else {
-      m_subsystem.setSpeedClimbOne(0);
-    }
-    if ((m_subsystem.getPositionClimbTwo() <= m_subsystem.climb_max_2) && (m_subsystem.getPositionClimbTwo() >= m_subsystem.climb_min_2)) {
-      m_subsystem.setSpeedClimbTwo(this.direction ? -1 * Constants.ELEVATOR_SPEED : Constants.ELEVATOR_SPEED);
-    } else {
-      m_subsystem.setSpeedClimbTwo(0);
-    }
+    // -
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if ((m_subsystem.getPositionClimbOne() > m_subsystem.climb_max_1) || (m_subsystem.getPositionClimbOne() < m_subsystem.climb_min_1)) {
-      m_subsystem.setSpeedClimbOne(0);
-    }
-    if ((m_subsystem.getPositionClimbTwo() > m_subsystem.climb_max_2) || (m_subsystem.getPositionClimbTwo() < m_subsystem.climb_min_2)) {
-      m_subsystem.setSpeedClimbTwo(0);
-    }
+    m_subsystem.setSpeedClimb(this.direction ? -1 * Constants.ELEVATOR_SPEED : Constants.ELEVATOR_SPEED, this.direction ? -1 * Constants.ELEVATOR_SPEED : Constants.ELEVATOR_SPEED);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_subsystem.setSpeedClimbOne(0);
-    m_subsystem.setSpeedClimbTwo(0);
+    m_subsystem.stopClimb();
   }
 
   // Returns true when the command should end.

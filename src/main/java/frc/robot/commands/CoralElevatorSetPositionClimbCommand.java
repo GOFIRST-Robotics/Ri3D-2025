@@ -55,12 +55,8 @@ public class CoralElevatorSetPositionClimbCommand extends Command {
       output_2 = Math.copySign(0.05, output_2);
     }
 
-    m_subsystem.setSpeedClimbOne(output_2);
     m_subsystem.setSpeedClimbOne(output_1);
-
-    if ((position_1 > m_subsystem.climb_max_1) || (position_1 < m_subsystem.climb_min_1) || (position_2 > m_subsystem.climb_max_2) || (position_2 > m_subsystem.climb_min_2)) {
-      end(true);
-    }
+    m_subsystem.setSpeedClimbTwo(output_2);
   }
 
   // Called once the command ends or is interrupted.
