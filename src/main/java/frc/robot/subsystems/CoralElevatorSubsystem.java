@@ -5,7 +5,7 @@ package frc.robot.subsystems;
 
 import frc.robot.Constants;
 import frc.robot.commands.CoralElevatorSetPositionClimbCommand;
-import frc.robot.commands.CoralElevatorSetPositionLowerCommand;
+import frc.robot.commands.CoralElevatorSetPositionArmCommand;
 
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
@@ -14,27 +14,24 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class CoralElevatorSubsystem extends SubsystemBase {
-  
-    public boolean fingerState = false;
 
     // Coral Elevator Motor Controllers
     private SparkMax m_elevator_climb; // NEO motor
-    private SparkMax m_elevator_lower; // NEO motor
-    private Servo m_elevator_finger; // Servo motor
+    private SparkMax m_elevator_arm; // NEO motor
+    private SparkMax m_elevator_wheel; // NEO motor
 
     /** Subsystem for controlling the coral elevator */
     public CoralElevatorSubsystem() {
       // Configure the Spark MAX motor controller using the new 2025 method
       m_elevator_climb = new SparkMax(Constants.ELEVATOR_STAGE_1_MOTOR_ID, MotorType.kBrushless);
       configureSparkMAX(m_elevator_climb, Constants.ELEVATOR_INVERT);
-      m_elevator_lower = new SparkMax(Constants.ELEVATOR_STAGE_2_MOTOR_ID, MotorType.kBrushless);
+      m_elevator_arm = new SparkMax(Constants.ELEVATOR_STAGE_2_MOTOR_ID, MotorType.kBrushless);
       configureSparkMAX(m_elevator_climb, Constants.ELEVATOR_INVERT);
-      
-      m_elevator_finger = new Servo(Constants.ELEVATOR_DROP_MOTOR_ID);
+      m_elevator_wheel = new SparkMax(Constants.ELEVATOR_STAGE_2_MOTOR_ID, MotorType.kBrushless);
+      configureSparkMAX(m_elevator_climb, Constants.ELEVATOR_INVERT);
   
       // Put the default speed on SmartDashboard if needed
       // SmartDashboard.putNumber("Elevator Speed", Constants.ELEVATOR_SPEED);
@@ -92,56 +89,56 @@ public class CoralElevatorSubsystem extends SubsystemBase {
     (new CoralElevatorSetPositionClimbCommand(74 * Constants.ELEVATOR_ROTATIONS_PER_INCH)).schedule(); // TODO: TUNE THIS
   }
 
-  // Lower Motor Methods -------------------------------------------------------------------------------
+  // Arm Motor Methods -------------------------------------------------------------------------------
 
-  /* Sets speed of the elevator lowering motor */
-  public void setSpeedLower(double speed) {
+  /* Sets speed of the elevator Arm motor */
+  public void setSpeedArm(double speed) {
     // Spark Max set() method
-    m_elevator_lower.set(speed);
+    m_elevator_arm.set(speed);
   }
 
-  /* Gets position of the elevator lowering motor */
-  public double getPositionLower() {
+  /* Gets position of the elevator Arm motor */
+  public double getPositionArm() {
     // Spark Max getEncoder().getPosition() method
-    return m_elevator_lower.getEncoder().getPosition();
+    return m_elevator_arm.getEncoder().getPosition();
   }
 
-  /* Sets position of elevator Lower to Drop preset */
-  public void lowerDrop() {
-    // Calls CoralElevatorSetPositionLowerCommand()
-    (new CoralElevatorSetPositionLowerCommand(0.25)).schedule(); // TODO: TUNE THIS
+  /* Sets position of elevator Arm to Drop preset */
+  public void armDrop() {
+    // Calls CoralElevatorSetPositionArmCommand()
+    (new CoralElevatorSetPositionArmCommand(0.25)).schedule(); // TODO: TUNE THIS
   }
 
-  /* Sets position of elevator Lower to Intake preset */
-  public void lowerPlayerIntake() {
-    // Calls CoralElevatorSetPositionLowerCommand()
-    (new CoralElevatorSetPositionLowerCommand(0)).schedule(); // TODO: TUNE THIS
+  /* Sets position of elevator Arm to Intake preset */
+  public void armPlayerIntake() {
+    // Calls CoralElevatorSetPositionArmCommand()
+    (new CoralElevatorSetPositionArmCommand(0)).schedule(); // TODO: TUNE THIS
   }
 
-  /* Sets position of elevator Lower to Horizontal preset */
-  public void lowerHorizontalIntake() {
-    // Calls CoralElevatorSetPositionLowerCommand()
-    (new CoralElevatorSetPositionLowerCommand(0.125)).schedule(); // TODO: TUNE THIS
+  /* Sets position of elevator Arm to Horizontal preset */
+  public void armHorizontalIntake() {
+    // Calls CoralElevatorSetPositionArmCommand()
+    (new CoralElevatorSetPositionArmCommand(0.125)).schedule(); // TODO: TUNE THIS
   }
 
-  /* Sets position of elevator Lower to Vertical preset */
-  public void lowerVertical() {
-    // Calls CoralElevatorSetPositionLowerCommand()
-    (new CoralElevatorSetPositionLowerCommand(-0.125)).schedule(); // TODO: TUNE THIS
+  /* Sets position of elevator Arm to Vertical preset */
+  public void armVertical() {
+    // Calls CoralElevatorSetPositionArmCommand()
+    (new CoralElevatorSetPositionArmCommand(-0.125)).schedule(); // TODO: TUNE THIS
   }
 
-  // Finger Motor Methods ------------------------------------------------------------------------------
+  // Wheel Motor Methods ------------------------------------------------------------------------------
 
-  /* Set position to the elevator drop motor. Input between 0.0 and 1.0 */
-  public void setPositionFinger(double pos) {
-    // Servo set method
-    m_elevator_finger.set(pos);
+  /* Sets speed of the elevator Wheel motor */
+  public void setSpeedWheel(double speed) {
+    // Spark Max set() method
+    m_elevator_wheel.set(speed);
   }
 
-  /* Set position of the elevator drop motor in terms of an angle */
-  public void setAngleFinger(double angle) {
-    // Servo setAngle method
-    m_elevator_finger.setAngle(angle);
+  /* Gets position of the elevator Wheel motor */
+  public double getPositionWheel() {
+    // Spark Max getEncoder().getPosition() method
+    return m_elevator_wheel.getEncoder().getPosition();
   }
 
   @Override

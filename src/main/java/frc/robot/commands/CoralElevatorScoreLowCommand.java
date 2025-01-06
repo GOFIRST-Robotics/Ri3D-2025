@@ -21,7 +21,7 @@ public class CoralElevatorScoreLowCommand extends Command {
   @Override
   public void initialize() {
     m_subsystem.climbLowGoal();
-    m_subsystem.lowerDrop();
+    m_subsystem.armDrop();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -7,16 +7,16 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.subsystems.CoralElevatorSubsystem;
 
-// This is a custom Set Position command for the Lowering motor
-public class CoralElevatorSetPositionLowerCommand extends Command {
+// This is a custom Set Position command for the Arm motor
+public class CoralElevatorSetPositionArmCommand extends Command {
   private CoralElevatorSubsystem m_subsystem;
   private double position;
   private double error;
   private double kP = 0.1; // TODO: Tune this
   private double goalThreshold = 3; // TODO: Tune this
 
-  /** causes Lowering motor to move to given position */
-  public CoralElevatorSetPositionLowerCommand(double position) {
+  /** causes Arm motor to move to given position */
+  public CoralElevatorSetPositionArmCommand(double position) {
     this.position = position;
     m_subsystem = Robot.m_CoralElevatorSubsystem;
     addRequirements(m_subsystem);
@@ -31,7 +31,7 @@ public class CoralElevatorSetPositionLowerCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.error = position - m_subsystem.getPositionLower();
+    this.error = position - m_subsystem.getPositionArm();
     double output = kP * error;
     if (Math.abs(output) > 0.75) { // Max power we want to allow // TODO: Tune this
       output = Math.copySign(0.75, output);
@@ -39,13 +39,13 @@ public class CoralElevatorSetPositionLowerCommand extends Command {
     if (Math.abs(output) < 0.05) { // Min power we want to allow // TODO: Tune this
       output = Math.copySign(0.05, output);
     }
-    m_subsystem.setSpeedLower(output);
+    m_subsystem.setSpeedArm(output);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_subsystem.setSpeedLower(0);
+    m_subsystem.setSpeedArm(0);
   }
 
   // Returns true when the command should end.

@@ -8,13 +8,13 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.subsystems.CoralElevatorSubsystem;
 
-// This Command causes the End Effector to tilt up or down
-public class CoralElevatorEndEffectorMoveCommand extends Command {
+// This Command causes the Arm to tilt up or down
+public class CoralElevatorArmMoveCommand extends Command {
   private CoralElevatorSubsystem m_subsystem;
   private boolean direction;
 
-  /** Start command, causes End Effector to tilt up. Prev command, causes End Effector to tilt down */
-  public CoralElevatorEndEffectorMoveCommand(boolean direction) {
+  /** Start command, causes Arm to tilt up. Prev command, causes Arm to tilt down */
+  public CoralElevatorArmMoveCommand(boolean direction) {
     this.direction = direction;
     m_subsystem = Robot.m_CoralElevatorSubsystem;
     addRequirements(m_subsystem);
@@ -23,7 +23,7 @@ public class CoralElevatorEndEffectorMoveCommand extends Command {
   // Called once when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_subsystem.setSpeedLower(this.direction ? -1 * Constants.LOWERING_SPEED : Constants.LOWERING_SPEED);
+    m_subsystem.setSpeedArm(this.direction ? -1 * Constants.ARM_SPEED : Constants.ARM_SPEED);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -35,7 +35,7 @@ public class CoralElevatorEndEffectorMoveCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_subsystem.setSpeedLower(0);
+    m_subsystem.setSpeedArm(0);
   }
 
   // Returns true when the command should end.

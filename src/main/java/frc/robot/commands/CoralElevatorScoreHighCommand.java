@@ -21,7 +21,7 @@ public class CoralElevatorScoreHighCommand extends Command {
   @Override
   public void initialize() {
     m_subsystem.climbHighGoal();
-    m_subsystem.lowerVertical();
+    m_subsystem.armVertical();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

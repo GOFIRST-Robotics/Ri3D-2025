@@ -11,7 +11,7 @@ import frc.robot.subsystems.CoralElevatorSubsystem;
 public class CoralElevatorNeutralCommand extends Command {
   private CoralElevatorSubsystem m_subsystem;
 
-  /** D Pad down command, sets height to Neutral and End Effector  to Intake */
+  /** A Button command, sets height to Neutral and End Effector to Intake */
   public CoralElevatorNeutralCommand() {
     m_subsystem = Robot.m_CoralElevatorSubsystem;
     addRequirements(m_subsystem);
@@ -20,7 +20,7 @@ public class CoralElevatorNeutralCommand extends Command {
   // Called once when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_subsystem.lowerPlayerIntake();
+    m_subsystem.armPlayerIntake();
     m_subsystem.climbNeutral();
   }
 
