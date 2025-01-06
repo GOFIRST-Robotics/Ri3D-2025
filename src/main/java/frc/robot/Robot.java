@@ -1,4 +1,3 @@
-
 // Author: UMN Robotics Ri3D
 // Last Updated: December 2024
 
@@ -16,13 +15,23 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.autonomous.Drive1MeterAuto;
 import frc.robot.commands.autonomous.SquareAutonomous;
+import frc.robot.commands.CoralElevatorArmMoveCommand;
+import frc.robot.commands.CoralElevatorHorizontalIntakeCommand;
+import frc.robot.commands.CoralElevatorMoveCommand;
+import frc.robot.commands.CoralElevatorNeutralCommand;
+import frc.robot.commands.CoralElevatorScoreHighCommand;
+import frc.robot.commands.CoralElevatorScoreLowCommand;
+import frc.robot.commands.CoralElevatorScoreMidCommand;
+import frc.robot.commands.CoralElevatorWheelMoveCommand;
 import frc.robot.commands.DriveToTrackedTargetCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeToggleCommand;
+import frc.robot.subsystems.CoralElevatorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
@@ -40,13 +49,14 @@ public class Robot extends TimedRobot {
 
   Command m_autonomousCommand;
 	SendableChooser<Command> autonChooser = new SendableChooser<Command>(); // Create a chooser to select an autonomous command
-  
+
   public static boolean manualDriveControl = true;
 
   public static final GenericHID controller = new GenericHID(Constants.CONTROLLER_USB_PORT_ID); // Instantiate our controller at the specified USB port
 
   public static final DriveSubsystem m_driveSubsystem = new DriveSubsystem(); // Drivetrain subsystem
   public static final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(); // Intake subsystem
+  public static final CoralElevatorSubsystem m_CoralElevatorSubsystem = new CoralElevatorSubsystem(); // Elevator subsystem
   public static final PowerSubsystem m_powerSubsystem = new PowerSubsystem(); // Power subsystem for interacting with the Rev PDH
   public static final VisionSubsystem m_visionSubsystem = new VisionSubsystem(); // Subsystem for interacting with Photonvision
   public static final LEDSubsystem m_LEDSubsystem = new LEDSubsystem(); // Subsytem for controlling the REV Blinkin LED module
@@ -90,7 +100,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Gyroscope Pitch", m_driveSubsystem.getPitch());
     SmartDashboard.putNumber("Gyroscope Yaw", m_driveSubsystem.getYaw());
     SmartDashboard.putNumber("Gyroscope Roll", m_driveSubsystem.getRoll());
-    
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -103,7 +112,7 @@ public class Robot extends TimedRobot {
   /** This function is called continuously after the robot enters Disabled mode. */
   @Override
   public void disabledPeriodic() {
-   
+
   }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
@@ -146,8 +155,6 @@ public class Robot extends TimedRobot {
     m_driveSubsystem.zeroGyro();
     m_driveSubsystem.resetEncoders();
 
-
-
     Optional<Alliance> ally = DriverStation.getAlliance();
     if (ally.isPresent()) {
       if (ally.get() == Alliance.Red) {
@@ -159,7 +166,7 @@ public class Robot extends TimedRobot {
         m_LEDSubsystem.setLEDMode(LEDMode.TELEOPBLUE);
       }
     }
-    
+
     goalAngle = m_driveSubsystem.getGyroAngle();
   }
 
@@ -179,12 +186,12 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putNumber("Controller: Left Joystick Y Axis", controller.getRawAxis(Constants.LEFT_VERTICAL_JOYSTICK_AXIS));
     // SmartDashboard.putNumber("Controller: Right Joystick X Axis", controller.getRawAxis(Constants.RIGHT_HORIZONTAL_JOYSTICK_AXIS));
     // SmartDashboard.putNumber("Controller: Right Joystick Y Axis", controller.getRawAxis(Constants.RIGHT_VERTICAL_JOYSTICK_AXIS));
-  
-    if (Robot.manualDriveControl) {
-    double ySpeed = controller.getRawAxis(Constants.RIGHT_VERTICAL_JOYSTICK_AXIS);
-		double xSpeed = -controller.getRawAxis(Constants.RIGHT_HORIZONTAL_JOYSTICK_AXIS);
-		double zSpeed = -controller.getRawAxis(Constants.LEFT_HORIZONTAL_JOYSTICK_AXIS);
 
+  if (Robot.manualDriveControl) {
+    double ySpeed = controller.getRawAxis(Constants.RIGHT_VERTICAL_JOYSTICK_AXIS);
+    double xSpeed = -controller.getRawAxis(Constants.RIGHT_HORIZONTAL_JOYSTICK_AXIS);
+    double zSpeed = -controller.getRawAxis(Constants.LEFT_HORIZONTAL_JOYSTICK_AXIS);
+    
     // Speed limits
     ySpeed = Math.max(Math.min(ySpeed, 0.4), -0.4);
     xSpeed = Math.max(Math.min(xSpeed, 0.4), -0.4);
@@ -231,6 +238,19 @@ public class Robot extends TimedRobot {
     // Intake Controls //
     new Trigger(() -> controller.getRawButton(Constants.RIGHT_BUMPER)).whileTrue(new IntakeCommand()); // Intake or Outake depending on position
     new Trigger(() -> controller.getRawButton(Constants.B_BUTTON)).onTrue(new IntakeToggleCommand()); // Deploy or Retract Intake
+
+    // Coral Elevator Controls //
+    new Trigger(() -> controller.getRawButton(Constants.RIGHT_BUMPER)).whileTrue(new CoralElevatorMoveCommand(Constants.ELEVATOR_UP)); // Elevator Up Manual
+    new Trigger(() -> controller.getRawButton(Constants.LEFT_BUMPER)).whileTrue(new CoralElevatorMoveCommand(Constants.ELEVATOR_DOWN)); // Elevator Down Manual
+    new Trigger(() -> controller.getRawButton(Constants.RIGHT_STICK_BUTTON)).whileTrue(new CoralElevatorArmMoveCommand(Constants.ARM_UP)); // Arm Up Manual
+    new Trigger(() -> controller.getRawButton(Constants.LEFT_STICK_BUTTON)).whileTrue(new CoralElevatorArmMoveCommand(Constants.ARM_DOWN)); // Arm Down Manual
+    new Trigger(() -> controller.getRawButton(Constants.PREV_BUTTON)).whileTrue(new CoralElevatorWheelMoveCommand(Constants.WHEEL_OUTTAKE)); // Wheel Outtake Manual
+    new Trigger(() -> controller.getRawButton(Constants.START_BUTTON)).whileTrue(new CoralElevatorWheelMoveCommand(Constants.WHEEL_INTAKE)); // Weel Intake Manual
+    new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).onTrue(new CoralElevatorNeutralCommand()); // Neutral Preset
+    new POVButton(controller, 0).whileTrue(new CoralElevatorScoreMidCommand()); // Score Mid Preset
+    new POVButton(controller, 90).whileTrue(new CoralElevatorScoreHighCommand()); // Score High Preset
+    new POVButton(controller, 180).whileTrue(new CoralElevatorHorizontalIntakeCommand()); // Horizontal Intake Preset
+    new POVButton(controller, 270).whileTrue(new CoralElevatorScoreLowCommand()); // Score Low Preset
 
     // Test Controls //
     new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).whileTrue(new DriveToTrackedTargetCommand(0.75)); // Track AprilTag
