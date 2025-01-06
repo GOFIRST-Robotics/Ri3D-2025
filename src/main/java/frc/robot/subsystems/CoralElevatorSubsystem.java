@@ -14,6 +14,7 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class CoralElevatorSubsystem extends SubsystemBase {
@@ -213,5 +214,11 @@ public class CoralElevatorSubsystem extends SubsystemBase {
   }
 
   @Override
-  public void periodic() {}
+  public void periodic() {
+    // Publish encoder values to SmartDashboard
+    SmartDashboard.putNumber("Elevator Climb 1 Position", getPositionClimbOne());
+    SmartDashboard.putNumber("Elevator Climb 2 Position", getPositionClimbTwo());
+    SmartDashboard.putNumber("Elevator Arm Position", getPositionArm());
+    SmartDashboard.putNumber("Elevator Wheel Position", getPositionWheel());
+  }
 }
