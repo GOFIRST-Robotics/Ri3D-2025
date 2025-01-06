@@ -6,20 +6,36 @@ package frc.robot.subsystems;
 import frc.robot.Constants;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class VisionSubsystem extends SubsystemBase {
-    PhotonCamera camera = new PhotonCamera(Constants.USB_CAMERA_NAME); // Declare the name of the camera used in the pipeline
+    PhotonCamera camera;
+    PhotonPoseEstimator photonPoseEstimator;
     List<PhotonPipelineResult> results; // Stores all the data that Photonvision returns
     PhotonPipelineResult result; // Stores the latest data that Photonvision returns
     boolean hasTarget; // Stores whether or not a target is detected
+    Matrix<N3, N1> currentStdDevs;
+
+    public VisionSubsystem() {
+        photonPoseEstimator = new PhotonPoseEstimator(Constants.FIELD_APRILTAG_LAYOUT, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, Constants.ROBOT_TO_CAM);
+        camera = new PhotonCamera(Constants.USB_CAMERA_NAME); // Declare the name of the camera used in the pipeline
+    }
 
     @Override
     public void periodic() {
@@ -93,5 +109,64 @@ public class VisionSubsystem extends SubsystemBase {
         SmartDashboard.putBoolean("InRange", inRange);
     
         return inRange;
+    }
+    
+    public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
+        Optional<EstimatedRobotPose> estimation = Optional.empty();
+        for (PhotonPipelineResult change : results) {
+            estimation = photonPoseEstimator.update(change);
+            updateEstimationStdDevs(estimation, change.getTargets());
+        }
+        return estimation;
+    }
+
+    public Matrix<N3, N1> getEstimationStdDevs() {
+        return currentStdDevs;
+    }
+
+    /**
+     * Calculates new standard deviations This algorithm is a heuristic that creates dynamic standard
+     * deviations based on number of tags, estimation strategy, and distance from the tags.
+     *
+     * @param estimatedPose The estimated pose to guess standard deviations for.
+     * @param targets All targets in this camera frame
+     */
+    private void updateEstimationStdDevs(Optional<EstimatedRobotPose> estimatedPose, List<PhotonTrackedTarget> targets) {
+        if (estimatedPose.isEmpty()) {
+            // No pose input. Default to single-tag std devs
+            currentStdDevs = Constants.SINGLE_TAG_STDDEVS;
+        } else {
+            // Pose present. Start running Heuristic
+            Matrix<N3, N1> estStdDevs = Constants.SINGLE_TAG_STDDEVS;
+            int tagCount = 0;
+            double averageDistance = 0;
+
+            // Precalculation - see how many tags we found, and calculate an average-distance metric
+            for (PhotonTrackedTarget target : targets) {
+                Optional<Pose3d> tagPosition = photonPoseEstimator.getFieldTags().getTagPose(target.getFiducialId());
+                if (tagPosition.isEmpty()) {
+                    continue;
+                }
+                tagCount++;
+                averageDistance += tagPosition.get().toPose2d().getTranslation().getDistance(estimatedPose.get().estimatedPose.toPose2d().getTranslation());
+            }
+
+            if (tagCount == 0) {
+                // No tags visible. Default to single-tag std devs
+                currentStdDevs = Constants.SINGLE_TAG_STDDEVS;
+            } else {
+                // One or more tags visible, run the full heuristic.
+                averageDistance /= tagCount;
+                if (tagCount > 1) { // Decrease std devs if multiple targets are visible
+                    estStdDevs = Constants.MULTI_TAG_STDDEVS;
+                }
+                if (tagCount == 1 && averageDistance > 4) {// Increase std devs based on (average) distance
+                    estStdDevs = VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
+                } else {
+                    estStdDevs = estStdDevs.times(1 + (averageDistance * averageDistance / 30));
+                }
+                currentStdDevs = estStdDevs;
+            }
+        }
     }
 }

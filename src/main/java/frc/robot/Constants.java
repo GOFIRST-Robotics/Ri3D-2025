@@ -4,6 +4,15 @@
 
 package frc.robot;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 
 /**
@@ -112,5 +121,15 @@ public final class Constants {
     public static final double TARGET_HEIGHT_METERS = Units.inchesToMeters(18.5);
     public static final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(18);
     public static final String USB_CAMERA_NAME = "Arducam_OV9782_USB_Camera";
+    
+    // TODO: Change the values here to reflect the position of the robot relative to the camera
+    public static final Transform3d ROBOT_TO_CAM = new Transform3d(new Translation3d(0.5, 0.0, 0.5), new Rotation3d(0,0,0)); // Cam mounted facing forward, half a meter forward of center, half a meter up from center.
 
+    // The standard deviations of our vision estimated poses, which affect correction rate
+
+    // TODO: Figure out the standard deviations of our vision estimated poses
+    public static final Matrix<N3, N1> SINGLE_TAG_STDDEVS = VecBuilder.fill(4, 4, 8);
+    public static final Matrix<N3, N1> MULTI_TAG_STDDEVS = VecBuilder.fill(0.5, 0.5, 1);
+    // TODO: Upload JSON to updated field (2025)
+    public static final AprilTagFieldLayout FIELD_APRILTAG_LAYOUT = AprilTagFields.kDefaultField.loadAprilTagLayoutField();
 }
