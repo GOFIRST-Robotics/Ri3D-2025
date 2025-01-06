@@ -74,8 +74,7 @@ public class VisionSubsystem extends SubsystemBase {
         return distance;
     }
 
-    public boolean InRange(double distanceThreshold, double distanceThresholdRange,
-    double angleThreshold, double angleThresholdRange) {
+    public boolean InRange(double distanceThreshold, double distanceThresholdRange, double angleThreshold, double angleThresholdRange) {
         if (!hasTarget) {
             return false;
         }
