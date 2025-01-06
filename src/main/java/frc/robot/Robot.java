@@ -7,6 +7,11 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import java.util.Optional;
+
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -145,8 +150,17 @@ public class Robot extends TimedRobot {
     m_driveSubsystem.zeroGyro();
     m_driveSubsystem.resetEncoders();
 
-    // Set the LED pattern for teleop mode
-    m_LEDSubsystem.setLEDMode(LEDMode.TELEOP);
+    Optional<Alliance> ally = DriverStation.getAlliance();
+    if (ally.isPresent()) {
+      if (ally.get() == Alliance.Red) {
+        // Set the LED pattern for teleop mode
+      m_LEDSubsystem.setLEDMode(LEDMode.TELEOPRED);
+
+      }
+      if (ally.get() == Alliance.Blue) {
+        m_LEDSubsystem.setLEDMode(LEDMode.TELEOPBLUE);
+      }
+    }
 
     goalAngle = m_driveSubsystem.getGyroAngle();
   }

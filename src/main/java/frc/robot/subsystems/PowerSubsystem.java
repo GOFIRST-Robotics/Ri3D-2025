@@ -55,10 +55,6 @@ public class PowerSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Left Back Drive Motor Current", currentsArray[Constants.LEFT_BACK_DRIVE_MOTOR_PDH_CHANNEL]);
         SmartDashboard.putNumber("Right Back Drive Motor Current", currentsArray[Constants.RIGHT_BACK_DRIVE_MOTOR_PDH_CHANNEL]);
 
-        // SmartDashboard.putNumber("Upper Intake Motor Current", currentsArray[Constants.UPPER_INTAKE_MOTOR_PDH_CHANNEL]);
-        // SmartDashboard.putNumber("Lower Intake Motor Current", currentsArray[Constants.LOWER_INTAKE_MOTOR_PDH_CHANNEL]);
-        // SmartDashboard.putNumber("Climber Motor Current", currentsArray[Constants.CLIMBER_MOTOR_PDH_CHANNEL]);
-
         // SmartDashboard.putBoolean("Switched Channel State", switchedChannelState);
         // SmartDashboard.putBoolean("Reported Switched Channel State", getSwitchedChannelState());
     }
