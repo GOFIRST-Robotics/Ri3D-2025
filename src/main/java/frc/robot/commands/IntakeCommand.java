@@ -16,11 +16,11 @@ public class IntakeCommand extends Command {
   private boolean reverse;
 
   /** Creates a new IntakeCommand. */
-  public IntakeCommand() {
+  public IntakeCommand(boolean reverse) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_intakeSubsystem = Robot.m_intakeSubsystem;
     addRequirements(m_intakeSubsystem);
-    this.reverse = m_intakeSubsystem.getDeployed();
+    this.reverse = reverse;
   }
 
   // Called when the command is initially scheduled.

@@ -78,6 +78,10 @@ public class IntakeSubsystem extends SubsystemBase {
     } 
   }
 
+  public void deployIntake(double power) {
+    m_DeployIntake.set(power);
+  }
+
   @Override
   public void periodic() {
     IntakeBarRPM = m_IntakeBar.getEncoder().getVelocity();
