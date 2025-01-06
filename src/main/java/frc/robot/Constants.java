@@ -85,6 +85,9 @@ public final class Constants {
 	public static final double kMAX_ANGULAR_ACCELERATION_RADIANS_PER_SECOND_SQUARED = 2*Math.PI; // TODO: Update this for 2025
 
     // Intake Constants //
+    public static final double DEPLOY_SPEED = 0.1;
+    public static final double INTAKE_DEPLOYED_POS = 1.0;
+    public static final double INTAKE_RETURNED_POS = 0.01;
     public static final boolean INTAKE_BAR_INVERT = false;
     public static final double INTAKE_BAR_SPEED = 0.8;
 

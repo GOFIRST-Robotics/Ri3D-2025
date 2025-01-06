@@ -11,14 +11,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.commands.autonomous.Drive1MeterAuto;
 import frc.robot.commands.autonomous.SquareAutonomous;
 import frc.robot.commands.DriveToTrackedTargetCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.IntakeToggleCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
@@ -202,14 +201,11 @@ public class Robot extends TimedRobot {
    * or {@link XboxController}), and then passing it to a {@link edu.wpi.first.wpilibj2.command.button.Trigger}.
    */
   private void configureButtonBindings() {
-    // Climber Controls //
-
     // Intake Controls //
-    new Trigger(() -> controller.getRawButton(Constants.RIGHT_BUMPER)).whileTrue(new IntakeCommand(false)); // Intake
-    new Trigger(() -> controller.getRawButton(Constants.LEFT_BUMPER)).whileTrue(new IntakeCommand(true)); // Outtake
+    new Trigger(() -> controller.getRawButton(Constants.RIGHT_BUMPER)).whileTrue(new IntakeCommand()); // Intake or Outake depending on position
+    new Trigger(() -> controller.getRawButton(Constants.B_BUTTON)).onTrue(new IntakeToggleCommand()); // Deploy or Retract Intake
 
     // Test Controls //
     new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).whileTrue(new DriveToTrackedTargetCommand(0.5)); // Track AprilTag
   }
-
 }
