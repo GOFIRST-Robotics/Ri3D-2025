@@ -19,6 +19,9 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -31,9 +34,14 @@ public class VisionSubsystem extends SubsystemBase {
     PhotonPipelineResult result; // Stores the latest data that Photonvision returns
     boolean hasTarget; // Stores whether or not a target is detected
     Matrix<N3, N1> currentStdDevs;
+    Transform3d robotToCam;
 
     public VisionSubsystem() {
-        photonPoseEstimator = new PhotonPoseEstimator(Constants.FIELD_APRILTAG_LAYOUT, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, Constants.ROBOT_TO_CAM);
+        robotToCam = new Transform3d(
+            new Translation3d(Constants.CAMERA_FORWARD_METERS, Constants.CAMERA_HORIZONTAL_METERS, Constants.CAMERA_HEIGHT_METERS), 
+            new Rotation3d(0, Constants.CAMERA_PITCH_RADIANS,0)
+        );
+        photonPoseEstimator = new PhotonPoseEstimator(Constants.FIELD_APRILTAG_LAYOUT, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotToCam);
         camera = new PhotonCamera(Constants.USB_CAMERA_NAME); // Declare the name of the camera used in the pipeline
     }
 

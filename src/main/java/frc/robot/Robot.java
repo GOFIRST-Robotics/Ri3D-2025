@@ -146,8 +146,6 @@ public class Robot extends TimedRobot {
     m_driveSubsystem.zeroGyro();
     m_driveSubsystem.resetEncoders();
 
-
-
     Optional<Alliance> ally = DriverStation.getAlliance();
     if (ally.isPresent()) {
       if (ally.get() == Alliance.Red) {
