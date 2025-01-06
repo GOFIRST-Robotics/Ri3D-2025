@@ -24,8 +24,13 @@ public class IntakeSubsystem extends SubsystemBase {
 
   private double IntakeBarRPM;
   private double DeployPosition;
+  private double intakeMotorCurrent;
+
+  private double intakeLiftMotorCurrent;
 
   private int preset;
+
+  
 
   /** Subsystem for controlling the Intake */
   public IntakeSubsystem() {
@@ -57,8 +62,8 @@ public class IntakeSubsystem extends SubsystemBase {
     return IntakeBarRPM;
   }
   /* toggle the intake in or out */
-  public void presetToggle() {
-    preset = (preset++)%3;
+  public void setPreset(int preset) {
+    this.preset = preset;
   }
 
   /* get whether the intake is in or out */
@@ -70,6 +75,14 @@ public class IntakeSubsystem extends SubsystemBase {
     return DeployPosition;
   }
 
+  public double getIntakeMotorCurrent() {
+    return intakeMotorCurrent;
+  }
+
+  public double getIntakeLiftMotorCurrent() {
+    return intakeLiftMotorCurrent;
+  }
+
   public void deployIntake(double power) {
     m_DeployIntake.set(power);
   }
@@ -78,6 +91,8 @@ public class IntakeSubsystem extends SubsystemBase {
   public void periodic() {
     IntakeBarRPM = m_IntakeBar.getEncoder().getVelocity();
     DeployPosition = m_DeployIntake.getEncoder().getPosition();
+    intakeMotorCurrent = m_IntakeBar.getOutputCurrent();
+    intakeLiftMotorCurrent = m_DeployIntake.getOutputCurrent();
 
     // Add intake bar RPM readings to SmartDashboard for the sake of data logging
     SmartDashboard.putNumber("Intake Bar RPM", IntakeBarRPM);

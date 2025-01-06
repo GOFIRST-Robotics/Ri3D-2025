@@ -93,9 +93,17 @@ public final class Constants {
     public static final double DEPLOY_SPEED = 0.1;
     public static final boolean INTAKE_BAR_INVERT = false;
     public static final double INTAKE_BAR_SPEED = 0.8;
-    public static final double POSITION_ZERO = 0;
-    public static final double POSITION_ONE = 0.5;
-    public static final double POSITION_TWO = 0.7;
+    public static final int HOLD_ALGAE_ID = 0;
+    public static final int HOLD_CORAL_ID = 1;
+    public static final int PICK_UP_ALGAE_ID = 2;
+    public static final int PICK_UP_CORAL_ID = 3;
+    /* angle estimates: Pick up algae ~45, Pick up Coral ~90, Hold coral ~0, Hold algae ~10 */
+    public static final double PICK_UP_ALGAE = 0; // TODO: NEEDS TUNING
+    public static final double HOLD_CORAL = 2; // TODO: NEEDS TUNING
+    public static final double PICK_UP_CORAL = 0; // TODO: NEEDS TUNING
+    public static final double HOLD_ALGAE = 0; // TODO: NEEDS TUNING
+    public static final double INTAKE_CURRENT_THRESHOLD = 0.3; // TODO: NEEDS TUNING
+    public static final double GRAVITY_RESISTANCE = 0.3; // TODO: NEEDS TUNING
 
     // REV PH Channels //
     // Example: public static final int EXTENSION_SOLENOID_ID = 0;
@@ -120,6 +128,8 @@ public final class Constants {
     public static final double TARGET_HEIGHT_METERS = Units.inchesToMeters(18.5);
     public static final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(18);
     public static final String USB_CAMERA_NAME = "Arducam_OV9782_USB_Camera";
+
+    
     
     
 

@@ -19,21 +19,21 @@ import frc.robot.subsystems.IntakeSubsystem;
 public class IntakeToggleCommand extends Command {
   public static final GenericHID controller = new GenericHID(Constants.CONTROLLER_USB_PORT_ID); // Instantiate our controller at the specified USB port
   private IntakeSubsystem m_intakeSubsystem;
-  boolean reverse;
+  int preset;
 
 
   /** Creates a new IntakeCommand. */
-  public IntakeToggleCommand(boolean reverse) {
+  public IntakeToggleCommand(int preset) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_intakeSubsystem = Robot.m_intakeSubsystem;
     addRequirements(m_intakeSubsystem);
-    this.reverse = reverse;
+    this.preset = preset;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_intakeSubsystem.presetToggle();
+    m_intakeSubsystem.setPreset(preset);
     
 
   }
@@ -42,14 +42,17 @@ public class IntakeToggleCommand extends Command {
   @Override
   public void execute() {
     switch(m_intakeSubsystem.getPreset()) {
-      case 0:
-        new IntakeSetPosition(Constants.POSITION_ZERO);
+      case Constants.HOLD_ALGAE_ID:
+        (new IntakeSetPosition(Constants.HOLD_ALGAE)).schedule();
         break;
-      case 1:
-        new IntakeSetPosition(Constants.POSITION_ONE);
+      case Constants.HOLD_CORAL_ID:
+        (new IntakeSetPosition(Constants.HOLD_CORAL)).schedule();;
         break;
-      case 2:
-        new IntakeSetPosition(Constants.POSITION_TWO);
+      case Constants.PICK_UP_ALGAE_ID:
+        (new IntakeSetPosition(Constants.PICK_UP_ALGAE)).schedule();;
+        break;
+        case Constants.PICK_UP_CORAL_ID:
+        (new IntakeSetPosition(Constants.PICK_UP_CORAL)).schedule();;
         break;
     }
   }
