@@ -26,7 +26,9 @@ public class CoralElevatorSetPositionArmCommand extends Command {
   // Called once when the command is initially scheduled.
   @Override
   public void initialize() {
-    // -
+    if ((position > m_subsystem.arm_max) || (position < m_subsystem.arm_min)) {
+      end(true);
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -46,6 +48,10 @@ public class CoralElevatorSetPositionArmCommand extends Command {
       output = Math.copySign(0.05, output);
     }
     m_subsystem.setSpeedArm(output);
+    
+    if ((position > m_subsystem.arm_max) || (position < m_subsystem.arm_min)) {
+      end(true);
+    }
   }
 
   // Called once the command ends or is interrupted.
