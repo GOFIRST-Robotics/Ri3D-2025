@@ -48,7 +48,6 @@ public final class Constants {
     public static final int ELEVATOR_STAGE_1_MOTOR_ID = 7; // NEO motor
     public static final int ELEVATOR_STAGE_2_MOTOR_ID = 9; // NEO 550 motor
     public static final int FINGER_MOTOR_ID = 10; // NEO 550 motor
-    public static final int CLIMBER_MOTOR_ID_SPARK = 11; // TODO: Do we need this or no?
 
     // PWM Ports //
     public static final int LED_PWM_ID = 4;
