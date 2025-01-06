@@ -19,6 +19,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class CoralElevatorSubsystem extends SubsystemBase {
   
+    public boolean fingerState = false;
+
     // Coral Elevator Motor Controllers
     private SparkMax m_elevator_climb; // NEO motor
     private SparkMax m_elevator_lower; // NEO motor
@@ -136,22 +138,10 @@ public class CoralElevatorSubsystem extends SubsystemBase {
     m_elevator_finger.set(pos);
   }
 
-  /* Gets current position of elevator drop motor. Output between 0.0 and 1.0 */
-  public double getPositionFinger() {
-    // Servo get method
-    return m_elevator_finger.get();
-  }
-
   /* Set position of the elevator drop motor in terms of an angle */
   public void setAngleFinger(double angle) {
     // Servo setAngle method
     m_elevator_finger.setAngle(angle);
-  }
-
-  /* Get position of the elevator drop motor in terms of an angle */
-  public double getAngleFinger() {
-    // Servo getAngle method
-    return m_elevator_finger.getAngle();
   }
 
   @Override

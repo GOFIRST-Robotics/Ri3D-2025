@@ -217,8 +217,8 @@ public class Robot extends TimedRobot {
     new Trigger(() -> controller.getRawButton(Constants.LEFT_BUMPER)).whileTrue(new CoralElevatorMoveCommand(Constants.ELEVATOR_DOWN)); // Elevator Down Manual
     new Trigger(() -> controller.getRawButton(Constants.RIGHT_STICK_BUTTON)).whileTrue(new CoralElevatorEndEffectorMoveCommand(Constants.END_EFFECTOR_UP)); // End Effector Up Manual
     new Trigger(() -> controller.getRawButton(Constants.LEFT_STICK_BUTTON)).whileTrue(new CoralElevatorEndEffectorMoveCommand(Constants.END_EFFECTOR_DOWN)); // End Effector Down Manual
-    new Trigger(() -> controller.getRawButton(Constants.B_BUTTON)).whileTrue(new CoralElevatorFingerToggleCommand()); // Finger Toggle Manual
-    new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).whileTrue(new CoralElevatorHorizontalIntakeCommand()); // Horizontal Intake Preset
+    new Trigger(() -> controller.getRawButton(Constants.B_BUTTON)).onTrue(new CoralElevatorFingerToggleCommand()); // Finger Toggle Manual
+    new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).onTrue(new CoralElevatorHorizontalIntakeCommand()); // Horizontal Intake Preset
     new POVButton(controller, 0).whileTrue(new CoralElevatorScoreMidCommand()); // Score Mid Preset
     new POVButton(controller, 90).whileTrue(new CoralElevatorScoreHighCommand()); // Score High Preset
     new POVButton(controller, 180).whileTrue(new CoralElevatorNeutralCommand()); // Neutral Preset

@@ -20,29 +20,23 @@ public class CoralElevatorFingerToggleCommand extends Command {
   // Called once when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (m_subsystem.getAngleFinger() == 0) {
-      m_subsystem.setAngleFinger(90);
-    }
-    if (m_subsystem.getAngleFinger() == 90) {
-      m_subsystem.setAngleFinger(0);
-    }
+    m_subsystem.setAngleFinger(m_subsystem.fingerState ?  90.0 : 0.0);
+    m_subsystem.fingerState = !m_subsystem.fingerState;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // -
+    System.out.println("Finger State: " + m_subsystem.fingerState);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    // -
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false; // Command will never finish (we don't want it to)
+    return true; // Command will finish right away
   }
 }
