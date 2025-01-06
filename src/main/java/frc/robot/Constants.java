@@ -1,6 +1,6 @@
 
 // Author: UMN Robotics Ri3D
-// Last Updated: December 2024
+// Last Updated: January 2025
 
 package frc.robot;
 
@@ -58,8 +58,11 @@ public final class Constants {
     public static final int DEPLOY_INTAKE_MOTOR_ID = 6; // NEO motor
     public static final int ELEVATOR_STAGE_1_MOTOR_ID = 7; // NEO motor
     public static final int ELEVATOR_STAGE_2_MOTOR_ID = 9; // NEO 550 motor
-    public static final int ELEVATOR_WHEEL_MOTOR_ID = 10; // NEO 550 motor
-    public static final int ELEVATOR_ARM_MOTOR_ID = 12; // NEO 550 motor
+    public static final int END_EFFECTOR_WHEEL_MOTOR_ID = 10; // NEO 550 motor
+    public static final int END_EFFECTOR_ARM_MOTOR_ID = 12; // NEO 550 motor
+
+    // Servo IDs //
+    public static final int ELEVATOR_DROP_MOTOR_ID = 0;
 
     // PWM Ports //
     public static final int LED_PWM_ID = 4;
@@ -95,6 +98,20 @@ public final class Constants {
     public static final double kP_THETA_CONTROLLER = 9.6421; // TODO: Tune this value if needed
 	public static final double kMAX_ANGULAR_SPEED_RADIANS_PER_SECOND = 2*Math.PI; // TODO: Tune this value if needed
 	public static final double kMAX_ANGULAR_ACCELERATION_RADIANS_PER_SECOND_SQUARED = 2*Math.PI; // TODO: Tune this value if needed
+
+    // Coral Elevator Constants //
+    public static final boolean ELEVATOR_INVERT = false;
+    public static final double ELEVATOR_SPEED = 0.5; // TODO: Tune this
+    public static final double ARM_SPEED = 0.2; // TODO: Tune this
+    public static final double WHEEL_SPEED = 0.9; // TODO: Tune this
+    public static final boolean ELEVATOR_UP = true;
+    public static final boolean ELEVATOR_DOWN = false;
+    public static final boolean ARM_UP = true;
+    public static final boolean ARM_DOWN = false;
+    public static final boolean WHEEL_INTAKE = true;
+    public static final boolean WHEEL_OUTTAKE = false;
+    public static final double GRAVITY_CONST = 0.02; // TODO: Figure this out
+    public static final int ELEVATOR_ROTATIONS_PER_INCH = 13; // Number of rotations elevator climb motor must complete to raise/lower elevator by one inch
 
     // Intake Constants //
     public static final double DEPLOY_SPEED = 0.1;
