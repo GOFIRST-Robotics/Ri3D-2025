@@ -16,8 +16,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class IntakeSubsystem extends SubsystemBase {
-  
+public class IntakeSubsystem extends SubsystemBase {  
   // Intake Motor Controllers
   private SparkMax m_IntakeBar; // NEO 550 motor
   private SparkMax m_DeployIntake; // NEO 550 motor
@@ -115,7 +114,11 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void deployIntake(double power) {
-    m_DeployIntake.set(power);
+    if(!(power > 0 && getPosition() > Constants.INTAKE_DEPLOY_LIMIT || (power < 0 && getPosition() < Constants.INTAKE_RETURN_LIMIT))) {
+      m_DeployIntake.set(power);
+    } else {
+      m_DeployIntake.set(0);
+    }
   }
   
 
@@ -125,7 +128,7 @@ public class IntakeSubsystem extends SubsystemBase {
     DeployPosition = m_DeployIntake.getEncoder().getPosition();
     intakeMotorCurrent = m_IntakeBar.getOutputCurrent();
     intakeLiftMotorCurrent = m_DeployIntake.getOutputCurrent();
-    intakeGravityControl = DeployPosition*Constants.GRAVITY_RESISTANCE/Constants.INTAKE_MAX_ANGLE;
+    intakeGravityControl = DeployPosition*Constants.GRAVITY_RESISTANCE/Constants.INTAKE_DEPLOY_LIMIT;
     i = i++%10;
     intakeMotorCurrents[i] = intakeMotorCurrent;
 

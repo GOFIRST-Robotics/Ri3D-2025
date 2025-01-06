@@ -37,15 +37,13 @@ public class IntakeManualControl extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(!((controller.getRawAxis(Constants.LEFT_VERTICAL_JOYSTICK_AXIS) > 0 && m_intakeSubsystem.getPosition() > Constants.INTAKE_DEPLOY_LIMIT || (controller.getRawAxis(Constants.LEFT_VERTICAL_JOYSTICK_AXIS) < 0 && m_intakeSubsystem.getPosition() < Constants.INTAKE_RETURN_LIMIT)))) {
-      m_intakeSubsystem.deployIntake(Constants.DEPLOY_SPEED*controller.getRawAxis(Constants.LEFT_VERTICAL_JOYSTICK_AXIS)-m_intakeSubsystem.getIntakeGravityControl());
-    }
+    m_intakeSubsystem.deployIntake(Constants.DEPLOY_SPEED*controller.getRawAxis(Constants.LEFT_VERTICAL_JOYSTICK_AXIS)-m_intakeSubsystem.getIntakeGravityControl());
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (m_intakeSubsystem.getPosition() > Constants.INTAKE_DEPLOY_LIMIT) || (m_intakeSubsystem.getPosition() < Constants.INTAKE_RETURN_LIMIT);
+    return false;
   }
 
   // Called once the command ends or is interrupted.

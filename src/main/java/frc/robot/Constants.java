@@ -105,22 +105,21 @@ public final class Constants {
     public static final int ELEVATOR_ROTATIONS_PER_INCH = 13; // Number of rotations elevator climb motor must complete to raise/lower elevator by one inch
 
     // Intake Constants //
-    public static final double INTAKE_DEPLOY_LIMIT = 72;
-    public static final double INTAKE_RETURN_LIMIT = 0.01;
+    public static final double INTAKE_LIFT_GEAR_RATIO = 7*7*48/29;
+    public static final double INTAKE_DEPLOY_LIMIT = 0.25*INTAKE_LIFT_GEAR_RATIO;
+    public static final double INTAKE_RETURN_LIMIT = 0;
     public static final double DEPLOY_SPEED = 0.1;
     public static final boolean INTAKE_BAR_INVERT = false;
-    public static final double INTAKE_BAR_SPEED = 0.8;
+    public static final double INTAKE_BAR_SPEED = 0.8; // TODO: NEEDS TUNING
     public static final int HOLD_ALGAE_ID = 0;
     public static final int HOLD_CORAL_ID = 1;
     public static final int PICK_UP_ALGAE_ID = 2;
     public static final int PICK_UP_CORAL_ID = 3;
-    /* angle estimates: Pick up algae ~45, Pick up Coral ~90, Hold coral ~0, Hold algae ~10 */
-    public static final double PICK_UP_ALGAE = 0; // TODO: NEEDS TUNING
-    public static final double HOLD_CORAL = 2; // TODO: NEEDS TUNING
-    public static final double PICK_UP_CORAL = 0; // TODO: NEEDS TUNING
-    public static final double HOLD_ALGAE = 0; // TODO: NEEDS TUNING
-    public static final double INTAKE_CURRENT_THRESHOLD = 0.3; // TODO: NEEDS TUNING
-    public static final double INTAKE_MAX_ANGLE = 0; // TODO: NEEDS TUNING
+    /* angle estimates: Pick up algae ~45, Pick up Coral ~90, Hold coral ~45, Hold algae ~10 */
+    public static final double PICK_UP_ALGAE = 0.12*INTAKE_LIFT_GEAR_RATIO; 
+    public static final double HOLD_CORAL = 0.125*INTAKE_LIFT_GEAR_RATIO; 
+    public static final double PICK_UP_CORAL = 0.25*INTAKE_LIFT_GEAR_RATIO; 
+    public static final double HOLD_ALGAE = 0.02*INTAKE_LIFT_GEAR_RATIO;
     public static final double GRAVITY_RESISTANCE = 0.3; // TODO: NEEDS TUNING
 
     // REV PH Channels //
