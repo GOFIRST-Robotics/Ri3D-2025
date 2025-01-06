@@ -50,7 +50,6 @@ public final class Constants {
     public static final int ELEVATOR_STAGE_1_MOTOR_ID = 7; // NEO motor
     public static final int ELEVATOR_STAGE_2_MOTOR_ID = 9; // NEO 550 motor
     public static final int FINGER_MOTOR_ID = 10; // NEO 550 motor
-    public static final int CLIMBER_MOTOR_ID_SPARK = 5; // TODO: Do we need this or no?
 
     // PWM Ports //
     public static final int LED_PWM_ID = 4;
@@ -94,10 +93,6 @@ public final class Constants {
     public static final boolean INTAKE_BAR_INVERT = false;
     public static final double INTAKE_BAR_SPEED = 0.8;
 
-    // Climber Constants //
-    public static final boolean CLIMBER_INVERT = false;
-    public static final double CLIMBER_SPEED = 0.6;
-
     // REV PH Channels //
     // Example: public static final int EXTENSION_SOLENOID_ID = 0;
 
@@ -106,9 +101,8 @@ public final class Constants {
     public static final int RIGHT_FRONT_DRIVE_MOTOR_PDH_CHANNEL = 10;
     public static final int LEFT_BACK_DRIVE_MOTOR_PDH_CHANNEL = 12;
     public static final int RIGHT_BACK_DRIVE_MOTOR_PDH_CHANNEL = 13;
-    public static final int LOWER_INTAKE_MOTOR_PDH_CHANNEL = 14;
-    public static final int FLY_WHEEL_MOTOR_PDH_CHANNEL = 16;
-    public static final int CLIMBER_MOTOR_PDH_CHANNEL = 17;
+    // Example: public static final int LOWER_INTAKE_MOTOR_PDH_CHANNEL = 14;
+    // Example: public static final int FLYWHEEL_MOTOR_PDH_CHANNEL = 16;
 
     // Pneumatics Constants //
     public static final int COMPRESSOR_CAN_ID = 7;
