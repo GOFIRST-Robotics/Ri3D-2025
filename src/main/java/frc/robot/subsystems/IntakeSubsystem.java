@@ -132,7 +132,8 @@ public class IntakeSubsystem extends SubsystemBase {
     i = i++%10;
     intakeMotorCurrents[i] = intakeMotorCurrent;
 
-    // Add intake bar RPM readings to SmartDashboard for the sake of data logging
+    // Add intake bar RPM and deploy position readings to SmartDashboard for the sake of data logging
     SmartDashboard.putNumber("Intake Bar RPM", IntakeBarRPM);
+    SmartDashboard.putNumber("Intake Deploy Position", DeployPosition);
   }
 }
