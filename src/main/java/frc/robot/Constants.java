@@ -48,7 +48,8 @@ public final class Constants {
     public static final int DEPLOY_INTAKE_MOTOR_ID = 6; // NEO motor
     public static final int ELEVATOR_STAGE_1_MOTOR_ID = 7; // NEO motor
     public static final int ELEVATOR_STAGE_2_MOTOR_ID = 9; // NEO 550 motor
-    public static final int FINGER_MOTOR_ID = 10; // NEO 550 motor
+    public static final int END_EFFECTOR_WHEEL_MOTOR_ID = 10; // NEO 550 motor
+    public static final int END_EFFECTOR_ARM_MOTOR_ID = 12; // NEO 550 motor
     public static final int CLIMBER_MOTOR_ID_SPARK = 5; // TODO: Do we need this or no?
 
     // Servo IDs //
