@@ -52,8 +52,8 @@ public class PowerSubsystem extends SubsystemBase {
 
         SmartDashboard.putNumber("Left Front Drive Motor Current", currentsArray[Constants.LEFT_FRONT_DRIVE_MOTOR_PDH_CHANNEL]);
         SmartDashboard.putNumber("Right Front Drive Motor Current", currentsArray[Constants.RIGHT_FRONT_DRIVE_MOTOR_PDH_CHANNEL]);
-        SmartDashboard.putNumber("Left Back Drive Motor Current", currentsArray[Constants.LEFT_REAR_DRIVE_MOTOR_PDH_CHANNEL]);
-        SmartDashboard.putNumber("Right Back Drive Motor Current", currentsArray[Constants.RIGHT_REAR_DRIVE_MOTOR_PDH_CHANNEL]);
+        SmartDashboard.putNumber("Left Back Drive Motor Current", currentsArray[Constants.LEFT_BACK_DRIVE_MOTOR_PDH_CHANNEL]);
+        SmartDashboard.putNumber("Right Back Drive Motor Current", currentsArray[Constants.RIGHT_BACK_DRIVE_MOTOR_PDH_CHANNEL]);
 
         // SmartDashboard.putNumber("Upper Intake Motor Current", currentsArray[Constants.UPPER_INTAKE_MOTOR_PDH_CHANNEL]);
         // SmartDashboard.putNumber("Lower Intake Motor Current", currentsArray[Constants.LOWER_INTAKE_MOTOR_PDH_CHANNEL]);

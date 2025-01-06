@@ -3,9 +3,10 @@
 
 package frc.robot.commands;
 
-import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -14,16 +15,12 @@ import frc.robot.subsystems.VisionSubsystem;
 
 // This command rotates the robot to the best (nearest) field april tag
 public class DriveToTrackedTargetCommand extends Command {
-
   private DriveSubsystem m_drivetrainSubsystem;
   private VisionSubsystem m_visionSubsystem;
 
-  double angleToTarget;
-  int targetTagID;
-  double desiredDistanceToTarget;
-  double targetArea;
-  boolean usingArea;
-  double translationalError;
+  private int targetTagID;
+  private double desiredDistanceToTarget;
+  private double distance;
 
   /** Rotates the robot and drives to the best (nearest) tracked target, can be used for either 
    * april tags or retroreflective tape tracked by photonvision
@@ -39,26 +36,6 @@ public class DriveToTrackedTargetCommand extends Command {
   public DriveToTrackedTargetCommand(double distanceToTarget, int targetTagID) {
     this(distanceToTarget);
     this.targetTagID = targetTagID; 
-  }
-
-  /** Rotates the robot and drives to the best (nearest) target, but instead of specifying distance
-   * only specift target area.
-  */
-  public DriveToTrackedTargetCommand(double targetArea, boolean usingArea) {
-    this(targetArea);
-    this.usingArea = usingArea;
-  }
-
-  /**
-   * Rotates the robot and drives to a specific april tag, but instead of specifying distance
-   * only specift target area.
-   * @param targetArea
-   * @param targetTagID
-   * @param usingArea
-   */
-  public DriveToTrackedTargetCommand(double targetArea, int targetTagID, boolean usingArea) {
-    this(targetArea, targetTagID);
-    this.usingArea = usingArea;
   }
 
   // Called when the command is initially scheduled.
@@ -79,50 +56,47 @@ public class DriveToTrackedTargetCommand extends Command {
       if (trackedTarget != null) { // If a valid target has been retrieved
         // A bunch of math to tell the drivetrain how to drive to the target 
         // while turning at the same time, till it is a certian distance away.
-        double rotationalError = trackedTarget.getYaw();      
-        double translationValue;
-        if (usingArea) {
-          translationalError = desiredDistanceToTarget - trackedTarget.getArea();
-          translationValue = translationalError * Constants.TRACKED_TAG_AREA_DRIVE_KP;
-        } else {
-          translationalError = -desiredDistanceToTarget + PhotonUtils.calculateDistanceToTargetMeters(
-            Constants.CAMERA_HEIGHT_METERS, 
-            Constants.TARGET_HEIGHT_METERS, 
-            Constants.CAMERA_PITCH_RADIANS, 
-            trackedTarget.getPitch()
-          );
-          translationValue = translationalError * Constants.TRACKED_TAG_DISTANCE_DRIVE_KP*3;
-        }
-        // If the robot is too close to the target, drive backwards
+        Transform3d targetRelativeLocation = trackedTarget.getBestCameraToTarget(); // Get the apriltag's relative location baised on the camera's location
+        
+        // distance = m_visionSubsystem.getDistanceToTarget(trackedTarget); // Stores the distance 
+        distance = targetRelativeLocation.getX(); // Stores the distance
+
+        double rotationalError = trackedTarget.getYaw();
+        double forwardError = distance - desiredDistanceToTarget; 
+        double leftError = targetRelativeLocation.getY(); 
+
+        // Calcualte powers of driving to fix error
         double rotationValue = -rotationalError * Constants.TRACKED_TAG_ROATION_KP;
-        double leftPower =  translationValue - rotationValue; // NEGATIVE
-        double rightPower = translationValue + rotationValue; // POSITVE
-        double leftDriveRate;
-        double rightDriveRate;
-        if (leftPower > Constants.APRILTAG_POWER_CAP || rightPower > Constants.APRILTAG_POWER_CAP) {
-          double max = Math.max(Math.abs(leftPower), Math.abs(rightPower));
-          leftDriveRate = Math.copySign(leftPower/max, leftPower);
-          rightDriveRate = Math.copySign(rightPower/max, rightPower);
-        } else if (leftPower < -Constants.APRILTAG_POWER_CAP || rightPower < -Constants.APRILTAG_POWER_CAP) {
-            double min = Math.max(Math.abs(leftPower), Math.abs(rightPower));
-            leftDriveRate = Math.copySign(leftPower/min, leftPower);
-            rightDriveRate = Math.copySign(rightPower/min, rightPower);
-        } else {
-          leftDriveRate = leftPower;
-          rightDriveRate = rightPower;
-        }
-        m_drivetrainSubsystem.drive(leftDriveRate, rightDriveRate); // Finnally drive with the values we have
+        double forwardValue = -forwardError * Constants.TRACKED_TAG_FORWARD_DRIVE_KP;
+        double leftValue = -leftError * Constants.TRACKED_TAG_STRAFE_DRIVE_KP;
+        
+        // Limit the power of the drive rate directions 
+        double rotationDriveRate = limit(rotationValue, Constants.APRILTAG_POWER_CAP);
+        double forwardDriveRate = limit(forwardValue, Constants.APRILTAG_POWER_CAP);
+        double strafeDriveRate = limit(leftValue, Constants.APRILTAG_POWER_CAP);
+
+        m_drivetrainSubsystem.driveCartesian(forwardDriveRate, strafeDriveRate, rotationDriveRate);
 
         // Print out all the variables for debugging
-        System.out.println("Target Area: " + desiredDistanceToTarget);
-        System.out.println("Current Area: " + translationValue);
-        System.out.println("Distance: " + desiredDistanceToTarget);
-        System.out.println("Rotational Error: " + rotationalError);
-        System.out.println("Translational Error: " + translationalError);
-        System.out.println("Rotational Value: " + rotationValue);
-        System.out.println("Translational Value: " + translationValue);
-        System.out.println("leftDriveRate: " + leftDriveRate);
-        System.out.println("rightDriveRate: " + rightDriveRate); 
+        // System.out.println("Distance: " + desiredDistanceToTarget);
+        // System.out.println("Rotational Error: " + rotationalError);
+        // System.out.println("Forward Error: " + forwardError);
+        // System.out.println("Left Error: " + leftError);
+        // System.out.println("Rotational Value: " + rotationValue);
+        // System.out.println("Forward Value: " + forwardValue);
+        // System.out.println("Left Value: " + leftValue);
+        // System.out.println("forwardDriveRate: " + forwardDriveRate);
+        // System.out.println("strafeDriveRate: " + strafeDriveRate); 
+        // System.out.println("rotationDriveRate: " + rotationDriveRate); 
+
+        // Use Smartdashboard for Debugging
+        SmartDashboard.putNumber("Distance", distance);
+        SmartDashboard.putNumber("Forward Value", forwardValue);
+        SmartDashboard.putNumber("Left Value", leftValue);
+        SmartDashboard.putNumber("Rotation Value", rotationValue);
+        SmartDashboard.putNumber("forwardDriveRate", forwardDriveRate);
+        SmartDashboard.putNumber("strafeDriveRate", strafeDriveRate);
+        SmartDashboard.putNumber("rotationDriveRate", rotationDriveRate);
       }
     } else {
       m_drivetrainSubsystem.stop();
@@ -138,10 +112,10 @@ public class DriveToTrackedTargetCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(usingArea) {
-      return desiredDistanceToTarget <= 0.5;
-    } else {
-      return translationalError <= 0.2;
-    }
+    return distance <= 0.2;
+  }
+
+  public double limit(double value, double limit) {
+    return Math.copySign(Math.min(Math.abs(value), limit), value);
   }
 }

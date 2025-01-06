@@ -8,6 +8,7 @@ import frc.robot.Constants;
 import java.util.List;
 
 import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -58,19 +59,22 @@ public class VisionSubsystem extends SubsystemBase {
             return 0;
         }
         double april_tag_pitch = target.getPitch();
-        double april_tag_area = target.getArea();
 
-        double distance = april_tag_area;
+        double distance = PhotonUtils.calculateDistanceToTargetMeters(
+            Constants.CAMERA_HEIGHT_METERS, 
+            Constants.TARGET_HEIGHT_METERS, 
+            Constants.CAMERA_PITCH_RADIANS, 
+            Math.toRadians(target.getPitch())
+        );
 
         // Print the area and pitch of the target
         //System.out.println("Area: " + april_tag_height + "Pitch: " + april_tag_pitch);
-        SmartDashboard.putNumber("t_area", april_tag_area);
+        SmartDashboard.putNumber("t_distance", distance);
         SmartDashboard.putNumber("t_pitch", april_tag_pitch);
         return distance;
     }
 
-    public boolean InRange(double distanceThreshold, double distanceThresholdRange,
-    double angleThreshold, double angleThresholdRange) {
+    public boolean InRange(double distanceThreshold, double distanceThresholdRange, double angleThreshold, double angleThresholdRange) {
         if (!hasTarget) {
             return false;
         }
