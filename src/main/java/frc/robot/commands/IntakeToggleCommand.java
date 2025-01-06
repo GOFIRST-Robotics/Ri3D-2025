@@ -32,20 +32,32 @@ public class IntakeToggleCommand extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_intakeSubsystem.presetToggle();
+    
+
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(!((controller.getRawAxis(Constants.LEFT_VERTICAL_JOYSTICK_AXIS) > 0 && m_intakeSubsystem.getPosition() > Constants.INTAKE_DEPLOYED_POS) || (controller.getRawAxis(Constants.LEFT_VERTICAL_JOYSTICK_AXIS) < 0 && m_intakeSubsystem.getPosition() < Constants.INTAKE_RETURNED_POS))) {
-      m_intakeSubsystem.deployIntake(Constants.DEPLOY_SPEED*controller.getRawAxis(Constants.LEFT_VERTICAL_JOYSTICK_AXIS));
+    switch(m_intakeSubsystem.getPreset()) {
+      case 0:
+        new IntakeSetPosition(Constants.POSITION_ZERO);
+        break;
+      case 1:
+        new IntakeSetPosition(Constants.POSITION_ONE);
+        break;
+      case 2:
+        new IntakeSetPosition(Constants.POSITION_TWO);
+        break;
     }
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (m_intakeSubsystem.getPosition() > Constants.INTAKE_DEPLOYED_POS) || (m_intakeSubsystem.getPosition() < Constants.INTAKE_RETURNED_POS);
+    return false;
   }
 
   // Called once the command ends or is interrupted.

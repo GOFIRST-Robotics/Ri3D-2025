@@ -36,7 +36,7 @@ public class IntakeCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (reverse != m_intakeSubsystem.getDeployed());
+    return false;
   }
 
   // Called once the command ends or is interrupted.

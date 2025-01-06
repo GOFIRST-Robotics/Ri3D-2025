@@ -87,11 +87,14 @@ public final class Constants {
 	public static final double kMAX_ANGULAR_ACCELERATION_RADIANS_PER_SECOND_SQUARED = 2*Math.PI; // TODO: Update this for 2025
 
     // Intake Constants //
+    public static final double INTAKE_DEPLOY_LIMIT = 72;
+    public static final double INTAKE_RETURN_LIMIT = 0.01;
     public static final double DEPLOY_SPEED = 0.1;
-    public static final double INTAKE_DEPLOYED_POS = 1.0;
-    public static final double INTAKE_RETURNED_POS = 0.01;
     public static final boolean INTAKE_BAR_INVERT = false;
     public static final double INTAKE_BAR_SPEED = 0.8;
+    public static final double POSITION_ZERO = 0;
+    public static final double POSITION_ONE = 0.5;
+    public static final double POSITION_TWO = 0.7;
 
     // REV PH Channels //
     // Example: public static final int EXTENSION_SOLENOID_ID = 0;
@@ -112,5 +115,7 @@ public final class Constants {
     public static final double TARGET_HEIGHT_METERS = Units.inchesToMeters(18.5);
     public static final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(18);
     public static final String USB_CAMERA_NAME = "Arducam_OV9782_USB_Camera";
+    
+    
 
 }

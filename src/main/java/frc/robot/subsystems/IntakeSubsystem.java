@@ -25,7 +25,7 @@ public class IntakeSubsystem extends SubsystemBase {
   private double IntakeBarRPM;
   private double DeployPosition;
 
-  private boolean deployed;
+  private int preset;
 
   /** Subsystem for controlling the Intake */
   public IntakeSubsystem() {
@@ -34,7 +34,7 @@ public class IntakeSubsystem extends SubsystemBase {
     m_DeployIntake = new SparkMax(Constants.DEPLOY_INTAKE_MOTOR_ID, MotorType.kBrushless);
     // Configure the Spark MAX motor controllers using the new 2025 method
     configureSparkMAX(m_IntakeBar, Constants.INTAKE_BAR_INVERT);
-
+    preset = 0;
     SmartDashboard.putNumber("Intake Bar Speed", Constants.INTAKE_BAR_SPEED);
   }
 
@@ -57,25 +57,17 @@ public class IntakeSubsystem extends SubsystemBase {
     return IntakeBarRPM;
   }
   /* toggle the intake in or out */
-  public void deployToggle() {
-    deployed = !deployed;
+  public void presetToggle() {
+    preset = (preset++)%3;
   }
 
   /* get whether the intake is in or out */
-  public boolean getDeployed() {
-    return deployed;
+  public int getPreset() {
+    return preset;
   }
   /* get position */
   public double getPosition() {
     return DeployPosition;
-  }
-
-  public void goToPosition() {
-    if(deployed) {
-      (new IntakeSetPosition(Constants.INTAKE_DEPLOYED_POS)).schedule();
-    } else {
-      (new IntakeSetPosition(Constants.INTAKE_RETURNED_POS)).schedule();
-    } 
   }
 
   public void deployIntake(double power) {
