@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.commands.autonomous.Drive1MeterAuto;
 import frc.robot.commands.autonomous.SquareAutonomous;
 import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.MotorPositionControlTest;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -161,21 +160,18 @@ public class Robot extends TimedRobot {
   
     double ySpeed = controller.getRawAxis(Constants.RIGHT_VERTICAL_JOYSTICK_AXIS);
 		double xSpeed = controller.getRawAxis(Constants.RIGHT_HORIZONTAL_JOYSTICK_AXIS);
-		double zSpeed = controller.getRawAxis(Constants.LEFT_HORIZONTAL_JOYSTICK_AXIS);
+		double zSpeed = -controller.getRawAxis(Constants.LEFT_HORIZONTAL_JOYSTICK_AXIS);
 
     if (Math.abs(zSpeed) > 0.01) { // If we are telling the robot to rotate, then let it rotate
 			m_driveSubsystem.driveCartesian(ySpeed, xSpeed, zSpeed, m_driveSubsystem.getRotation2d());
 			goalAngle = m_driveSubsystem.getGyroAngle();
 		}
 		else { // Otherwise, use the gyro to maintain our current angle
-			double error = goalAngle - m_driveSubsystem.getGyroAngle();
+			double error = m_driveSubsystem.getGyroAngle() - goalAngle;
 			
 			double correction = Constants.GYRO_TURN_KP * error;
-      if (Math.abs(correction) > 0.75) { // Maximum drive value we want
-        correction = Math.copySign(0.75, correction);
-      }
-      if (Math.abs(correction) < 0.15) { // Minimum drive value we want
-        correction = Math.copySign(0.15, correction);
+      if (Math.abs(correction) > Constants.MAX_POWER_GYRO) { // Maximum value we want
+        correction = Math.copySign(Constants.MAX_POWER_GYRO, correction);
       }
 			
 			m_driveSubsystem.driveCartesian(ySpeed, xSpeed, -1 * correction, m_driveSubsystem.getRotation2d());
@@ -206,8 +202,5 @@ public class Robot extends TimedRobot {
     // Intake Controls //
     new Trigger(() -> controller.getRawButton(Constants.RIGHT_BUMPER)).whileTrue(new IntakeCommand(false)); // Intake
     new Trigger(() -> controller.getRawButton(Constants.LEFT_BUMPER)).whileTrue(new IntakeCommand(true)); // Outtake
-
-    // Motor Position Control Test //
-    new Trigger(() -> controller.getRawButton(Constants.X_BUTTON)).onTrue(new MotorPositionControlTest());
   }
 }
