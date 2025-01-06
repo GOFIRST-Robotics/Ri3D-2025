@@ -1,5 +1,5 @@
 // Author: UMN Robotics Ri3D
-// Last Updated: December 2024
+// Last Updated: January 2025
 
 package frc.robot.subsystems;
 
@@ -54,6 +54,12 @@ public class PowerSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Right Front Drive Motor Current", currentsArray[Constants.RIGHT_FRONT_DRIVE_MOTOR_PDH_CHANNEL]);
         SmartDashboard.putNumber("Left Back Drive Motor Current", currentsArray[Constants.LEFT_BACK_DRIVE_MOTOR_PDH_CHANNEL]);
         SmartDashboard.putNumber("Right Back Drive Motor Current", currentsArray[Constants.RIGHT_BACK_DRIVE_MOTOR_PDH_CHANNEL]);
+        SmartDashboard.putNumber("Intake Bar Motor Current", currentsArray[Constants.INTAKE_BAR_MOTOR_PDH_CHANNEL]);
+        SmartDashboard.putNumber("Intake Deploy Motor Current", currentsArray[Constants.INTAKE_DEPLOY_MOTOR_PDH_CHANNEL]);
+        SmartDashboard.putNumber("Elevator Stage 1 Motor Current", currentsArray[Constants.ELEVATOR_STAGE_1_MOTOR_PDH_CHANNEL]);
+        SmartDashboard.putNumber("Elevator Stage 2 Motor Current", currentsArray[Constants.ELEVATOR_STAGE_2_MOTOR_PDH_CHANNEL]);
+        SmartDashboard.putNumber("Elevator Arm Motor Current", currentsArray[Constants.ELEVATOR_ARM_MOTOR_PDH_CHANNEL]);
+        SmartDashboard.putNumber("Elevator Wheel Motor Current", currentsArray[Constants.ELEVATOR_WHEEL_MOTOR_PDH_CHANNEL]);
 
         // SmartDashboard.putBoolean("Switched Channel State", switchedChannelState);
         // SmartDashboard.putBoolean("Reported Switched Channel State", getSwitchedChannelState());

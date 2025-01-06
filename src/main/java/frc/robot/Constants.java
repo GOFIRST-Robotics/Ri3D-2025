@@ -1,6 +1,6 @@
 
 // Author: UMN Robotics Ri3D
-// Last Updated: December 2024
+// Last Updated: January 2025
 
 package frc.robot;
 
@@ -54,7 +54,11 @@ public final class Constants {
     public static final int DEPLOY_INTAKE_MOTOR_ID = 6; // NEO motor
     public static final int ELEVATOR_STAGE_1_MOTOR_ID = 7; // NEO motor
     public static final int ELEVATOR_STAGE_2_MOTOR_ID = 9; // NEO 550 motor
-    public static final int FINGER_MOTOR_ID = 10; // NEO 550 motor
+    public static final int END_EFFECTOR_WHEEL_MOTOR_ID = 10; // NEO 550 motor
+    public static final int END_EFFECTOR_ARM_MOTOR_ID = 12; // NEO 550 motor
+
+    // Servo IDs //
+    public static final int ELEVATOR_DROP_MOTOR_ID = 0;
 
     // PWM Ports //
     public static final int LED_PWM_ID = 4;
@@ -81,15 +85,29 @@ public final class Constants {
     public static final double APRILTAG_TRACKING_DISTANCE_THRESHOLD = 0.1;
     public static final double TURNING_THRESHOLD_DEGREES = 3;
     public static final double MAX_POWER_GYRO = 0.4;
-    public static final double kP_FRONT_RIGHT_VELOCITY = 0.0010269; // TODO: Update this for 2025
-	public static final double kP_FRONT_LEFT_VELOCITY = 0.0010269; // TODO: Update this for 2025
-	public static final double kP_BACK_RIGHT_VELOCITY = 0.0010269; // TODO: Update this for 2025
-	public static final double kP_BACK_LEFT_VELOCITY = 0.0010269; // TODO: Update this for 2025
-	public static final double kP_X_CONTROLLER = 9.6421; // TODO: Update this for 2025
-    public static final double kP_Y_CONTROLLER = 9.6421; // TODO: Update this for 2025
-    public static final double kP_THETA_CONTROLLER = 9.6421; // TODO: Update this for 2025
-	public static final double kMAX_ANGULAR_SPEED_RADIANS_PER_SECOND = 2*Math.PI; // TODO: Update this for 2025
-	public static final double kMAX_ANGULAR_ACCELERATION_RADIANS_PER_SECOND_SQUARED = 2*Math.PI; // TODO: Update this for 2025
+    public static final double kP_FRONT_RIGHT_VELOCITY = 0.0010269; // TODO: Tune this value if needed
+	public static final double kP_FRONT_LEFT_VELOCITY = 0.0010269; // TODO: Tune this value if needed
+	public static final double kP_BACK_RIGHT_VELOCITY = 0.0010269; // TODO: Tune this value if needed
+	public static final double kP_BACK_LEFT_VELOCITY = 0.0010269; // TODO: Tune this value if needed
+	public static final double kP_X_CONTROLLER = 9.6421; // TODO: Tune this value if needed
+    public static final double kP_Y_CONTROLLER = 9.6421; // TODO: Tune this value if needed
+    public static final double kP_THETA_CONTROLLER = 9.6421; // TODO: Tune this value if needed
+	public static final double kMAX_ANGULAR_SPEED_RADIANS_PER_SECOND = 2*Math.PI; // TODO: Tune this value if needed
+	public static final double kMAX_ANGULAR_ACCELERATION_RADIANS_PER_SECOND_SQUARED = 2*Math.PI; // TODO: Tune this value if needed
+
+    // Coral Elevator Constants //
+    public static final boolean ELEVATOR_INVERT = false;
+    public static final double ELEVATOR_SPEED = 0.5; // TODO: Tune this
+    public static final double ARM_SPEED = 0.2; // TODO: Tune this
+    public static final double WHEEL_SPEED = 0.9; // TODO: Tune this
+    public static final boolean ELEVATOR_UP = true;
+    public static final boolean ELEVATOR_DOWN = false;
+    public static final boolean ARM_UP = true;
+    public static final boolean ARM_DOWN = false;
+    public static final boolean WHEEL_INTAKE = true;
+    public static final boolean WHEEL_OUTTAKE = false;
+    public static final double GRAVITY_CONST = 0.02; // TODO: Figure this out
+    public static final int ELEVATOR_ROTATIONS_PER_INCH = 13; // Number of rotations elevator climb motor must complete to raise/lower elevator by one inch
 
     // Intake Constants //
     public static final double DEPLOY_SPEED = 0.1;
@@ -102,12 +120,16 @@ public final class Constants {
     // Example: public static final int EXTENSION_SOLENOID_ID = 0;
 
     // Rev PDH Constants //
-    public static final int LEFT_FRONT_DRIVE_MOTOR_PDH_CHANNEL = 11;
-    public static final int RIGHT_FRONT_DRIVE_MOTOR_PDH_CHANNEL = 10;
-    public static final int LEFT_BACK_DRIVE_MOTOR_PDH_CHANNEL = 12;
-    public static final int RIGHT_BACK_DRIVE_MOTOR_PDH_CHANNEL = 13;
-    // Example: public static final int LOWER_INTAKE_MOTOR_PDH_CHANNEL = 14;
-    // Example: public static final int FLYWHEEL_MOTOR_PDH_CHANNEL = 16;
+    public static final int LEFT_FRONT_DRIVE_MOTOR_PDH_CHANNEL = 11; // TODO: Fix this number with the correct channel
+    public static final int RIGHT_FRONT_DRIVE_MOTOR_PDH_CHANNEL = 10; // TODO: Fix this number with the correct channel
+    public static final int LEFT_BACK_DRIVE_MOTOR_PDH_CHANNEL = 12; // TODO: Fix this number with the correct channel
+    public static final int RIGHT_BACK_DRIVE_MOTOR_PDH_CHANNEL = 13; // TODO: Fix this number with the correct channel
+    public static final int INTAKE_BAR_MOTOR_PDH_CHANNEL = 1; // TODO: Fix this number with the correct channel
+    public static final int INTAKE_DEPLOY_MOTOR_PDH_CHANNEL = 2; // TODO: Fix this number with the correct channel
+    public static final int ELEVATOR_STAGE_1_MOTOR_PDH_CHANNEL = 3; // TODO: Fix this number with the correct channel
+    public static final int ELEVATOR_STAGE_2_MOTOR_PDH_CHANNEL = 4; // TODO: Fix this number with the correct channel
+    public static final int ELEVATOR_ARM_MOTOR_PDH_CHANNEL = 5; // TODO: Fix this number with the correct channel
+    public static final int ELEVATOR_WHEEL_MOTOR_PDH_CHANNEL = 6; // TODO: Fix this number with the correct channel
 
     // Pneumatics Constants //
     public static final int COMPRESSOR_CAN_ID = 7;
