@@ -25,12 +25,12 @@ public class CoralElevatorSubsystem extends SubsystemBase {
     private SparkMax m_elevator_wheel; // NEO motor
 
     // Coral Elevator limiters
-    public double climb_max_1 = 3;
-    public double climb_max_2 = 3;
-    public double climb_min_1 = 0;
-    public double climb_min_2 = 0;
-    public double arm_max = 3;
-    public double arm_min = 0;
+    public double climb_max_1 = 3; // TODO: TUNE THIS
+    public double climb_max_2 = 3; // TODO: TUNE THIS
+    public double climb_min_1 = 0; // TODO: TUNE THIS
+    public double climb_min_2 = 0; // TODO: TUNE THIS
+    public double arm_max = 3; // TODO: TUNE THIS
+    public double arm_min = 0; // TODO: TUNE THIS
 
     /** Subsystem for controlling the coral elevator */
     public CoralElevatorSubsystem() {

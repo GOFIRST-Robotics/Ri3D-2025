@@ -28,9 +28,7 @@ public class CoralElevatorSetPositionClimbCommand extends Command {
   // Called once when the command is initially scheduled.
   @Override
   public void initialize() {
-    if ((position_1 > m_subsystem.climb_max_1) || (position_1 < m_subsystem.climb_min_1) || (position_2 > m_subsystem.climb_max_2) || (position_2 > m_subsystem.climb_min_2)) {
-      end(true);
-    }
+    // -
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -14,7 +14,6 @@ public class CoralElevatorSetPositionArmCommand extends Command {
   private double position;
   private double error;
   private double kP = 0.1; // TODO: Tune this
-  private double goalThreshold = 3; // TODO: Tune this
 
   /** causes Arm motor to move to given position */
   public CoralElevatorSetPositionArmCommand(double position) {
@@ -26,9 +25,7 @@ public class CoralElevatorSetPositionArmCommand extends Command {
   // Called once when the command is initially scheduled.
   @Override
   public void initialize() {
-    if ((position > m_subsystem.arm_max) || (position < m_subsystem.arm_min)) {
-      end(true);
-    }
+    // -
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -57,12 +54,12 @@ public class CoralElevatorSetPositionArmCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_subsystem.setSpeedArm(0);
+    m_subsystem.stopArm();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(this.error) < this.goalThreshold;
+    return false; // Command will never finish (we don't want it to unless interrupted)
   }
 }
