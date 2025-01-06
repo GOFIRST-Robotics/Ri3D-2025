@@ -22,6 +22,8 @@ public class DriveToTrackedTargetCommand extends Command {
   private double desiredDistanceToTarget;
   private double distance;
 
+  private PhotonTrackedTarget previousTrackedTarget;
+
   /** Rotates the robot and drives to the best (nearest) tracked target, can be used for either 
    * april tags or retroreflective tape tracked by photonvision
   */
@@ -40,7 +42,9 @@ public class DriveToTrackedTargetCommand extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    this.previousTrackedTarget = null;
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -53,22 +57,28 @@ public class DriveToTrackedTargetCommand extends Command {
       } else {
         trackedTarget = m_visionSubsystem.getTargetWithID(targetTagID);
       }
+
+      if (trackedTarget == null) {
+        trackedTarget = previousTrackedTarget;
+      }
+
       if (trackedTarget != null) { // If a valid target has been retrieved
         // A bunch of math to tell the drivetrain how to drive to the target 
         // while turning at the same time, till it is a certian distance away.
+        previousTrackedTarget = trackedTarget;
         Transform3d targetRelativeLocation = trackedTarget.getBestCameraToTarget(); // Get the apriltag's relative location baised on the camera's location
-        
-        // distance = m_visionSubsystem.getDistanceToTarget(trackedTarget); // Stores the distance 
-        distance = targetRelativeLocation.getX(); // Stores the distance
 
+        // distance = m_visionSubsystem.getDistanceToTarget(trackedTarget); // Stores the distance 
         double rotationalError = trackedTarget.getYaw();
-        double forwardError = distance - desiredDistanceToTarget; 
+        double forwardError = targetRelativeLocation.getX() - desiredDistanceToTarget; 
         double leftError = targetRelativeLocation.getY(); 
+
+        distance = Math.sqrt(Math.pow(leftError, 2) + Math.pow(forwardError, 2)); // Stores the distance
 
         // Calcualte powers of driving to fix error
         double rotationValue = -rotationalError * Constants.TRACKED_TAG_ROATION_KP;
         double forwardValue = -forwardError * Constants.TRACKED_TAG_FORWARD_DRIVE_KP;
-        double leftValue = -leftError * Constants.TRACKED_TAG_STRAFE_DRIVE_KP;
+        double leftValue = leftError * Constants.TRACKED_TAG_STRAFE_DRIVE_KP;
         
         // Limit the power of the drive rate directions 
         double rotationDriveRate = limit(rotationValue, Constants.APRILTAG_POWER_CAP);
