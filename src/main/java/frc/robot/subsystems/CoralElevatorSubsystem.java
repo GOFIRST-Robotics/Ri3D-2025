@@ -61,31 +61,33 @@ public class CoralElevatorSubsystem extends SubsystemBase {
   /* Sets position of elevator climb to Neutral preset */
   public void climbNeutral() {
     // Calls CoralElevatorSetPositionClimbCommand()
-    (new CoralElevatorSetPositionClimbCommand(0)).schedule(); // TODO: TUNE THIS
+    (new CoralElevatorSetPositionClimbCommand(0)).schedule();
   }
 
+  // OBSOLETE, USAGE REPLACED BY "NEUTRAL"
+  // MAY USE AGAIN IN THE FUTURE
   /* Sets position of elevator climb to Player Intake preset */
-  public void climbPlayerIntake() {
+  // public void climbPlayerIntake() {
     // Calls CoralElevatorSetPositionClimbCommand()
-    (new CoralElevatorSetPositionClimbCommand(2* 12 * Constants.ELEVATOR_ROTATIONS_PER_INCH)).schedule(); // TODO: TUNE THIS
-  }
+    // (new CoralElevatorSetPositionClimbCommand(2 * 12 * Constants.ELEVATOR_ROTATIONS_PER_INCH)).schedule();
+  // }
 
   /* Sets position of elevator climb to low Goal preset */
   public void climbLowGoal() {
     // Calls CoralElevatorSetPositionClimbCommand()
-    (new CoralElevatorSetPositionClimbCommand(4* 12 * Constants.ELEVATOR_ROTATIONS_PER_INCH)).schedule(); // TODO: TUNE THIS
+    (new CoralElevatorSetPositionClimbCommand(3 * Constants.ELEVATOR_ROTATIONS_PER_INCH)).schedule(); // TODO: TUNE THIS
   }
 
   /* Sets position of elevator climb to Mid Goal preset */
   public void climbMidGoal() {
     // Calls CoralElevatorSetPositionClimbCommand()
-    (new CoralElevatorSetPositionClimbCommand(6* 12 * Constants.ELEVATOR_ROTATIONS_PER_INCH)).schedule(); // TODO: TUNE THIS
+    (new CoralElevatorSetPositionClimbCommand(17 * Constants.ELEVATOR_ROTATIONS_PER_INCH)).schedule(); // TODO: TUNE THIS
   }
 
   /* Sets position of elevator climb to High Goal preset */
   public void climbHighGoal() {
     // Calls CoralElevatorSetPositionClimbCommand()
-    (new CoralElevatorSetPositionClimbCommand(8* 12 * Constants.ELEVATOR_ROTATIONS_PER_INCH)).schedule(); // TODO: TUNE THIS
+    (new CoralElevatorSetPositionClimbCommand(74 * Constants.ELEVATOR_ROTATIONS_PER_INCH)).schedule(); // TODO: TUNE THIS
   }
 
   // Lower Motor Methods -------------------------------------------------------------------------------
@@ -109,13 +111,13 @@ public class CoralElevatorSubsystem extends SubsystemBase {
   }
 
   /* Sets position of elevator Lower to Intake preset */
-  public void lowerIntake() {
+  public void lowerPlayerIntake() {
     // Calls CoralElevatorSetPositionLowerCommand()
     (new CoralElevatorSetPositionLowerCommand(0)).schedule(); // TODO: TUNE THIS
   }
 
   /* Sets position of elevator Lower to Horizontal preset */
-  public void lowerHorizontal() {
+  public void lowerHorizontalIntake() {
     // Calls CoralElevatorSetPositionLowerCommand()
     (new CoralElevatorSetPositionLowerCommand(0.125)).schedule(); // TODO: TUNE THIS
   }

@@ -20,7 +20,7 @@ public class CoralElevatorNeutralCommand extends Command {
   // Called once when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_subsystem.lowerIntake();
+    m_subsystem.lowerPlayerIntake();
     m_subsystem.climbNeutral();
   }
 

@@ -20,7 +20,7 @@ public class CoralElevatorHorizontalIntakeCommand extends Command {
   // Called once when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_subsystem.lowerHorizontal();
+    m_subsystem.lowerHorizontalIntake();
     m_subsystem.climbNeutral();
   }
 
