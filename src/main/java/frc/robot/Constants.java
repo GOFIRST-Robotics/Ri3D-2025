@@ -1,3 +1,4 @@
+
 // Author: UMN Robotics Ri3D
 // Last Updated: December 2024
 
@@ -71,10 +72,13 @@ public final class Constants {
     public static final boolean REVERSE_RIGHT_FRONT_MOTOR = false;
     public static final boolean REVERSE_RIGHT_BACK_MOTOR = false;
     public static final double GYRO_TURN_KP = 0.007; // P (Proportional) constant of a PID loop
-    public static final double TRACKED_TAG_ROATION_KP = 0.0175;
-    public static final double TRACKED_TAG_DISTANCE_DRIVE_KP = 0.3; // P (Proportional) constant of a PID loop
-    public static final double TRACKED_TAG_AREA_DRIVE_KP = 0.2; // P (Proportional) constant of a PID loop
-    public static final double APRILTAG_POWER_CAP = 0.75;
+    public static final double TRACKED_TAG_ROATION_KP = 0.3; // P (Proportional) constant of a PID loop
+    public static final double TRACKED_TAG_FORWARD_DRIVE_KP = 0.4; // P (Proportional) constant of a PID loop
+    public static final double TRACKED_TAG_STRAFE_DRIVE_KP = 0.5; // P (Proportional) constant of a PID loop
+    public static final double APRILTAG_ROTATION_POWER_CAP = 0.3;
+    public static final double APRILTAG_FORWARD_POWER_CAP = 0.3;
+    public static final double APRILTAG_STRAFE_POWER_CAP = 0.3;
+    public static final double APRILTAG_TRACKING_DISTANCE_THRESHOLD = 0.1;
     public static final double TURNING_THRESHOLD_DEGREES = 3;
     public static final double MAX_POWER_GYRO = 0.4;
     public static final double kP_FRONT_RIGHT_VELOCITY = 0.0010269; // TODO: Update this for 2025
@@ -102,12 +106,11 @@ public final class Constants {
     public static final int ELEVATOR_ROTATIONS_PER_INCH = 13; // number of rotations elevator climb motor must complete to raise/lower elevator by one inch
 
     // Intake Constants //
+    public static final double DEPLOY_SPEED = 0.1;
+    public static final double INTAKE_DEPLOYED_POS = 1.0;
+    public static final double INTAKE_RETURNED_POS = 0.01;
     public static final boolean INTAKE_BAR_INVERT = false;
     public static final double INTAKE_BAR_SPEED = 0.8;
-
-    // Climber Constants //
-    public static final boolean CLIMBER_INVERT = false;
-    public static final double CLIMBER_SPEED = 0.6;
 
     // REV PH Channels //
     // Example: public static final int EXTENSION_SOLENOID_ID = 0;
@@ -117,9 +120,8 @@ public final class Constants {
     public static final int RIGHT_FRONT_DRIVE_MOTOR_PDH_CHANNEL = 10;
     public static final int LEFT_BACK_DRIVE_MOTOR_PDH_CHANNEL = 12;
     public static final int RIGHT_BACK_DRIVE_MOTOR_PDH_CHANNEL = 13;
-    public static final int LOWER_INTAKE_MOTOR_PDH_CHANNEL = 14;
-    public static final int FLY_WHEEL_MOTOR_PDH_CHANNEL = 16;
-    public static final int CLIMBER_MOTOR_PDH_CHANNEL = 17;
+    // Example: public static final int LOWER_INTAKE_MOTOR_PDH_CHANNEL = 14;
+    // Example: public static final int FLYWHEEL_MOTOR_PDH_CHANNEL = 16;
 
     // Pneumatics Constants //
     public static final int COMPRESSOR_CAN_ID = 7;
@@ -128,5 +130,6 @@ public final class Constants {
     public static final double CAMERA_HEIGHT_METERS = Units.inchesToMeters(7);
     public static final double TARGET_HEIGHT_METERS = Units.inchesToMeters(18.5);
     public static final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(18);
-    public static final String USB_CAMERA_NAME = "USB_Camera-B4.09.24.1";
+    public static final String USB_CAMERA_NAME = "Arducam_OV9782_USB_Camera";
+
 }

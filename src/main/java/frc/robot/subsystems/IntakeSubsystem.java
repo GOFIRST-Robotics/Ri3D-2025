@@ -4,6 +4,7 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants;
+import frc.robot.commands.IntakeSetPosition;
 
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
@@ -18,17 +19,21 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class IntakeSubsystem extends SubsystemBase {
   
   // Intake Motor Controllers
-  private SparkMax intakeBar; // NEO 550 motor
+  private SparkMax m_IntakeBar; // NEO 550 motor
+  private SparkMax m_DeployIntake; // NEO 550 motor
 
-  private double intakeBarRPM;
+  private double IntakeBarRPM;
+  private double DeployPosition;
+
+  private boolean deployed;
 
   /** Subsystem for controlling the Intake */
   public IntakeSubsystem() {
     // Instantiate the Intake motor controllers
-    intakeBar = new SparkMax(Constants.INTAKE_BAR_MOTOR_ID, MotorType.kBrushless);
-
+    m_IntakeBar = new SparkMax(Constants.INTAKE_BAR_MOTOR_ID, MotorType.kBrushless);
+    m_DeployIntake = new SparkMax(Constants.DEPLOY_INTAKE_MOTOR_ID, MotorType.kBrushless);
     // Configure the Spark MAX motor controllers using the new 2025 method
-    configureSparkMAX(intakeBar, Constants.INTAKE_BAR_INVERT);
+    configureSparkMAX(m_IntakeBar, Constants.INTAKE_BAR_INVERT);
 
     SmartDashboard.putNumber("Intake Bar Speed", Constants.INTAKE_BAR_SPEED);
   }
@@ -39,24 +44,46 @@ public class IntakeSubsystem extends SubsystemBase {
     max.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 	}
 
-  /* Set power to the intake motors */
-  public void setPower(double power) {
-    intakeBar.set(power);
+  /* Set power to the intake motor */
+  public void setPower(double Power) {
+    m_IntakeBar.set(Power);
   }
   public void stop() {
-    intakeBar.set(0);
+    m_IntakeBar.set(0);
   }
 
   /* Read the speed of the intake motor */
   public double getIntakeBarRPM() {
-    return intakeBarRPM;
+    return IntakeBarRPM;
+  }
+  /* toggle the intake in or out */
+  public void deployToggle() {
+    deployed = !deployed;
+  }
+
+  /* get whether the intake is in or out */
+  public boolean getDeployed() {
+    return deployed;
+  }
+  /* get position */
+  public double getPosition() {
+    return DeployPosition;
+  }
+
+  public void goToPosition() {
+    if(deployed) {
+      (new IntakeSetPosition(Constants.INTAKE_DEPLOYED_POS)).schedule();
+    } else {
+      (new IntakeSetPosition(Constants.INTAKE_RETURNED_POS)).schedule();
+    } 
   }
 
   @Override
   public void periodic() {
-    intakeBarRPM = intakeBar.getEncoder().getVelocity();
+    IntakeBarRPM = m_IntakeBar.getEncoder().getVelocity();
+    DeployPosition = m_DeployIntake.getEncoder().getPosition();
 
-    // Add intake bar RPM readingss to SmartDashboard for the sake of datalogging
-    SmartDashboard.putNumber("Intake Bar RPM", intakeBarRPM);
+    // Add intake bar RPM readings to SmartDashboard for the sake of data logging
+    SmartDashboard.putNumber("Intake Bar RPM", IntakeBarRPM);
   }
 }

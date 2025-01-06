@@ -7,6 +7,11 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import java.util.Optional;
+
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -24,7 +29,7 @@ import frc.robot.commands.CoralElevatorScoreLowCommand;
 import frc.robot.commands.CoralElevatorScoreMidCommand;
 import frc.robot.commands.CoralElevatorWheelMoveCommand;
 import frc.robot.commands.IntakeCommand;
-import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.commands.IntakeToggleCommand;
 import frc.robot.subsystems.CoralElevatorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -44,11 +49,12 @@ public class Robot extends TimedRobot {
   Command m_autonomousCommand;
 	SendableChooser<Command> autonChooser = new SendableChooser<Command>(); // Create a chooser to select an autonomous command
 
+  public static boolean manualDriveControl = true;
+
   public static final GenericHID controller = new GenericHID(Constants.CONTROLLER_USB_PORT_ID); // Instantiate our controller at the specified USB port
 
   public static final DriveSubsystem m_driveSubsystem = new DriveSubsystem(); // Drivetrain subsystem
   public static final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(); // Intake subsystem
-  public static final ClimberSubsystem m_climbSubsystem = new ClimberSubsystem(); // Climber subsystem
   public static final CoralElevatorSubsystem m_CoralElevatorSubsystem = new CoralElevatorSubsystem(); // Elevator subsystem
   public static final PowerSubsystem m_powerSubsystem = new PowerSubsystem(); // Power subsystem for interacting with the Rev PDH
   public static final VisionSubsystem m_visionSubsystem = new VisionSubsystem(); // Subsystem for interacting with Photonvision
@@ -144,8 +150,17 @@ public class Robot extends TimedRobot {
     m_driveSubsystem.zeroGyro();
     m_driveSubsystem.resetEncoders();
 
-    // Set the LED pattern for teleop mode
-    m_LEDSubsystem.setLEDMode(LEDMode.TELEOP);
+    Optional<Alliance> ally = DriverStation.getAlliance();
+    if (ally.isPresent()) {
+      if (ally.get() == Alliance.Red) {
+        // Set the LED pattern for teleop mode
+      m_LEDSubsystem.setLEDMode(LEDMode.TELEOPRED);
+
+      }
+      if (ally.get() == Alliance.Blue) {
+        m_LEDSubsystem.setLEDMode(LEDMode.TELEOPBLUE);
+      }
+    }
 
     goalAngle = m_driveSubsystem.getGyroAngle();
   }
@@ -209,16 +224,16 @@ public class Robot extends TimedRobot {
     // new POVButton(controller, 180).whileTrue(new StartEndCommand(() -> m_climbSubsystem.setPower(-1 * Constants.CLIMBER_SPEED), () -> m_climbSubsystem.stop())); // Climber down
 
     // Intake Controls //
-    new Trigger(() -> controller.getRawButton(Constants.RIGHT_TRIGGER_BUTTON)).whileTrue(new IntakeCommand(false)); // Intake
-    new Trigger(() -> controller.getRawButton(Constants.LEFT_TRIGGER_BUTTON)).whileTrue(new IntakeCommand(true)); // Outtake
+    new Trigger(() -> controller.getRawButton(Constants.RIGHT_BUMPER)).whileTrue(new IntakeCommand()); // Intake or Outake depending on position
+    new Trigger(() -> controller.getRawButton(Constants.B_BUTTON)).onTrue(new IntakeToggleCommand()); // Deploy or Retract Intake
 
     // Coral Elevator Controls //
     new Trigger(() -> controller.getRawButton(Constants.RIGHT_BUMPER)).whileTrue(new CoralElevatorMoveCommand(Constants.ELEVATOR_UP)); // Elevator Up Manual
     new Trigger(() -> controller.getRawButton(Constants.LEFT_BUMPER)).whileTrue(new CoralElevatorMoveCommand(Constants.ELEVATOR_DOWN)); // Elevator Down Manual
     new Trigger(() -> controller.getRawButton(Constants.RIGHT_STICK_BUTTON)).whileTrue(new CoralElevatorArmMoveCommand(Constants.ARM_UP)); // Arm Up Manual
-    new Trigger(() -> controller.getRawButton(Constants.LEFT_STICK_BUTTON)).whileTrue(new CoralElevatorArmMoveCommand(Constants.ARM_DOWN)); // Arm Down 
-    new Trigger(() -> controller.getRawButton(Constants.PREV_BUTTON)).whileTrue(new CoralElevatorWheelMoveCommand(Constants.WHEEL_INTAKE)); // Wheel Outtake Manual
-    new Trigger(() -> controller.getRawButton(Constants.START_BUTTON)).whileTrue(new CoralElevatorWheelMoveCommand(Constants.WHEEL_OUTTAKE)); // Weel Intake Manual
+    new Trigger(() -> controller.getRawButton(Constants.LEFT_STICK_BUTTON)).whileTrue(new CoralElevatorArmMoveCommand(Constants.ARM_DOWN)); // Arm Down Manual
+    new Trigger(() -> controller.getRawButton(Constants.PREV_BUTTON)).whileTrue(new CoralElevatorWheelMoveCommand(Constants.WHEEL_OUTTAKE)); // Wheel Outtake Manual
+    new Trigger(() -> controller.getRawButton(Constants.START_BUTTON)).whileTrue(new CoralElevatorWheelMoveCommand(Constants.WHEEL_INTAKE)); // Weel Intake Manual
     new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).onTrue(new CoralElevatorNeutralCommand()); // Neutral Preset
     new POVButton(controller, 0).whileTrue(new CoralElevatorScoreMidCommand()); // Score Mid Preset
     new POVButton(controller, 90).whileTrue(new CoralElevatorScoreHighCommand()); // Score High Preset
