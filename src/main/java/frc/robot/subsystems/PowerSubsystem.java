@@ -38,8 +38,8 @@ public class PowerSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Voltage", voltage);
         SmartDashboard.putNumber("Total Current", totalCurrent);
         SmartDashboard.putNumber("Total Power", totalPower);
-        SmartDashboard.putNumber("Total Energy", totalEnergy);
-        SmartDashboard.putNumber("Temperature", temperatureCelsius);
+        // SmartDashboard.putNumber("Total Energy", totalEnergy);
+        // SmartDashboard.putNumber("PDH Temperature", temperatureCelsius);
         
         // Get the current going through all channels, in Amperes.
         // The PDP returns the current in increments of 0.125A.
@@ -47,8 +47,8 @@ public class PowerSubsystem extends SubsystemBase {
         for(int i = 0; i < currentsArray.length; i++) {
             currentsArray[i] = m_revPDH.getCurrent(i);
         }
-        SmartDashboard.putNumberArray("Currents", currentsArray);
-        SmartDashboard.putNumber("Num Channels", m_revPDH.getNumChannels());
+        // SmartDashboard.putNumberArray("Currents", currentsArray);
+        // SmartDashboard.putNumber("Num Channels", m_revPDH.getNumChannels());
 
         SmartDashboard.putNumber("Left Front Drive Motor Current", currentsArray[Constants.LEFT_FRONT_DRIVE_MOTOR_PDH_CHANNEL]);
         SmartDashboard.putNumber("Right Front Drive Motor Current", currentsArray[Constants.RIGHT_FRONT_DRIVE_MOTOR_PDH_CHANNEL]);

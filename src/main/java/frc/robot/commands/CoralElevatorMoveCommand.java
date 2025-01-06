@@ -23,21 +23,19 @@ public class CoralElevatorMoveCommand extends Command {
   // Called once when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_subsystem.setSpeedClimbOne(this.direction ? -1 * Constants.ELEVATOR_SPEED : Constants.ELEVATOR_SPEED);
-    m_subsystem.setSpeedClimbTwo(this.direction ? -1 * Constants.ELEVATOR_SPEED : Constants.ELEVATOR_SPEED);
+    // -
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // -
+    m_subsystem.setSpeedClimb(this.direction ? -1 * Constants.ELEVATOR_SPEED : Constants.ELEVATOR_SPEED, this.direction ? -1 * Constants.ELEVATOR_SPEED : Constants.ELEVATOR_SPEED);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_subsystem.setSpeedClimbOne(0);
-    m_subsystem.setSpeedClimbTwo(0);
+    m_subsystem.stopClimb();
   }
 
   // Returns true when the command should end.

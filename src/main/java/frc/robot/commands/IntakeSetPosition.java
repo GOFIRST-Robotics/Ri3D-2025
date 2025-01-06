@@ -15,7 +15,6 @@ public class IntakeSetPosition extends Command {
   private double goal;
   private double error;
   private double kP = 0.1; // TODO: This will need to be tuned
-  private double goalThreshold = 3; // TODO: This will need to be tuned
 
   /** Creates a new IntakeSetPosition. */
   public IntakeSetPosition(double position) {
@@ -26,7 +25,9 @@ public class IntakeSetPosition extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    // -
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -45,7 +46,7 @@ public class IntakeSetPosition extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(this.error) < this.goalThreshold;
+    return false; // Command will never finish (we don't want it to unless interrupted)
   }
 
   // Called once the command ends or is interrupted.

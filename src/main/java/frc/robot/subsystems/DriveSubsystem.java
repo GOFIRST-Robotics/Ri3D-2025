@@ -22,7 +22,6 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.Matrix;
@@ -57,10 +56,6 @@ public class DriveSubsystem extends SubsystemBase {
 	private AHRS navx = new AHRS(AHRS.NavXComType.kUSB1); // Instantiate a NavX Gyroscope connected to a roboRIO USB port
 
 	double leftFrontPositionZero, rightFrontPositionZero, leftBackPositionZero, rightBackPositionZero = 0.0;
-
-	// Create a chooser for selecting the desired drive speed scale
-	SendableChooser<Double> driveScaleChooser = new SendableChooser<Double>();
-	public double CURRENT_DRIVE_SCALE;
 
 	private static final double TRACK_WIDTH = Constants.TRACK_WIDTH;
 	private static final double WHEEL_BASE = Constants.WHEEL_BASE;
@@ -104,20 +99,8 @@ public class DriveSubsystem extends SubsystemBase {
 		rightFilter = new SlewRateLimiter(5);
 		leftFilter = new SlewRateLimiter(5);
 
-		// Drive Scale Options //
-		driveScaleChooser.addOption("100%", 1.0);
-		driveScaleChooser.setDefaultOption("75%", 0.75);
-		driveScaleChooser.addOption("50%", 0.5);
-		driveScaleChooser.addOption("25%", 0.25);
-
-		SmartDashboard.putData("Drivetrain Speed", driveScaleChooser);
-		SmartDashboard.putNumber("Left Front Power Pct", 0);
-		SmartDashboard.putNumber("Left Back Power Pct", 0);
-		SmartDashboard.putNumber("Right Front Power Pct", 0);
-		SmartDashboard.putNumber("Right Back Power Pct", 0);
-
-		System.out.println("NavX Connected: " + navx.isConnected());
-	}
+    	System.out.println("NavX Connected: " + navx.isConnected());
+  }
 
 	private void configureSparkMAX(SparkMax max, boolean reverse) {
 		SparkMaxConfig config = new SparkMaxConfig();
@@ -185,7 +168,10 @@ public class DriveSubsystem extends SubsystemBase {
 		});
 		
 
-		CURRENT_DRIVE_SCALE = driveScaleChooser.getSelected(); // Continously update the desired drive scale
+		SmartDashboard.putNumber("Left Front Position", getLeftFrontPosition());
+		SmartDashboard.putNumber("Right Front Position", getRightFrontPosition());
+		SmartDashboard.putNumber("Left Back Position", getLeftBackPosition());
+		SmartDashboard.putNumber("Right Back Position", getRightBackPosition());
 	}
 
 	// Not Field-Oriented (aka Robot-Oriented)
