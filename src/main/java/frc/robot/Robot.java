@@ -28,6 +28,7 @@ import frc.robot.commands.CoralElevatorScoreHighCommand;
 import frc.robot.commands.CoralElevatorScoreLowCommand;
 import frc.robot.commands.CoralElevatorScoreMidCommand;
 import frc.robot.commands.CoralElevatorWheelMoveCommand;
+import frc.robot.commands.DriveToTrackedTargetCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeToggleCommand;
 import frc.robot.subsystems.CoralElevatorSubsystem;
@@ -79,6 +80,7 @@ public class Robot extends TimedRobot {
     // Zero the gyroscope and reset the drive encoders
     m_driveSubsystem.zeroGyro();
     m_driveSubsystem.resetEncoders();
+    m_LEDSubsystem.setLEDMode(LEDMode.DISABLED);
   }
 
   /**
@@ -104,11 +106,14 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     System.out.println("ROBOT DISABLED");
+    m_LEDSubsystem.setLEDMode(LEDMode.DISABLED);
   }
 
   /** This function is called continuously after the robot enters Disabled mode. */
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+
+  }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
@@ -186,8 +191,15 @@ public class Robot extends TimedRobot {
 		double xSpeed = controller.getRawAxis(Constants.RIGHT_HORIZONTAL_JOYSTICK_AXIS);
 		double zSpeed = -controller.getRawAxis(Constants.LEFT_HORIZONTAL_JOYSTICK_AXIS);
 
+if (Robot.manualDriveControl) {
+    // Speed limits
+    ySpeed = Math.max(Math.min(ySpeed, 0.4), -0.4);
+    xSpeed = Math.max(Math.min(xSpeed, 0.4), -0.4);
+    zSpeed = Math.max(Math.min(zSpeed, 0.4), -0.4);
+
     if (Math.abs(zSpeed) > 0.01) { // If we are telling the robot to rotate, then let it rotate
-			m_driveSubsystem.driveCartesian(ySpeed, xSpeed, zSpeed, m_driveSubsystem.getRotation2d());
+			// m_driveSubsystem.driveCartesian(ySpeed, xSpeed, zSpeed, m_driveSubsystem.getRotation2d()); // field-relative
+      m_driveSubsystem.driveCartesian(ySpeed, xSpeed, zSpeed); // robot-relative
 			goalAngle = m_driveSubsystem.getGyroAngle();
 		}
 		else { // Otherwise, use the gyro to maintain our current angle
@@ -198,7 +210,11 @@ public class Robot extends TimedRobot {
         correction = Math.copySign(Constants.MAX_POWER_GYRO, correction);
       }
 			
-			m_driveSubsystem.driveCartesian(ySpeed, xSpeed, -1 * correction, m_driveSubsystem.getRotation2d());
+			// m_driveSubsystem.driveCartesian(ySpeed, xSpeed, -1 * correction, m_driveSubsystem.getRotation2d()); // field-relative
+      m_driveSubsystem.driveCartesian(ySpeed, xSpeed, -1 * correction); // robot-relative
+      }
+    } else {
+      goalAngle = m_driveSubsystem.getGyroAngle();
 		}
   }
 
@@ -219,10 +235,6 @@ public class Robot extends TimedRobot {
    * or {@link XboxController}), and then passing it to a {@link edu.wpi.first.wpilibj2.command.button.Trigger}.
    */
   private void configureButtonBindings() {
-    // Climber Controls //
-    // new POVButton(controller, 0).whileTrue(new StartEndCommand(() -> m_climbSubsystem.setPower(Constants.CLIMBER_SPEED), () -> m_climbSubsystem.stop())); // Climber up
-    // new POVButton(controller, 180).whileTrue(new StartEndCommand(() -> m_climbSubsystem.setPower(-1 * Constants.CLIMBER_SPEED), () -> m_climbSubsystem.stop())); // Climber down
-
     // Intake Controls //
     new Trigger(() -> controller.getRawButton(Constants.RIGHT_BUMPER)).whileTrue(new IntakeCommand()); // Intake or Outake depending on position
     new Trigger(() -> controller.getRawButton(Constants.B_BUTTON)).onTrue(new IntakeToggleCommand()); // Deploy or Retract Intake
@@ -239,5 +251,8 @@ public class Robot extends TimedRobot {
     new POVButton(controller, 90).whileTrue(new CoralElevatorScoreHighCommand()); // Score High Preset
     new POVButton(controller, 180).whileTrue(new CoralElevatorHorizontalIntakeCommand()); // Horizontal Intake Preset
     new POVButton(controller, 270).whileTrue(new CoralElevatorScoreLowCommand()); // Score Low Preset
+
+    // Test Controls //
+    new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).whileTrue(new DriveToTrackedTargetCommand(0.75)); // Track AprilTag
   }
 }
