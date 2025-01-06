@@ -81,8 +81,6 @@ public class DriveSubsystem extends SubsystemBase {
 	private static MecanumDrive robotDrive;
 	
 	private static MecanumDrivePoseEstimator poseEstimator;
-
-	private static VisionSubsystem m_VisionSubsystem;
 	
 	/** Subsystem for controlling the Drivetrain and accessing the NavX Gyroscope */
 	public DriveSubsystem() {
@@ -93,9 +91,7 @@ public class DriveSubsystem extends SubsystemBase {
 		m_rightBackMotor = new SparkMax(Constants.RIGHT_REAR_DRIVE_MOTOR_ID, MotorType.kBrushless);
 
 		robotDrive = new MecanumDrive(m_leftFrontMotor, m_leftBackMotor, m_rightFrontMotor, m_rightBackMotor);
-		poseEstimator = new MecanumDrivePoseEstimator(kDriveKinematics, navx.getRotation2d(), getWheelPositions(), getPose());
-
-		m_VisionSubsystem = Robot.m_visionSubsystem;
+		poseEstimator = new MecanumDrivePoseEstimator(kDriveKinematics, navx.getRotation2d(), getWheelPositions(), new Pose2d());
 
 		// Configure the Spark MAX motor controllers using the new 2025 method
 		configureSparkMAX(m_leftFrontMotor, Constants.REVERSE_LEFT_FRONT_MOTOR);
@@ -179,11 +175,11 @@ public class DriveSubsystem extends SubsystemBase {
 		poseEstimator.update(getRotation2d(), getWheelPositions());
 
 		// Estimate robot pose using vision
-		Optional<EstimatedRobotPose> visionPoseEstimate = m_VisionSubsystem.getEstimatedGlobalPose();
+		Optional<EstimatedRobotPose> visionPoseEstimate = Robot.m_visionSubsystem.getEstimatedGlobalPose();
     
 		visionPoseEstimate.ifPresent(estimate -> {
 			// Change our trust in the measurement based on the tags we can see
-			Matrix<N3, N1> estStdDevs = m_VisionSubsystem.getEstimationStdDevs();
+			Matrix<N3, N1> estStdDevs = Robot.m_visionSubsystem.getEstimationStdDevs();
 
 			poseEstimator.addVisionMeasurement(estimate.estimatedPose.toPose2d(), estimate.timestampSeconds, estStdDevs);
 		});

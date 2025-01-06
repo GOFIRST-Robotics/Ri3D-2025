@@ -121,9 +121,11 @@ public class VisionSubsystem extends SubsystemBase {
     
     public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
         Optional<EstimatedRobotPose> estimation = Optional.empty();
-        for (PhotonPipelineResult change : results) {
-            estimation = photonPoseEstimator.update(change);
-            updateEstimationStdDevs(estimation, change.getTargets());
+        if (results != null) {
+            for (PhotonPipelineResult change : results) {
+                estimation = photonPoseEstimator.update(change);
+                updateEstimationStdDevs(estimation, change.getTargets());
+            }
         }
         return estimation;
     }

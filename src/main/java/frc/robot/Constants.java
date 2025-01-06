@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.numbers.N1;
@@ -149,5 +150,5 @@ public final class Constants {
     public static final Matrix<N3, N1> SINGLE_TAG_STDDEVS = VecBuilder.fill(4, 4, 8);
     public static final Matrix<N3, N1> MULTI_TAG_STDDEVS = VecBuilder.fill(0.5, 0.5, 1);
     // TODO: Upload JSON to updated field (2025)
-    public static final AprilTagFieldLayout FIELD_APRILTAG_LAYOUT = AprilTagFieldLayout.loadField(null);
+    public static final AprilTagFieldLayout FIELD_APRILTAG_LAYOUT = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 }
