@@ -34,6 +34,8 @@ public class Robot extends TimedRobot {
 
   Command m_autonomousCommand;
 	SendableChooser<Command> autonChooser = new SendableChooser<Command>(); // Create a chooser to select an autonomous command
+  
+  public static boolean manualDriveControl = true;
 
   public static final GenericHID controller = new GenericHID(Constants.CONTROLLER_USB_PORT_ID); // Instantiate our controller at the specified USB port
 
@@ -157,6 +159,7 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putNumber("Controller: Right Joystick X Axis", controller.getRawAxis(Constants.RIGHT_HORIZONTAL_JOYSTICK_AXIS));
     // SmartDashboard.putNumber("Controller: Right Joystick Y Axis", controller.getRawAxis(Constants.RIGHT_VERTICAL_JOYSTICK_AXIS));
   
+    if (Robot.manualDriveControl) {
     double ySpeed = controller.getRawAxis(Constants.RIGHT_VERTICAL_JOYSTICK_AXIS);
 		double xSpeed = -controller.getRawAxis(Constants.RIGHT_HORIZONTAL_JOYSTICK_AXIS);
 		double zSpeed = -controller.getRawAxis(Constants.LEFT_HORIZONTAL_JOYSTICK_AXIS);
@@ -181,6 +184,9 @@ public class Robot extends TimedRobot {
 			
 			// m_driveSubsystem.driveCartesian(ySpeed, xSpeed, -1 * correction, m_driveSubsystem.getRotation2d()); // field-relative
       m_driveSubsystem.driveCartesian(ySpeed, xSpeed, -1 * correction); // robot-relative
+      }
+    } else {
+      goalAngle = m_driveSubsystem.getGyroAngle();
 		}
   }
 
@@ -207,6 +213,6 @@ public class Robot extends TimedRobot {
 
 
     // Test Controls //
-    new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).whileTrue(new DriveToTrackedTargetCommand(0.5)); // Track AprilTag
+    new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).whileTrue(new DriveToTrackedTargetCommand(0.75)); // Track AprilTag
   }
 }

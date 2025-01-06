@@ -67,10 +67,13 @@ public final class Constants {
     public static final boolean REVERSE_RIGHT_FRONT_MOTOR = false;
     public static final boolean REVERSE_RIGHT_BACK_MOTOR = false;
     public static final double GYRO_TURN_KP = 0.007; // P (Proportional) constant of a PID loop
-    public static final double TRACKED_TAG_ROATION_KP = 0.005; // P (Proportional) constant of a PID loop
-    public static final double TRACKED_TAG_FORWARD_DRIVE_KP = 0.2; // P (Proportional) constant of a PID loop
-    public static final double TRACKED_TAG_STRAFE_DRIVE_KP = 0.3; // P (Proportional) constant of a PID loop
-    public static final double APRILTAG_POWER_CAP = 0.15;
+    public static final double TRACKED_TAG_ROATION_KP = 0.3; // P (Proportional) constant of a PID loop
+    public static final double TRACKED_TAG_FORWARD_DRIVE_KP = 0.4; // P (Proportional) constant of a PID loop
+    public static final double TRACKED_TAG_STRAFE_DRIVE_KP = 0.5; // P (Proportional) constant of a PID loop
+    public static final double APRILTAG_ROTATION_POWER_CAP = 0.3;
+    public static final double APRILTAG_FORWARD_POWER_CAP = 0.3;
+    public static final double APRILTAG_STRAFE_POWER_CAP = 0.3;
+    public static final double APRILTAG_TRACKING_DISTANCE_THRESHOLD = 0.1;
     public static final double TURNING_THRESHOLD_DEGREES = 3;
     public static final double MAX_POWER_GYRO = 0.4;
     public static final double kP_FRONT_RIGHT_VELOCITY = 0.0010269; // TODO: Update this for 2025
