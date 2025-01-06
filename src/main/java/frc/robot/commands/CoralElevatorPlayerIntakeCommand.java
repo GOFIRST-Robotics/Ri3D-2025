@@ -11,7 +11,7 @@ import frc.robot.subsystems.CoralElevatorSubsystem;
 public class CoralElevatorPlayerIntakeCommand extends Command {
   private CoralElevatorSubsystem m_subsystem;
 
-  /** Right Stick Button command, sets height to Neutral and arm to Intake */
+  /** Right Stick Button command, sets height to Neutral and End Effector  to Intake */
   public CoralElevatorPlayerIntakeCommand() {
     m_subsystem = Robot.m_CoralElevatorSubsystem;
     addRequirements(m_subsystem);

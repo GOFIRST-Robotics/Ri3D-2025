@@ -13,7 +13,7 @@ public class CoralElevatorMoveCommand extends Command {
   private CoralElevatorSubsystem m_subsystem;
   private boolean direction;
 
-  /** D Pad up command, causes elevator to ascend. D Pad down command, causes elevaor to descend */
+  /** Right Bumper command, causes Elevator to ascend. Left Bumper command, causes Elevator to descend */
   public CoralElevatorMoveCommand(boolean direction) {
     this.direction = direction;
     m_subsystem = Robot.m_CoralElevatorSubsystem;

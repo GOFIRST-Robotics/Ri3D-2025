@@ -92,6 +92,8 @@ public final class Constants {
     public static final double LOWERING_SPEED = 0.2; // TODO: Tune this
     public static final boolean ELEVATOR_UP = true;
     public static final boolean ELEVATOR_DOWN = false;
+    public static final boolean END_EFFECTOR_UP = true;
+    public static final boolean END_EFFECTOR_DOWN = false;
     public static final int ELEVATOR_ROTATIONS_PER_INCH = 13; // number of rotations elevator climb motor must complete to raise/lower elevator by one inch
 
     // Intake Constants //

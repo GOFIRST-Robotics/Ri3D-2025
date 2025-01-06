@@ -15,7 +15,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.autonomous.Drive1MeterAuto;
 import frc.robot.commands.autonomous.SquareAutonomous;
+import frc.robot.commands.CoralElevatorEndEffectorMoveCommand;
 import frc.robot.commands.CoralElevatorFingerToggleCommand;
+import frc.robot.commands.CoralElevatorHorizontalIntakeCommand;
 import frc.robot.commands.CoralElevatorMoveCommand;
 import frc.robot.commands.CoralElevatorNeutralCommand;
 import frc.robot.commands.CoralElevatorPlayerIntakeCommand;
@@ -212,13 +214,16 @@ public class Robot extends TimedRobot {
     new Trigger(() -> controller.getRawButton(Constants.LEFT_TRIGGER_BUTTON)).whileTrue(new IntakeCommand(true)); // Outtake
 
     // Coral Elevator Controls //
-    new Trigger(() -> controller.getRawButton(Constants.RIGHT_BUMPER)).whileTrue(new CoralElevatorMoveCommand(Constants.ELEVATOR_UP)); // Elevator up
-    new Trigger(() -> controller.getRawButton(Constants.LEFT_BUMPER)).whileTrue(new CoralElevatorMoveCommand(Constants.ELEVATOR_DOWN)); // Elevator down
-    new Trigger(() -> controller.getRawButton(Constants.RIGHT_STICK_BUTTON)).whileTrue(new CoralElevatorPlayerIntakeCommand()); // Player Position Preset
+    new Trigger(() -> controller.getRawButton(Constants.RIGHT_BUMPER)).whileTrue(new CoralElevatorMoveCommand(Constants.ELEVATOR_UP)); // Elevator Up Manual
+    new Trigger(() -> controller.getRawButton(Constants.LEFT_BUMPER)).whileTrue(new CoralElevatorMoveCommand(Constants.ELEVATOR_DOWN)); // Elevator Down Manual
+    new Trigger(() -> controller.getRawButton(Constants.START_BUTTON)).whileTrue(new CoralElevatorEndEffectorMoveCommand(Constants.END_EFFECTOR_UP)); // End Effector Up Manual
+    new Trigger(() -> controller.getRawButton(Constants.PREV_BUTTON)).whileTrue(new CoralElevatorEndEffectorMoveCommand(Constants.END_EFFECTOR_DOWN)); // End Effector Down Manual
+    new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).whileTrue(new CoralElevatorFingerToggleCommand()); // Finger Toggle Manual
+    new Trigger(() -> controller.getRawButton(Constants.RIGHT_STICK_BUTTON)).whileTrue(new CoralElevatorPlayerIntakeCommand()); // Player Intake Preset
+    new Trigger(() -> controller.getRawButton(Constants.LEFT_STICK_BUTTON)).whileTrue(new CoralElevatorHorizontalIntakeCommand()); // Horizontal Intake Preset
     new POVButton(controller, 0).whileTrue(new CoralElevatorScoreMidCommand()); // Score Mid Preset
     new POVButton(controller, 90).whileTrue(new CoralElevatorScoreHighCommand()); // Score High Preset
     new POVButton(controller, 180).whileTrue(new CoralElevatorNeutralCommand()); // Neutral Preset
     new POVButton(controller, 270).whileTrue(new CoralElevatorScoreLowCommand()); // Score Low Preset
-    new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).whileTrue(new CoralElevatorFingerToggleCommand()); // Finger Toggle
   }
 }

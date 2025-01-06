@@ -11,7 +11,7 @@ import frc.robot.subsystems.CoralElevatorSubsystem;
 public class CoralElevatorScoreMidCommand extends Command {
   private CoralElevatorSubsystem m_subsystem;
 
-  /** D Pad up command, sets height to Neutral and arm to Intake */
+  /** D Pad up command, sets height to Neutral and End Effector  to Intake */
   public CoralElevatorScoreMidCommand() {
     m_subsystem = Robot.m_CoralElevatorSubsystem;
     addRequirements(m_subsystem);

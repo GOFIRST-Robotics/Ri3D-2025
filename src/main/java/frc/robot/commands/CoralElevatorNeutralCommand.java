@@ -11,7 +11,7 @@ import frc.robot.subsystems.CoralElevatorSubsystem;
 public class CoralElevatorNeutralCommand extends Command {
   private CoralElevatorSubsystem m_subsystem;
 
-  /** D Pad down command, sets height to Neutral and arm to Intake */
+  /** D Pad down command, sets height to Neutral and End Effector  to Intake */
   public CoralElevatorNeutralCommand() {
     m_subsystem = Robot.m_CoralElevatorSubsystem;
     addRequirements(m_subsystem);

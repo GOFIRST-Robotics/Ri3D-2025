@@ -114,6 +114,12 @@ public class CoralElevatorSubsystem extends SubsystemBase {
     (new CoralElevatorSetPositionLowerCommand(0)).schedule(); // TODO: TUNE THIS
   }
 
+  /* Sets position of elevator Lower to Horizontal preset */
+  public void lowerHorizontal() {
+    // Calls CoralElevatorSetPositionLowerCommand()
+    (new CoralElevatorSetPositionLowerCommand(0.125)).schedule(); // TODO: TUNE THIS
+  }
+
   /* Sets position of elevator Lower to Vertical preset */
   public void lowerVertical() {
     // Calls CoralElevatorSetPositionLowerCommand()
