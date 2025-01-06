@@ -120,6 +120,7 @@ public final class Constants {
     public static final double PICK_UP_CORAL = 0; // TODO: NEEDS TUNING
     public static final double HOLD_ALGAE = 0; // TODO: NEEDS TUNING
     public static final double INTAKE_CURRENT_THRESHOLD = 0.3; // TODO: NEEDS TUNING
+    public static final double INTAKE_MAX_ANGLE = 0; // TODO: NEEDS TUNING
     public static final double GRAVITY_RESISTANCE = 0.3; // TODO: NEEDS TUNING
 
     // REV PH Channels //

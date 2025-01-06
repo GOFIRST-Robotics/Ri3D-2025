@@ -39,7 +39,7 @@ public class IntakeSetPosition extends Command {
     if (Math.abs(output) < 0.05) { // Minimum power we want to allow  // TODO: Tune this
       output = Math.copySign(0.05, output);
     }
-    intake.setPower(output);
+    intake.setPower(output-intake.getIntakeGravityControl());
   }
 
   // Returns true when the command should end.

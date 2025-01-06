@@ -28,6 +28,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
   private double intakeLiftMotorCurrent;
 
+  private double intakeGravityControl;
+
   private int preset;
 
   
@@ -66,6 +68,10 @@ public class IntakeSubsystem extends SubsystemBase {
     this.preset = preset;
   }
 
+  public double getIntakeGravityControl() {
+    return intakeGravityControl;
+  }
+
   /* get whether the intake is in or out */
   public int getPreset() {
     return preset;
@@ -93,6 +99,7 @@ public class IntakeSubsystem extends SubsystemBase {
     DeployPosition = m_DeployIntake.getEncoder().getPosition();
     intakeMotorCurrent = m_IntakeBar.getOutputCurrent();
     intakeLiftMotorCurrent = m_DeployIntake.getOutputCurrent();
+    intakeGravityControl = DeployPosition*Constants.GRAVITY_RESISTANCE/Constants.INTAKE_MAX_ANGLE;
 
     // Add intake bar RPM readings to SmartDashboard for the sake of data logging
     SmartDashboard.putNumber("Intake Bar RPM", IntakeBarRPM);

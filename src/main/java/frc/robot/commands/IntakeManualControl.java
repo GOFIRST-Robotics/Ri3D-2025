@@ -38,7 +38,7 @@ public class IntakeManualControl extends Command {
   @Override
   public void execute() {
     if(!((controller.getRawAxis(Constants.LEFT_VERTICAL_JOYSTICK_AXIS) > 0 && m_intakeSubsystem.getPosition() > Constants.INTAKE_DEPLOY_LIMIT || (controller.getRawAxis(Constants.LEFT_VERTICAL_JOYSTICK_AXIS) < 0 && m_intakeSubsystem.getPosition() < Constants.INTAKE_RETURN_LIMIT)))) {
-      m_intakeSubsystem.deployIntake(Constants.DEPLOY_SPEED*controller.getRawAxis(Constants.LEFT_VERTICAL_JOYSTICK_AXIS));
+      m_intakeSubsystem.deployIntake(Constants.DEPLOY_SPEED*controller.getRawAxis(Constants.LEFT_VERTICAL_JOYSTICK_AXIS)-m_intakeSubsystem.getIntakeGravityControl());
     }
   }
 
