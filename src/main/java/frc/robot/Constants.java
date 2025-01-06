@@ -101,9 +101,8 @@ public final class Constants {
     public static final boolean ARM_DOWN = false;
     public static final boolean WHEEL_INTAKE = true;
     public static final boolean WHEEL_OUTTAKE = false;
-    public static final double GRAVITY_CONST = 0.02; //Figure this out
-
-    public static final int ELEVATOR_ROTATIONS_PER_INCH = 13; // number of rotations elevator climb motor must complete to raise/lower elevator by one inch
+    public static final double GRAVITY_CONST = 0.02; // TODO: Figure this out
+    public static final int ELEVATOR_ROTATIONS_PER_INCH = 13; // Number of rotations elevator climb motor must complete to raise/lower elevator by one inch
 
     // Intake Constants //
     public static final double DEPLOY_SPEED = 0.1;
