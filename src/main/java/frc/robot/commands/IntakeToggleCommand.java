@@ -37,7 +37,7 @@ public class IntakeToggleCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_intakeSubsystem.deployIntake((reverse ? -Constants.DEPLOY_SPEED : Constants.DEPLOY_SPEED)*controller.getRawAxis(Constants.RIGHT_VERTICAL_JOYSTICK_AXIS));
+    m_intakeSubsystem.deployIntake(Constants.DEPLOY_SPEED*controller.getRawAxis(Constants.LEFT_VERTICAL_JOYSTICK_AXIS));
   }
 
   // Returns true when the command should end.

@@ -139,8 +139,10 @@ public class Robot extends TimedRobot {
     // Set the LED pattern for teleop mode
     m_LEDSubsystem.setLEDMode(LEDMode.TELEOP);
 
-    goalAngle = m_driveSubsystem.getGyroAngle();
+  new IntakeToggleCommand(false);
+  goalAngle = m_driveSubsystem.getGyroAngle();
   }
+
 
   /** This function is called periodically during operator control. */
   @Override
