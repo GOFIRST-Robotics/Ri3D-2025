@@ -33,8 +33,8 @@ public class IntakeSetPosition extends Command {
   public void execute() {
     this.error = goal - intake.getPosition();
     double output = kP * error;
-    if (Math.abs(output) > 0.75) { // Maximum power we want to allow // TODO: Tune this
-      output = Math.copySign(0.75, output);
+    if (Math.abs(output) > 0.5) { // Maximum power we want to allow // TODO: Tune this
+      output = Math.copySign(0.5, output);
     }
     if (Math.abs(output) < 0.05) { // Minimum power we want to allow  // TODO: Tune this
       output = Math.copySign(0.05, output);
