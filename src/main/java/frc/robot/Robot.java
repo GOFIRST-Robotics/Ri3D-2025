@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.commands.autonomous.Drive1MeterAuto;
 import frc.robot.commands.autonomous.SquareAutonomous;
+import frc.robot.commands.DriveToTrackedTargetCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeToggleCommand;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -160,11 +161,17 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putNumber("Controller: Right Joystick Y Axis", controller.getRawAxis(Constants.RIGHT_VERTICAL_JOYSTICK_AXIS));
   
     double ySpeed = controller.getRawAxis(Constants.RIGHT_VERTICAL_JOYSTICK_AXIS);
-		double xSpeed = controller.getRawAxis(Constants.RIGHT_HORIZONTAL_JOYSTICK_AXIS);
+		double xSpeed = -controller.getRawAxis(Constants.RIGHT_HORIZONTAL_JOYSTICK_AXIS);
 		double zSpeed = -controller.getRawAxis(Constants.LEFT_HORIZONTAL_JOYSTICK_AXIS);
 
+    // Speed limits
+    ySpeed = Math.max(Math.min(ySpeed, 0.4), -0.4);
+    xSpeed = Math.max(Math.min(xSpeed, 0.4), -0.4);
+    zSpeed = Math.max(Math.min(zSpeed, 0.4), -0.4);
+
     if (Math.abs(zSpeed) > 0.01) { // If we are telling the robot to rotate, then let it rotate
-			m_driveSubsystem.driveCartesian(ySpeed, xSpeed, zSpeed, m_driveSubsystem.getRotation2d());
+			// m_driveSubsystem.driveCartesian(ySpeed, xSpeed, zSpeed, m_driveSubsystem.getRotation2d()); // field-relative
+      m_driveSubsystem.driveCartesian(ySpeed, xSpeed, zSpeed); // robot-relative
 			goalAngle = m_driveSubsystem.getGyroAngle();
 		}
 		else { // Otherwise, use the gyro to maintain our current angle
@@ -175,7 +182,8 @@ public class Robot extends TimedRobot {
         correction = Math.copySign(Constants.MAX_POWER_GYRO, correction);
       }
 			
-			m_driveSubsystem.driveCartesian(ySpeed, xSpeed, -1 * correction, m_driveSubsystem.getRotation2d());
+			// m_driveSubsystem.driveCartesian(ySpeed, xSpeed, -1 * correction, m_driveSubsystem.getRotation2d()); // field-relative
+      m_driveSubsystem.driveCartesian(ySpeed, xSpeed, -1 * correction); // robot-relative
 		}
   }
 
@@ -204,6 +212,7 @@ public class Robot extends TimedRobot {
     new Trigger(() -> controller.getRawButton(Constants.RIGHT_BUMPER)).whileTrue(new IntakeCommand()); // Intake or Outake depending on position
     new Trigger(() -> controller.getRawButton(Constants.B_BUTTON)).onTrue(new IntakeToggleCommand()); // Deploy or Retract Intake
 
-    // Motor Position Control Test //
+    // Test Controls //
+    new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).whileTrue(new DriveToTrackedTargetCommand(0.5)); // Track AprilTag
   }
 }
