@@ -25,12 +25,18 @@ public class IntakeSubsystem extends SubsystemBase {
   private double IntakeBarRPM;
   private double DeployPosition;
   private double intakeMotorCurrent;
+  private double intakeMotorCurrentMean;
+  private double intakeMotorCurrents[];
+  private int i;
+  private double intakeMotorCurrentDeviationTotal;
+  private double intakeMotorCurrentStandardDeviation;
 
   private double intakeLiftMotorCurrent;
 
   private double intakeGravityControl;
 
   private int preset;
+
 
   
 
@@ -43,6 +49,7 @@ public class IntakeSubsystem extends SubsystemBase {
     configureSparkMAX(m_IntakeBar, Constants.INTAKE_BAR_INVERT);
     preset = 0;
     SmartDashboard.putNumber("Intake Bar Speed", Constants.INTAKE_BAR_SPEED);
+    intakeMotorCurrents = new double[10];
   }
 
   private void configureSparkMAX(SparkMax max, boolean reverse) {
@@ -72,6 +79,10 @@ public class IntakeSubsystem extends SubsystemBase {
     return intakeGravityControl;
   }
 
+  public double getIntakeMotorCurrentMean() {
+    return intakeMotorCurrentMean;
+  }
+
   /* get whether the intake is in or out */
   public int getPreset() {
     return preset;
@@ -89,9 +100,24 @@ public class IntakeSubsystem extends SubsystemBase {
     return intakeLiftMotorCurrent;
   }
 
+  public double getIntakeMotorCurrentStandardDeviation() {
+    intakeMotorCurrentMean = 0;
+    for(int index = 0; index < 10; index++)  {
+      intakeMotorCurrentMean += intakeMotorCurrents[i];
+    }
+    intakeMotorCurrentDeviationTotal = 0;
+    for(int index = 0; index < 10; index++)  {
+      intakeMotorCurrents[i] -= intakeMotorCurrentMean;
+      intakeMotorCurrentDeviationTotal += Math.pow(intakeMotorCurrents[i],2);
+    }
+    intakeMotorCurrentStandardDeviation = Math.pow(intakeMotorCurrentDeviationTotal,0.5);
+    return intakeMotorCurrentStandardDeviation;
+  }
+
   public void deployIntake(double power) {
     m_DeployIntake.set(power);
   }
+  
 
   @Override
   public void periodic() {
@@ -100,6 +126,8 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeMotorCurrent = m_IntakeBar.getOutputCurrent();
     intakeLiftMotorCurrent = m_DeployIntake.getOutputCurrent();
     intakeGravityControl = DeployPosition*Constants.GRAVITY_RESISTANCE/Constants.INTAKE_MAX_ANGLE;
+    i = i++%10;
+    intakeMotorCurrents[i] = intakeMotorCurrent;
 
     // Add intake bar RPM readings to SmartDashboard for the sake of data logging
     SmartDashboard.putNumber("Intake Bar RPM", IntakeBarRPM);

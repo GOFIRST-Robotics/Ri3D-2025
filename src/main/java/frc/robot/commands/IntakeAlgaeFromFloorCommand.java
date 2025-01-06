@@ -33,7 +33,7 @@ public class IntakeAlgaeFromFloorCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(m_intakeSubsystem.getIntakeMotorCurrent() > previousCurrent+Constants.INTAKE_CURRENT_THRESHOLD) {
+    if(m_intakeSubsystem.getIntakeMotorCurrent() > previousCurrent+2*m_intakeSubsystem.getIntakeMotorCurrentStandardDeviation()) {
       (new IntakeSetPosition(Constants.HOLD_ALGAE_ID)).schedule();
       isFinished = true;
     }
