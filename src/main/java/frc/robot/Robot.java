@@ -68,6 +68,7 @@ public class Robot extends TimedRobot {
     // Zero the gyroscope and reset the drive encoders
     m_driveSubsystem.zeroGyro();
     m_driveSubsystem.resetEncoders();
+    m_LEDSubsystem.setLEDMode(LEDMode.DISABLED);
   }
 
   /**
@@ -87,19 +88,20 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Gyroscope Pitch", m_driveSubsystem.getPitch());
     SmartDashboard.putNumber("Gyroscope Yaw", m_driveSubsystem.getYaw());
     SmartDashboard.putNumber("Gyroscope Roll", m_driveSubsystem.getRoll());
-    m_LEDSubsystem.setLEDMode(LEDMode.DISABLED);
+    
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
     System.out.println("ROBOT DISABLED");
+    m_LEDSubsystem.setLEDMode(LEDMode.DISABLED);
   }
 
   /** This function is called continuously after the robot enters Disabled mode. */
   @Override
   public void disabledPeriodic() {
-    m_LEDSubsystem.setLEDMode(LEDMode.DISABLED);
+   
   }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
