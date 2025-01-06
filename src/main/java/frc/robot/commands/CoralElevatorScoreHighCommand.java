@@ -39,6 +39,6 @@ public class CoralElevatorScoreHighCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false; // Command will never finish (we don't want it to)
+    return true; // Command will finish immediately
   }
 }
