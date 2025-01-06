@@ -1,3 +1,4 @@
+
 // Author: UMN Robotics Ri3D
 // Last Updated: December 2024
 
@@ -10,15 +11,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.commands.autonomous.Drive1MeterAuto;
 import frc.robot.commands.autonomous.SquareAutonomous;
+import frc.robot.commands.DriveToTrackedTargetCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeToggleCommand;
-import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
@@ -41,7 +40,6 @@ public class Robot extends TimedRobot {
 
   public static final DriveSubsystem m_driveSubsystem = new DriveSubsystem(); // Drivetrain subsystem
   public static final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(); // Intake subsystem
-  public static final ClimberSubsystem m_climbSubsystem = new ClimberSubsystem(); // Climber subsystem
   public static final PowerSubsystem m_powerSubsystem = new PowerSubsystem(); // Power subsystem for interacting with the Rev PDH
   public static final VisionSubsystem m_visionSubsystem = new VisionSubsystem(); // Subsystem for interacting with Photonvision
   public static final LEDSubsystem m_LEDSubsystem = new LEDSubsystem(); // Subsytem for controlling the REV Blinkin LED module
@@ -103,7 +101,7 @@ public class Robot extends TimedRobot {
 
     m_autonomousCommand = autonChooser.getSelected();
     
-    // Zero the gyroscope and reset the drive encoders
+    // Zero the gyrodcope and reset the drive encoders
     m_driveSubsystem.zeroGyro();
     m_driveSubsystem.resetEncoders();
 
@@ -162,11 +160,17 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putNumber("Controller: Right Joystick Y Axis", controller.getRawAxis(Constants.RIGHT_VERTICAL_JOYSTICK_AXIS));
   
     double ySpeed = controller.getRawAxis(Constants.RIGHT_VERTICAL_JOYSTICK_AXIS);
-		double xSpeed = controller.getRawAxis(Constants.RIGHT_HORIZONTAL_JOYSTICK_AXIS);
+		double xSpeed = -controller.getRawAxis(Constants.RIGHT_HORIZONTAL_JOYSTICK_AXIS);
 		double zSpeed = -controller.getRawAxis(Constants.LEFT_HORIZONTAL_JOYSTICK_AXIS);
 
+    // Speed limits
+    ySpeed = Math.max(Math.min(ySpeed, 0.4), -0.4);
+    xSpeed = Math.max(Math.min(xSpeed, 0.4), -0.4);
+    zSpeed = Math.max(Math.min(zSpeed, 0.4), -0.4);
+
     if (Math.abs(zSpeed) > 0.01) { // If we are telling the robot to rotate, then let it rotate
-			m_driveSubsystem.driveCartesian(ySpeed, xSpeed, zSpeed, m_driveSubsystem.getRotation2d());
+			// m_driveSubsystem.driveCartesian(ySpeed, xSpeed, zSpeed, m_driveSubsystem.getRotation2d()); // field-relative
+      m_driveSubsystem.driveCartesian(ySpeed, xSpeed, zSpeed); // robot-relative
 			goalAngle = m_driveSubsystem.getGyroAngle();
 		}
 		else { // Otherwise, use the gyro to maintain our current angle
@@ -177,7 +181,8 @@ public class Robot extends TimedRobot {
         correction = Math.copySign(Constants.MAX_POWER_GYRO, correction);
       }
 			
-			m_driveSubsystem.driveCartesian(ySpeed, xSpeed, -1 * correction, m_driveSubsystem.getRotation2d());
+			// m_driveSubsystem.driveCartesian(ySpeed, xSpeed, -1 * correction, m_driveSubsystem.getRotation2d()); // field-relative
+      m_driveSubsystem.driveCartesian(ySpeed, xSpeed, -1 * correction); // robot-relative
 		}
   }
 
@@ -194,18 +199,15 @@ public class Robot extends TimedRobot {
 
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link edu.wpi.first.wpilibj.Joystick} 
+   * instantiating a {@link GenericHID} or onse of its subclasses ({@link edu.wpi.first.wpilibj.Joystick} 
    * or {@link XboxController}), and then passing it to a {@link edu.wpi.first.wpilibj2.command.button.Trigger}.
    */
   private void configureButtonBindings() {
-    // Climber Controls //
-    new POVButton(controller, 0).whileTrue(new StartEndCommand(() -> m_climbSubsystem.setPower(Constants.CLIMBER_SPEED), () -> m_climbSubsystem.stop())); // Climber up
-    new POVButton(controller, 180).whileTrue(new StartEndCommand(() -> m_climbSubsystem.setPower(-1 * Constants.CLIMBER_SPEED), () -> m_climbSubsystem.stop())); // Climber down
-
     // Intake Controls //
     new Trigger(() -> controller.getRawButton(Constants.RIGHT_BUMPER)).whileTrue(new IntakeCommand(false)); // Intake depending on position
     new Trigger(() -> controller.getRawButton(Constants.RIGHT_BUMPER)).whileTrue(new IntakeCommand(true)); // Outake depending on position
 
-    // Motor Position Control Test //
+    // Test Controls //
+    new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).whileTrue(new DriveToTrackedTargetCommand(0.5)); // Track AprilTag
   }
 }
