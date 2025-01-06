@@ -133,6 +133,10 @@ public class Robot extends TimedRobot {
 
     // Set the LED pattern for autonomous mode
     m_LEDSubsystem.setLEDMode(LEDMode.AUTO);
+
+    // Set Elevator/End Effector inital preset
+    m_CoralElevatorSubsystem.climbNeutral();
+    m_CoralElevatorSubsystem.armInitial();
   }
 
   /** This function is called periodically during autonomous. */
@@ -168,6 +172,10 @@ public class Robot extends TimedRobot {
     }
 
     goalAngle = m_driveSubsystem.getGyroAngle();
+
+    // Set Elevator/End Effector inital preset
+    m_CoralElevatorSubsystem.climbNeutral();
+    m_CoralElevatorSubsystem.armInitial();
   }
 
 

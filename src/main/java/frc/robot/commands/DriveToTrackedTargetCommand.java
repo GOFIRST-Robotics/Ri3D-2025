@@ -103,13 +103,13 @@ public class DriveToTrackedTargetCommand extends Command {
       // System.out.println("rotationDriveRate: " + rotationDriveRate); 
 
       // Use Smartdashboard for Debugging
-      SmartDashboard.putNumber("Forward Value", forwardValue);
-      SmartDashboard.putNumber("Left Value", leftValue);
-      SmartDashboard.putNumber("Rotation Value", rotationValue);
-      SmartDashboard.putNumber("forwardDriveRate", forwardDriveRate);
-      SmartDashboard.putNumber("strafeDriveRate", strafeDriveRate);
-      SmartDashboard.putNumber("rotationDriveRate", rotationDriveRate);
-      SmartDashboard.putNumber("AprilTag Z Angle", rotationalError);
+      // SmartDashboard.putNumber("Forward Value", forwardValue);
+      // SmartDashboard.putNumber("Left Value", leftValue);
+      // SmartDashboard.putNumber("Rotation Value", rotationValue);
+      // SmartDashboard.putNumber("forwardDriveRate", forwardDriveRate);
+      // SmartDashboard.putNumber("strafeDriveRate", strafeDriveRate);
+      // SmartDashboard.putNumber("rotationDriveRate", rotationDriveRate);
+      // SmartDashboard.putNumber("AprilTag Z Angle", rotationalError);
     } else {
       m_drivetrainSubsystem.stop();
     }
