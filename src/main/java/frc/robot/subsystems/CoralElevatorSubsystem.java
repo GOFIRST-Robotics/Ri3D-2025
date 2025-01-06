@@ -129,25 +129,31 @@ public class CoralElevatorSubsystem extends SubsystemBase {
   /* Sets position of elevator Arm to Drop preset */
   public void armDrop() {
     // Calls CoralElevatorSetPositionArmCommand()
-    (new CoralElevatorSetPositionArmCommand(0.25)).schedule(); // TODO: TUNE THIS
+    (new CoralElevatorSetPositionArmCommand(0.75)).schedule(); // TODO: TUNE THIS
   }
 
   /* Sets position of elevator Arm to Intake preset */
   public void armPlayerIntake() {
     // Calls CoralElevatorSetPositionArmCommand()
-    (new CoralElevatorSetPositionArmCommand(0)).schedule(); // TODO: TUNE THIS
+    (new CoralElevatorSetPositionArmCommand(0.4)).schedule(); // TODO: TUNE THIS
   }
 
   /* Sets position of elevator Arm to Horizontal preset */
   public void armHorizontalIntake() {
     // Calls CoralElevatorSetPositionArmCommand()
-    (new CoralElevatorSetPositionArmCommand(0.125)).schedule(); // TODO: TUNE THIS
+    (new CoralElevatorSetPositionArmCommand(0.5)).schedule(); // TODO: TUNE THIS
   }
 
   /* Sets position of elevator Arm to Vertical preset */
   public void armVertical() {
     // Calls CoralElevatorSetPositionArmCommand()
-    (new CoralElevatorSetPositionArmCommand(-0.125)).schedule(); // TODO: TUNE THIS
+    (new CoralElevatorSetPositionArmCommand(0.25)).schedule(); // TODO: TUNE THIS
+  }
+
+  /* Sets position of elevator Arm to Initial preset */
+  public void armInitial() {
+    // Calls CoralElevatorSetPositionArmCommand()
+    (new CoralElevatorSetPositionArmCommand(0)).schedule(); // TODO: TUNE THIS
   }
 
   // Wheel Motor Methods ------------------------------------------------------------------------------
