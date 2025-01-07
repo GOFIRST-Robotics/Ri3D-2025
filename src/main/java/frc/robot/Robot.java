@@ -184,7 +184,6 @@ public class Robot extends TimedRobot {
     m_intakeSubsystem.setDefaultCommand(new IntakeManualControl(false));
   }
 
-
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {

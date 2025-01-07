@@ -145,9 +145,4 @@ public final class Constants {
     public static final double TARGET_HEIGHT_METERS = Units.inchesToMeters(18.5);
     public static final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(18);
     public static final String USB_CAMERA_NAME = "Arducam_OV9782_USB_Camera";
-
-    
-    
-    
-
 }

@@ -35,9 +35,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
   private int preset;
 
-
-  
-
   /** Subsystem for controlling the Intake */
   public IntakeSubsystem() {
     // Instantiate the Intake motor controllers
