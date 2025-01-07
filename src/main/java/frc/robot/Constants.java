@@ -45,10 +45,10 @@ public final class Constants {
     public static final int RIGHT_FRONT_DRIVE_MOTOR_ID = 2; // NEO motor
     public static final int LEFT_REAR_DRIVE_MOTOR_ID = 11; // NEO motor
     public static final int RIGHT_REAR_DRIVE_MOTOR_ID = 4; // NEO motor
-    public static final int INTAKE_BAR_MOTOR_ID = 8; // NEO 550 motor
+    public static final int INTAKE_BAR_MOTOR_ID = 9; // NEO 550 motor
     public static final int DEPLOY_INTAKE_MOTOR_ID = 6; // NEO motor
     public static final int ELEVATOR_STAGE_1_MOTOR_ID = 7; // NEO motor
-    public static final int ELEVATOR_STAGE_2_MOTOR_ID = 9; // NEO 550 motor
+    public static final int ELEVATOR_STAGE_2_MOTOR_ID = 8; // NEO 550 motor
     public static final int END_EFFECTOR_WHEEL_MOTOR_ID = 10; // NEO 550 motor
     public static final int END_EFFECTOR_ARM_MOTOR_ID = 12; // NEO 550 motor
 
@@ -105,11 +105,23 @@ public final class Constants {
     public static final int ELEVATOR_ROTATIONS_PER_INCH = 13; // Number of rotations elevator climb motor must complete to raise/lower elevator by one inch
 
     // Intake Constants //
+    public static final double INTAKE_LIFT_GEAR_RATIO = 3*7*7*48/29;
+    public static final double INTAKE_DEPLOY_LIMIT = 53;
+    public static final double INTAKE_RETURN_LIMIT = 0;
     public static final double DEPLOY_SPEED = 0.1;
-    public static final double INTAKE_DEPLOYED_POS = 1.0;
-    public static final double INTAKE_RETURNED_POS = 0.01;
     public static final boolean INTAKE_BAR_INVERT = false;
+    public static final boolean INTAKE_DEPLOY_INVERT = true;
     public static final double INTAKE_BAR_SPEED = 0.8;
+    public static final int HOLD_ALGAE_ID = 0;
+    public static final int HOLD_CORAL_ID = 1;
+    public static final int PICK_UP_ALGAE_ID = 2;
+    public static final int PICK_UP_CORAL_ID = 3;
+    /* angle estimates: Pick up algae ~45, Pick up Coral ~90, Hold coral ~45, Hold algae ~10 */
+    public static final double PICK_UP_ALGAE = 33;
+    public static final double HOLD_CORAL = 24;
+    public static final double PICK_UP_CORAL = 53;
+    public static final double HOLD_ALGAE = 4.86;
+    public static final double GRAVITY_RESISTANCE = 0.05;
 
     // REV PH Channels //
     // Example: public static final int EXTENSION_SOLENOID_ID = 0;
@@ -134,5 +146,4 @@ public final class Constants {
     public static final double TARGET_HEIGHT_METERS = Units.inchesToMeters(18.5);
     public static final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(18);
     public static final String USB_CAMERA_NAME = "Arducam_OV9782_USB_Camera";
-
 }
