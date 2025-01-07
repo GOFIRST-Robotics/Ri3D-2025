@@ -37,13 +37,13 @@ public class CoralElevatorSubsystem extends SubsystemBase {
     public CoralElevatorSubsystem() {
       // Configure the Spark MAX motor controller using the new 2025 method
       m_elevator_climb_1 = new SparkMax(Constants.ELEVATOR_STAGE_1_MOTOR_ID, MotorType.kBrushless);
-      configureSparkMAX(m_elevator_climb_1, Constants.ELEVATOR_INVERT);
+      configureSparkMAX(m_elevator_climb_1, Constants.ELEVATOR_STAGE_1_INVERT);
       m_elevator_climb_2 = new SparkMax(Constants.ELEVATOR_STAGE_2_MOTOR_ID, MotorType.kBrushless);
-      configureSparkMAX(m_elevator_climb_2, Constants.ELEVATOR_INVERT);
+      configureSparkMAX(m_elevator_climb_2, Constants.ELEVATOR_STAGE_2_INVERT);
       m_elevator_arm = new SparkMax(Constants.END_EFFECTOR_ARM_MOTOR_ID, MotorType.kBrushless);
-      configureSparkMAX(m_elevator_arm, Constants.ELEVATOR_INVERT);
+      configureSparkMAX(m_elevator_arm, Constants.ELEVATOR_ARM_INVERT);
       m_elevator_wheel = new SparkMax(Constants.END_EFFECTOR_WHEEL_MOTOR_ID, MotorType.kBrushless);
-      configureSparkMAX(m_elevator_wheel, Constants.ELEVATOR_INVERT);
+      configureSparkMAX(m_elevator_wheel, Constants.ELEVATOR_WHEEL_INVERT);
   
       // Put the default speed on SmartDashboard if needed
       // SmartDashboard.putNumber("Elevator Speed", Constants.ELEVATOR_SPEED);

@@ -91,7 +91,10 @@ public final class Constants {
 	public static final double kMAX_ANGULAR_ACCELERATION_RADIANS_PER_SECOND_SQUARED = 2*Math.PI;
 
     // Coral Elevator Constants //
-    public static final boolean ELEVATOR_INVERT = false;
+    public static final boolean ELEVATOR_STAGE_1_INVERT = true;
+    public static final boolean ELEVATOR_STAGE_2_INVERT = true;
+    public static final boolean ELEVATOR_WHEEL_INVERT = false;
+    public static final boolean ELEVATOR_ARM_INVERT = false;
     public static final double ELEVATOR_SPEED = 0.5; // TODO: Tune this
     public static final double ARM_SPEED = 0.25; // TODO: Tune this
     public static final double WHEEL_SPEED = 0.5; // TODO: Tune this
