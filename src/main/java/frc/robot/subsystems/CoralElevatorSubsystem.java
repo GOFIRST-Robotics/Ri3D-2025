@@ -25,25 +25,27 @@ public class CoralElevatorSubsystem extends SubsystemBase {
     private SparkMax m_elevator_arm; // NEO motor
     private SparkMax m_elevator_wheel; // NEO motor
 
+    private double gravityControl;
+
     // Coral Elevator limiters
-    public double climb_max_1 = 3; // TODO: TUNE THIS LIMIT
-    public double climb_max_2 = 3; // TODO: TUNE THIS LIMIT
-    public double climb_min_1 = 0; // TODO: TUNE THIS LIMIT
-    public double climb_min_2 = 0; // TODO: TUNE THIS LIMIT
-    public double arm_max = 3; // TODO: TUNE THIS LIMIT
-    public double arm_min = 0; // TODO: TUNE THIS LIMIT
+    public double climb_max_1 = 167.2;
+    public double climb_max_2 = 251;
+    public double climb_min_1 = 0;
+    public double climb_min_2 = 0;
+    public double arm_max = 39.4;
+    public double arm_min = 0;
 
     /** Subsystem for controlling the coral elevator */
     public CoralElevatorSubsystem() {
       // Configure the Spark MAX motor controller using the new 2025 method
       m_elevator_climb_1 = new SparkMax(Constants.ELEVATOR_STAGE_1_MOTOR_ID, MotorType.kBrushless);
-      configureSparkMAX(m_elevator_climb_1, Constants.ELEVATOR_INVERT);
+      configureSparkMAX(m_elevator_climb_1, Constants.ELEVATOR_STAGE_1_INVERT);
       m_elevator_climb_2 = new SparkMax(Constants.ELEVATOR_STAGE_2_MOTOR_ID, MotorType.kBrushless);
-      configureSparkMAX(m_elevator_climb_2, Constants.ELEVATOR_INVERT);
+      configureSparkMAX(m_elevator_climb_2, Constants.ELEVATOR_STAGE_2_INVERT);
       m_elevator_arm = new SparkMax(Constants.END_EFFECTOR_ARM_MOTOR_ID, MotorType.kBrushless);
-      configureSparkMAX(m_elevator_arm, Constants.ELEVATOR_INVERT);
+      configureSparkMAX(m_elevator_arm, Constants.ELEVATOR_ARM_INVERT);
       m_elevator_wheel = new SparkMax(Constants.END_EFFECTOR_WHEEL_MOTOR_ID, MotorType.kBrushless);
-      configureSparkMAX(m_elevator_wheel, Constants.ELEVATOR_INVERT);
+      configureSparkMAX(m_elevator_wheel, Constants.ELEVATOR_WHEEL_INVERT);
   
       // Put the default speed on SmartDashboard if needed
       // SmartDashboard.putNumber("Elevator Speed", Constants.ELEVATOR_SPEED);
@@ -78,6 +80,10 @@ public class CoralElevatorSubsystem extends SubsystemBase {
   /* Set climb motor one speed to 0 */
   public void stopClimbOne() {
     setSpeedClimbOne(0);
+  }
+
+  public double getGravityControl() {
+    return gravityControl;
   }
 
   /* Sets speed of the elevator CLimb motor two. Inbuilt limiters */
@@ -124,19 +130,19 @@ public class CoralElevatorSubsystem extends SubsystemBase {
   /* Sets position of elevator climb to low Goal preset */
   public void climbLowGoal() {
     // Calls CoralElevatorSetPositionClimbCommand()
-    (new CoralElevatorSetPositionClimbCommand(1.5 * Constants.ELEVATOR_ROTATIONS_PER_INCH, 1.5 * Constants.ELEVATOR_ROTATIONS_PER_INCH)).schedule(); // TODO: TUNE THIS
+    (new CoralElevatorSetPositionClimbCommand(39.4, 59.5)).schedule();
   }
 
   /* Sets position of elevator climb to Mid Goal preset */
   public void climbMidGoal() {
     // Calls CoralElevatorSetPositionClimbCommand()
-    (new CoralElevatorSetPositionClimbCommand(8.5 * Constants.ELEVATOR_ROTATIONS_PER_INCH, 8.5 * Constants.ELEVATOR_ROTATIONS_PER_INCH)).schedule(); // TODO: TUNE THIS
+    (new CoralElevatorSetPositionClimbCommand(84.1, 133.4)).schedule();
   }
 
   /* Sets position of elevator climb to High Goal preset */
   public void climbHighGoal() {
     // Calls CoralElevatorSetPositionClimbCommand()
-    (new CoralElevatorSetPositionClimbCommand(37 * Constants.ELEVATOR_ROTATIONS_PER_INCH, 37 * Constants.ELEVATOR_ROTATIONS_PER_INCH)).schedule(); // TODO: TUNE THIS
+    (new CoralElevatorSetPositionClimbCommand(climb_max_1, climb_max_2)).schedule();
   }
 
   // Arm Motor Methods -------------------------------------------------------------------------------
@@ -167,31 +173,25 @@ public class CoralElevatorSubsystem extends SubsystemBase {
   /* Sets position of elevator Arm to Drop preset */
   public void armDrop() {
     // Calls CoralElevatorSetPositionArmCommand()
-    (new CoralElevatorSetPositionArmCommand(0.75)).schedule(); // TODO: TUNE THIS
+    (new CoralElevatorSetPositionArmCommand(arm_max)).schedule();
   }
 
   /* Sets position of elevator Arm to Intake preset */
   public void armPlayerIntake() {
     // Calls CoralElevatorSetPositionArmCommand()
-    (new CoralElevatorSetPositionArmCommand(0.4)).schedule(); // TODO: TUNE THIS
-  }
-
-  /* Sets position of elevator Arm to Horizontal preset */
-  public void armHorizontalIntake() {
-    // Calls CoralElevatorSetPositionArmCommand()
-    (new CoralElevatorSetPositionArmCommand(0.5)).schedule(); // TODO: TUNE THIS
+    (new CoralElevatorSetPositionArmCommand(29.2)).schedule();
   }
 
   /* Sets position of elevator Arm to Vertical preset */
   public void armVertical() {
     // Calls CoralElevatorSetPositionArmCommand()
-    (new CoralElevatorSetPositionArmCommand(0.25)).schedule(); // TODO: TUNE THIS
+    (new CoralElevatorSetPositionArmCommand(17.5)).schedule();
   }
 
   /* Sets position of elevator Arm to Initial preset */
   public void armInitial() {
     // Calls CoralElevatorSetPositionArmCommand()
-    (new CoralElevatorSetPositionArmCommand(0)).schedule(); // TODO: TUNE THIS
+    (new CoralElevatorSetPositionArmCommand(arm_min)).schedule();
   }
 
   // Wheel Motor Methods ------------------------------------------------------------------------------
@@ -215,6 +215,8 @@ public class CoralElevatorSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    gravityControl = Math.sin((getPositionArm() / 70 * 2 * Math.PI) + Math.PI/2)*Constants.ARM_GRAVITY_CONST;
+
     // Publish encoder values to SmartDashboard
     SmartDashboard.putNumber("Elevator Climb 1 Position", getPositionClimbOne());
     SmartDashboard.putNumber("Elevator Climb 2 Position", getPositionClimbTwo());
