@@ -5,6 +5,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -60,6 +61,8 @@ public class Robot extends TimedRobot {
   public static final PowerSubsystem m_powerSubsystem = new PowerSubsystem(); // Power subsystem for interacting with the Rev PDH
   public static final VisionSubsystem m_visionSubsystem = new VisionSubsystem(); // Subsystem for interacting with Photonvision
   public static final LEDSubsystem m_LEDSubsystem = new LEDSubsystem(); // Subsytem for controlling the REV Blinkin LED module
+
+  public static final Field2d m_Field = new Field2d();
   
   double goalAngle;
 
@@ -81,6 +84,7 @@ public class Robot extends TimedRobot {
     m_driveSubsystem.zeroGyro();
     m_driveSubsystem.resetEncoders();
     m_LEDSubsystem.setLEDMode(LEDMode.DISABLED);
+    SmartDashboard.putData("m_field", m_Field);
   }
 
   /**
@@ -100,6 +104,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Gyroscope Pitch", m_driveSubsystem.getPitch());
     SmartDashboard.putNumber("Gyroscope Yaw", m_driveSubsystem.getYaw());
     SmartDashboard.putNumber("Gyroscope Roll", m_driveSubsystem.getRoll());
+    m_Field.setRobotPose(m_driveSubsystem.getPose());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
