@@ -14,13 +14,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.subsystems.IntakeSubsystem;
 
-
-
 public class IntakeToggleCommand extends Command {
   public static final GenericHID controller = new GenericHID(Constants.CONTROLLER_USB_PORT_ID); // Instantiate our controller at the specified USB port
   private IntakeSubsystem m_intakeSubsystem;
   int preset;
-
 
   /** Creates a new IntakeCommand. */
   public IntakeToggleCommand(int preset) {
@@ -34,8 +31,6 @@ public class IntakeToggleCommand extends Command {
   @Override
   public void initialize() {
     m_intakeSubsystem.setPreset(preset);
-    
-
   }
 
   // Called every time the scheduler runs while the command is scheduled.

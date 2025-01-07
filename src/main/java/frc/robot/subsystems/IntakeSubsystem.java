@@ -42,6 +42,7 @@ public class IntakeSubsystem extends SubsystemBase {
     m_DeployIntake = new SparkMax(Constants.DEPLOY_INTAKE_MOTOR_ID, MotorType.kBrushless);
     // Configure the Spark MAX motor controllers using the new 2025 method
     configureSparkMAX(m_IntakeBar, Constants.INTAKE_BAR_INVERT);
+    configureSparkMAX(m_DeployIntake, Constants.INTAKE_DEPLOY_INVERT);
     preset = 0;
     SmartDashboard.putNumber("Intake Bar Speed", Constants.INTAKE_BAR_SPEED);
     intakeMotorCurrents = new double[10];
@@ -116,7 +117,6 @@ public class IntakeSubsystem extends SubsystemBase {
       m_DeployIntake.set(0);
     }
   }
-  
 
   @Override
   public void periodic() {

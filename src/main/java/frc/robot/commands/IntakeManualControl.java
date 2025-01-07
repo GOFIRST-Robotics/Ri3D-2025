@@ -6,21 +6,15 @@ package frc.robot.commands;
 import frc.robot.Constants;
 import frc.robot.Robot;
 
-import java.lang.ModuleLayer.Controller;
-import java.util.ResourceBundle.Control;
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.subsystems.IntakeSubsystem;
 
-
-
 public class IntakeManualControl extends Command {
   public static final GenericHID controller = new GenericHID(Constants.CONTROLLER_USB_PORT_ID); // Instantiate our controller at the specified USB port
   private IntakeSubsystem m_intakeSubsystem;
   boolean reverse;
-
 
   /** Creates a new IntakeCommand. */
   public IntakeManualControl(boolean reverse) {
