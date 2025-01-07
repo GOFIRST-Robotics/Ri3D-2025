@@ -23,8 +23,6 @@ public class IntakeSubsystem extends SubsystemBase {
   private double intakeBarRPM; // Stores the rpm of the bar
   private double intakeArmPosition; // Stores the position of the arm
 
-  private double intakeCurrentSum; // Stores the decaying sum of the current
-
   private double intakeGravityControl;
 
   /** Subsystem for controlling the Intake */
@@ -50,8 +48,6 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeBarRPM = m_IntakeBar.getEncoder().getVelocity();
     intakeArmPosition = m_IntakeArm.getEncoder().getPosition();
 
-    intakeCurrentSum = intakeCurrentSum * 0.75 + (m_IntakeBar.getOutputCurrent() * 0.75 + m_IntakeArm.getOutputCurrent() * 0.25) * 0.25;
-
     intakeGravityControl = intakeArmPosition * Constants.GRAVITY_RESISTANCE / Constants.INTAKE_DEPLOY_LIMIT;
 
     // Add intake bar RPM and deploy position readings to SmartDashboard for the sake of data logging
@@ -73,9 +69,6 @@ public class IntakeSubsystem extends SubsystemBase {
   }
   public double getIntakeGravityControl() {
     return intakeGravityControl;
-  }
-  public double getIntakeCurrentSum() {
-    return intakeCurrentSum;
   }
 
   /* get position */
