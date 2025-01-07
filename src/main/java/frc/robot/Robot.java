@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.IntakeManualControl;
+import frc.robot.commands.IntakePickUpAlgaeCommand;
 import frc.robot.commands.autonomous.example_basic_auto.Drive1MeterAuto;
 import frc.robot.commands.autonomous.example_basic_auto.SquareAutonomous;
 import frc.robot.commands.elevator.CoralElevatorArmMoveCommand;
@@ -28,8 +29,8 @@ import frc.robot.commands.elevator.CoralElevatorScoreHighCommand;
 import frc.robot.commands.elevator.CoralElevatorScoreLowCommand;
 import frc.robot.commands.elevator.CoralElevatorScoreMidCommand;
 import frc.robot.commands.elevator.CoralElevatorWheelMoveCommand;
-import frc.robot.commands.intake.IntakeCommand;
-import frc.robot.commands.intake.IntakeToggleCommand;
+import frc.robot.commands.intake.IntakeSetArmPositionCommand;
+import frc.robot.commands.intake.IntakeSetBarPowerCommand;
 import frc.robot.subsystems.CoralElevatorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -245,15 +246,15 @@ public class Robot extends TimedRobot {
    */
   private void configureButtonBindings() {
     // Intake Controls //
-    new Trigger(() -> controller.getRawButton(Constants.RIGHT_BUMPER)).whileTrue(new IntakeCommand(false)); // Intake 
-    new Trigger(() -> controller.getRawButton(Constants.LEFT_BUMPER)).whileTrue(new IntakeCommand(true)); // Outake 
+    new Trigger(() -> controller.getRawButton(Constants.RIGHT_BUMPER)).whileTrue(new IntakeSetBarPowerCommand(Constants.INTAKE_BAR_SPEED)); // Intake 
+    new Trigger(() -> controller.getRawButton(Constants.LEFT_BUMPER)).whileTrue(new IntakeSetBarPowerCommand(-Constants.INTAKE_BAR_SPEED)); // Outake 
 
-    new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).onTrue(new IntakeToggleCommand(Constants.HOLD_ALGAE_ID)); // Outake depending on position
-    new Trigger(() -> controller.getRawButton(Constants.B_BUTTON)).onTrue(new IntakeToggleCommand(Constants.HOLD_CORAL_ID)); // Outake depending on position
-    new Trigger(() -> controller.getRawButton(Constants.Y_BUTTON)).onTrue(new IntakeToggleCommand(Constants.PICK_UP_ALGAE_ID)); // Outake depending on position
-    new Trigger(() -> controller.getRawButton(Constants.X_BUTTON)).onTrue(new IntakeToggleCommand(Constants.PICK_UP_CORAL_ID)); // Outake
+    new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).onTrue(new IntakeSetArmPositionCommand(Constants.HOLD_ALGAE_POSITION)); // Outake depending on position
+    new Trigger(() -> controller.getRawButton(Constants.B_BUTTON)).onTrue(new IntakeSetArmPositionCommand(Constants.HOLD_CORAL_POSITION)); // Outake depending on position
+    new Trigger(() -> controller.getRawButton(Constants.Y_BUTTON)).onTrue(new IntakeSetArmPositionCommand(Constants.PICK_UP_ALGAE_POSITION)); // Outake depending on position
+    new Trigger(() -> controller.getRawButton(Constants.X_BUTTON)).onTrue(new IntakeSetArmPositionCommand(Constants.PICK_UP_CORAL_POSITION)); // Outake
 
-    // new Trigger(() -> controller.getRawButton(Constants.RIGHT_TRIGGER_BUTTON)).whileTrue(new IntakeAlgaeFromFloorCommand()); // Outake
+    new Trigger(() -> controller.getRawButton(Constants.RIGHT_TRIGGER_BUTTON)).whileTrue(new IntakePickUpAlgaeCommand()); // Outake
     // new Trigger(() -> controller.getRawButton(Constants.LEFT_TRIGGER_BUTTON)).whileTrue(new IntakeCoralFromFloorCommand()); // Outake
 
     // Coral Elevator Controls //

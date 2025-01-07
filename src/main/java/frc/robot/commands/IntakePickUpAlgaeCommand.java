@@ -7,18 +7,17 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.commands.intake.IntakeCommand;
-import frc.robot.commands.intake.IntakeSetPosition;
-import frc.robot.commands.intake.IntakeToggleCommand;
+import frc.robot.commands.intake.IntakeReverseCommand;
+import frc.robot.commands.intake.IntakeSetArmPositionCommand;
 import frc.robot.subsystems.IntakeSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class IntakeCoralFromFloorCommand extends Command {
+public class IntakePickUpAlgaeCommand extends Command {
   boolean isFinished;
   double previousCurrent;
   IntakeSubsystem m_intakeSubsystem;
-  /** Creates a new IntakeAlgaeFromFloorCommand. */
-  public IntakeCoralFromFloorCommand() {
+  /** Creates a new IntakePickUpAlgaeCommand. */
+  public IntakePickUpAlgaeCommand() {
     m_intakeSubsystem = Robot.m_intakeSubsystem;
     addRequirements(m_intakeSubsystem);
     previousCurrent = 9999.0;
@@ -28,24 +27,24 @@ public class IntakeCoralFromFloorCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    (new IntakeCommand(false)).schedule();
-    (new IntakeToggleCommand(Constants.PICK_UP_CORAL_ID)).schedule();
+    (new IntakeReverseCommand(false)).schedule();
+    (new IntakeSetArmPositionCommand(Constants.PICK_UP_ALGAE_POSITION)).schedule();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(m_intakeSubsystem.getIntakeMotorCurrent() > previousCurrent+2*m_intakeSubsystem.getIntakeMotorCurrentStandardDeviation()) {
-      (new IntakeSetPosition(Constants.HOLD_CORAL_ID)).schedule();
+    if(m_intakeSubsystem.getIntakeCurrentSum() > previousCurrent) {
+      (new IntakeSetArmPositionCommand(Constants.HOLD_ALGAE_POSITION)).schedule();
       isFinished = true;
     }
-    previousCurrent = m_intakeSubsystem.getIntakeMotorCurrent();
+    previousCurrent = m_intakeSubsystem.getIntakeCurrentSum();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    (new IntakeSetPosition(Constants.HOLD_CORAL_ID)).schedule();
+    (new IntakeSetArmPositionCommand(Constants.HOLD_ALGAE_POSITION)).schedule();
   }
 
   // Returns true when the command should end.

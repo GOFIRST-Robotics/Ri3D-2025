@@ -31,7 +31,7 @@ public class IntakeManualControl extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_intakeSubsystem.deployIntake(Constants.DEPLOY_SPEED*controller.getRawAxis(Constants.LEFT_VERTICAL_JOYSTICK_AXIS)-m_intakeSubsystem.getIntakeGravityControl());
+    m_intakeSubsystem.setIntakeArmPower(Constants.DEPLOY_SPEED*controller.getRawAxis(Constants.LEFT_VERTICAL_JOYSTICK_AXIS)-m_intakeSubsystem.getIntakeGravityControl());
   }
 
   // Returns true when the command should end.
