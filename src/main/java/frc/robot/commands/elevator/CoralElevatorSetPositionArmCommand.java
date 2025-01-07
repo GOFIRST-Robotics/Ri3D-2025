@@ -33,10 +33,10 @@ public class CoralElevatorSetPositionArmCommand extends Command {
     this.error = position - m_subsystem.getPositionArm();
     double output = kP * error;
 
-    if (Math.abs(output) > 0.2) { // Max power we want to allow // TODO: Tune this
+    if (Math.abs(output) > 0.2) { // Max power we want to allow
       output = Math.copySign(0.2, output);
     }
-    if (Math.abs(output) < 0.05) { // Min power we want to allow // TODO: Tune this
+    if (Math.abs(output) < 0.05) { // Min power we want to allow
       output = Math.copySign(0.05, output);
     }
 

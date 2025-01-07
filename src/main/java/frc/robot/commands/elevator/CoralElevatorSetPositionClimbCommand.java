@@ -14,8 +14,8 @@ public class CoralElevatorSetPositionClimbCommand extends Command {
   private double error_1;
   private double position_2;
   private double error_2;
-  private double kP = 0.05; // TODO: Tune this
-  private double goalThreshold = 3; // TODO: Tune this
+  private double kP = 0.05;
+  private double goalThreshold = 3;
 
   /** causes Climb motor to move to given position */
   public CoralElevatorSetPositionClimbCommand(double position_1, double position_2) {
@@ -39,17 +39,17 @@ public class CoralElevatorSetPositionClimbCommand extends Command {
     this.error_2 = position_2 - m_subsystem.getPositionClimbTwo();
     double output_2 = kP * error_2;
 
-    if (Math.abs(output_1) > 0.2) { // Max power we want to allow // TODO: Tune this
+    if (Math.abs(output_1) > 0.2) { // Max power we want to allow
       output_1 = Math.copySign(0.2, output_1);
     }
-    if (Math.abs(output_1) < 0.05) { // Min power we want to allow // TODO: Tune this
+    if (Math.abs(output_1) < 0.05) { // Min power we want to allow
       output_1 = Math.copySign(0.05, output_1);
     }
 
-    if (Math.abs(output_2) > 0.2) { // Max power we want to allow // TODO: Tune this
+    if (Math.abs(output_2) > 0.2) { // Max power we want to allow
       output_2 = Math.copySign(0.2, output_2);
     }
-    if (Math.abs(output_2) < 0.05) { // Min power we want to allow // TODO: Tune this
+    if (Math.abs(output_2) < 0.05) { // Min power we want to allow
       output_2 = Math.copySign(0.05, output_2);
     }
 
