@@ -7,8 +7,8 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.commands.intake.IntakeReverseCommand;
 import frc.robot.commands.intake.IntakeSetArmPositionCommand;
+import frc.robot.commands.intake.IntakeSetBarPowerCommand;
 import frc.robot.subsystems.IntakeSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
@@ -27,7 +27,7 @@ public class IntakePickUpAlgaeCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    (new IntakeReverseCommand(false)).schedule();
+    (new IntakeSetBarPowerCommand(Constants.INTAKE_BAR_SPEED)).schedule();
     (new IntakeSetArmPositionCommand(Constants.PICK_UP_ALGAE_POSITION)).schedule();
   }
 
