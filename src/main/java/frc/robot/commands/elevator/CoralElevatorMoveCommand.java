@@ -29,7 +29,8 @@ public class CoralElevatorMoveCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.setSpeedClimb(-Constants.ARM_SPEED*controller.getRawAxis(Constants.LEFT_VERTICAL_JOYSTICK_AXIS), -Constants.ARM_SPEED*controller.getRawAxis(Constants.LEFT_VERTICAL_JOYSTICK_AXIS));
+    m_subsystem.setSpeedClimb(-Constants.ARM_SPEED*controller.getRawAxis(Constants.RIGHT_VERTICAL_JOYSTICK_AXIS), -Constants.ARM_SPEED*controller.getRawAxis(Constants.RIGHT_VERTICAL_JOYSTICK_AXIS));
+    m_subsystem.setSpeedArm(-m_subsystem.getGravityControl());
   }
 
   // Called once the command ends or is interrupted.

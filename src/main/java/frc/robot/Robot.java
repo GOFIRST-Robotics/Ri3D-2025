@@ -20,15 +20,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.autonomous.example_basic_auto.Drive1MeterAuto;
 import frc.robot.commands.autonomous.example_basic_auto.SquareAutonomous;
-import frc.robot.commands.elevator.CoralElevatorArmMoveCommand;
 import frc.robot.commands.elevator.CoralElevatorMoveCommand;
-import frc.robot.commands.elevator.CoralElevatorNeutralCommand;
-import frc.robot.commands.elevator.CoralElevatorScoreHighCommand;
-import frc.robot.commands.elevator.CoralElevatorScoreLowCommand;
-import frc.robot.commands.elevator.CoralElevatorScoreMidCommand;
-import frc.robot.commands.elevator.CoralElevatorSetPositionBoth;
+import frc.robot.commands.elevator.CoralElevatorSetPositionArmCommand;
 import frc.robot.commands.elevator.CoralElevatorWheelMoveCommand;
-import frc.robot.commands.intake.IntakeManualControl;
 import frc.robot.commands.intake.IntakePickUpAlgaeCommand;
 import frc.robot.commands.intake.IntakePickUpCoralCommand;
 import frc.robot.commands.intake.IntakeSetArmPositionCommand;
@@ -202,9 +196,9 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putNumber("Controller: Right Joystick Y Axis", controller.getRawAxis(Constants.RIGHT_VERTICAL_JOYSTICK_AXIS));
 
   if (Robot.manualDriveControl) {
-    double ySpeed = controller.getRawAxis(Constants.RIGHT_VERTICAL_JOYSTICK_AXIS);
-    double xSpeed = -controller.getRawAxis(Constants.RIGHT_HORIZONTAL_JOYSTICK_AXIS);
-    double zSpeed = -controller.getRawAxis(Constants.LEFT_HORIZONTAL_JOYSTICK_AXIS);
+    double ySpeed = controller.getRawAxis(Constants.LEFT_VERTICAL_JOYSTICK_AXIS);
+    double xSpeed = -controller.getRawAxis(Constants.LEFT_HORIZONTAL_JOYSTICK_AXIS);
+    double zSpeed = -controller.getRawAxis(Constants.RIGHT_HORIZONTAL_JOYSTICK_AXIS);
     
     // Speed limits
     ySpeed = Math.max(Math.min(ySpeed, 0.4), -0.4);
@@ -266,10 +260,10 @@ public class Robot extends TimedRobot {
     // Coral Elevator Controls //
     new Trigger(() -> controller.getRawButton(Constants.PREV_BUTTON)).whileTrue(new CoralElevatorWheelMoveCommand(-Constants.WHEEL_SPEED)); // Wheel Outtake Manual
     new Trigger(() -> controller.getRawButton(Constants.START_BUTTON)).whileTrue(new CoralElevatorWheelMoveCommand(Constants.WHEEL_SPEED)); // Weel Intake Manual
-    new POVButton(controller, 0).whileTrue(new CoralElevatorScoreMidCommand()); // Score Mid Preset
-    new POVButton(controller, 90).whileTrue(new CoralElevatorScoreHighCommand()); // Score High Preset
-    new POVButton(controller, 180).whileTrue(new CoralElevatorNeutralCommand()); //  Intake Preset
-    new POVButton(controller, 270).whileTrue(new CoralElevatorScoreLowCommand()); // Score Low Preset
+    new POVButton(controller, 0).onTrue(new CoralElevatorSetPositionArmCommand(m_CoralElevatorSubsystem.arm_max)); // Score Mid Preset
+    new POVButton(controller, 90).onTrue(new CoralElevatorSetPositionArmCommand(21.33)); // Score High Preset
+    new POVButton(controller, 180).onTrue(new CoralElevatorSetPositionArmCommand(29.4)); //  Intake Preset
+    new POVButton(controller, 270).onTrue(new CoralElevatorSetPositionArmCommand(m_CoralElevatorSubsystem.arm_max)); // Score Low Preset
 
     // Test Controls //
     new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).whileTrue(new DriveToTrackedTargetCommand(1)); // Track AprilTag

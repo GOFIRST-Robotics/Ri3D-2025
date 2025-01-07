@@ -29,7 +29,7 @@ public class CoralElevatorSubsystem extends SubsystemBase {
 
     // Coral Elevator limiters
     public double climb_max_1 = 167.2;
-    public double climb_max_2 = 247.8;
+    public double climb_max_2 = 251;
     public double climb_min_1 = 0;
     public double climb_min_2 = 0;
     public double arm_max = 39.4;
