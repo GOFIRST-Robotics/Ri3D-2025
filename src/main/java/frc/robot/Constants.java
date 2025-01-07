@@ -109,6 +109,7 @@ public final class Constants {
     
     public static final double INTAKE_ARM_MAX_POWER = 0.1;
     public static final double INTAKE_ARM_MIN_POWER = 0.05;
+    public static final double INTAKE_ARM_kP = 0.015;
 
     public static final double INTAKE_DEPLOY_LIMIT = 53;
     public static final double INTAKE_RETURN_LIMIT = 0;

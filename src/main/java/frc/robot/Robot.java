@@ -29,6 +29,7 @@ import frc.robot.commands.elevator.CoralElevatorScoreMidCommand;
 import frc.robot.commands.elevator.CoralElevatorWheelMoveCommand;
 import frc.robot.commands.intake.IntakeManualControl;
 import frc.robot.commands.intake.IntakePickUpAlgaeCommand;
+import frc.robot.commands.intake.IntakePickUpCoralCommand;
 import frc.robot.commands.intake.IntakeSetArmPositionCommand;
 import frc.robot.commands.intake.IntakeSetBarPowerCommand;
 import frc.robot.subsystems.CoralElevatorSubsystem;
@@ -254,8 +255,8 @@ public class Robot extends TimedRobot {
     new Trigger(() -> controller.getRawButton(Constants.Y_BUTTON)).onTrue(new IntakeSetArmPositionCommand(Constants.PICK_UP_ALGAE_POSITION)); // Outake depending on position
     new Trigger(() -> controller.getRawButton(Constants.X_BUTTON)).onTrue(new IntakeSetArmPositionCommand(Constants.PICK_UP_CORAL_POSITION)); // Outake
 
-    new Trigger(() -> controller.getRawButton(Constants.RIGHT_TRIGGER_BUTTON)).whileTrue(new IntakePickUpAlgaeCommand()); // Outake
-    // new Trigger(() -> controller.getRawButton(Constants.LEFT_TRIGGER_BUTTON)).whileTrue(new IntakeCoralFromFloorCommand()); // Outake
+    new Trigger(() -> controller.getRawButton(Constants.RIGHT_TRIGGER_BUTTON)).whileTrue(new IntakePickUpAlgaeCommand()); // Pick Up Algae
+    new Trigger(() -> controller.getRawButton(Constants.LEFT_TRIGGER_BUTTON)).whileTrue(new IntakePickUpCoralCommand()); // Pick Up Coral
 
     // Coral Elevator Controls //
     new Trigger(() -> controller.getRawButton(Constants.RIGHT_TRIGGER_BUTTON)).whileTrue(new CoralElevatorMoveCommand(Constants.ELEVATOR_UP)); // Elevator Up Manual

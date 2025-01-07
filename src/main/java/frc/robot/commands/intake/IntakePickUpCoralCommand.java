@@ -9,44 +9,48 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.subsystems.IntakeSubsystem;
 
-/* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class IntakeSetArmPositionCommand extends Command {
-  IntakeSubsystem m_IntakeSubsystem = Robot.m_intakeSubsystem;
-  private double goalPosition;
+public class IntakePickUpCoralCommand extends Command {
+
+  private IntakeSubsystem m_intakeSubsystem;
+
+  private double goalPosition = Constants.PICK_UP_CORAL_POSITION;
   private double positionError;
   private double kP = Constants.INTAKE_ARM_kP;
 
-  /** Creates a new IntakeSetPosition. */
-  public IntakeSetArmPositionCommand(double position) {
+  /** Creates a new IntakePickUpCoralCommand. */
+  public IntakePickUpCoralCommand() {
+    m_intakeSubsystem = Robot.m_intakeSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_IntakeSubsystem);
-    goalPosition = position;
+    addRequirements(m_intakeSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_intakeSubsystem.setIntakeBarPower(Constants.INTAKE_BAR_SPEED);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.positionError = goalPosition - m_IntakeSubsystem.getIntakeArmPosition();
+    this.positionError = goalPosition - m_intakeSubsystem.getIntakeArmPosition();
 
     double positionValue = kP * positionError;
     double power = Math.copySign(Math.min(Math.max(Math.abs(positionValue), Constants.INTAKE_ARM_MIN_POWER), Constants.INTAKE_ARM_MAX_POWER), positionValue); // Limit the power
 
-    m_IntakeSubsystem.setIntakeArmPower(power - m_IntakeSubsystem.getIntakeGravityControl());
-  }
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return Math.abs(positionError) <= 0.5;
+    m_intakeSubsystem.setIntakeArmPower(power - m_intakeSubsystem.getIntakeGravityControl());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_IntakeSubsystem.stopIntakeArm();
+    m_intakeSubsystem.stopIntakeBar();
+    (new IntakeSetArmPositionCommand(Constants.HOLD_CORAL_POSITION)).schedule();
+  }
+
+  // Returns true when the command should end.
+  @Override
+  public boolean isFinished() {
+    return false;
   }
 }
