@@ -14,14 +14,12 @@ import frc.robot.subsystems.IntakeSubsystem;
 public class IntakeManualControl extends Command {
   public static final GenericHID controller = new GenericHID(Constants.CONTROLLER_USB_PORT_ID); // Instantiate our controller at the specified USB port
   private IntakeSubsystem m_intakeSubsystem;
-  boolean reverse;
 
   /** Creates a new IntakeCommand. */
-  public IntakeManualControl(boolean reverse) {
+  public IntakeManualControl() {
     // Use addRequirements() here to declare subsystem dependencies.
     m_intakeSubsystem = Robot.m_intakeSubsystem;
     addRequirements(m_intakeSubsystem);
-    this.reverse = reverse;
   }
 
   // Called when the command is initially scheduled.

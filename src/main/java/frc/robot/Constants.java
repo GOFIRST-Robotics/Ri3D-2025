@@ -93,12 +93,12 @@ public final class Constants {
     // Coral Elevator Constants //
     public static final boolean ELEVATOR_STAGE_1_INVERT = true;
     public static final boolean ELEVATOR_STAGE_2_INVERT = true;
-    public static final boolean ELEVATOR_WHEEL_INVERT = false;
-    public static final boolean ELEVATOR_ARM_INVERT = false;
+    public static final boolean ELEVATOR_WHEEL_INVERT = true;
+    public static final boolean ELEVATOR_ARM_INVERT = true;
     public static final double ELEVATOR_SPEED = 0.2;
-    public static final double ARM_SPEED = 0.2; // TODO: Tune this
-    public static final double WHEEL_SPEED = 0.8;
-    public static final double GRAVITY_CONST = 0.02; // TODO: Figure this out by measuring the power it takes to stay level
+    public static final double ARM_SPEED = 0.2;
+    public static final double WHEEL_SPEED = 0.6;
+    public static final double ARM_GRAVITY_CONST = -0.02;
     public static final int ELEVATOR_ROTATIONS_PER_INCH = 13; // Number of rotations elevator climb motor must complete to raise/lower elevator by one inch
 
     // Intake Constants //
@@ -117,7 +117,7 @@ public final class Constants {
     public static final double INTAKE_BAR_SPEED = 0.8;
 
     public static final double PICK_UP_ALGAE_POSITION = 33;
-    public static final double HOLD_ALGAE_POSITION = 4.86;
+    public static final double HOLD_ALGAE_POSITION = 2.0;
     public static final double PICK_UP_CORAL_POSITION = 53;
     public static final double HOLD_CORAL_POSITION = 24;
     
