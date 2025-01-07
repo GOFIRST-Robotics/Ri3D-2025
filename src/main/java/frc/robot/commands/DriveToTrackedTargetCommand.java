@@ -78,9 +78,9 @@ public class DriveToTrackedTargetCommand extends Command {
       distance = Math.sqrt(Math.pow(leftError, 2) + Math.pow(forwardError, 2)); // Stores the distance
 
       // Calcualte powers of driving to fix error
-      double rotationValue = -(Math.copySign(Math.PI, rotationalError) - rotationalError) * Constants.TRACKED_TAG_ROATION_KP;
-      double forwardValue = -forwardError * Constants.TRACKED_TAG_FORWARD_DRIVE_KP;
-      double leftValue = leftError * Constants.TRACKED_TAG_STRAFE_DRIVE_KP;
+      double rotationValue = (Math.copySign(Math.PI, rotationalError) - rotationalError) * Constants.TRACKED_TAG_ROATION_KP;
+      double forwardValue = forwardError * Constants.TRACKED_TAG_FORWARD_DRIVE_KP;
+      double leftValue = -leftError * Constants.TRACKED_TAG_STRAFE_DRIVE_KP;
       
       // Limit the power of the drive rate directions 
       double rotationDriveRate = limit(rotationValue, Constants.APRILTAG_ROTATION_POWER_CAP);
