@@ -1,7 +1,7 @@
 // Author: UMN Robotics Ri3D
 // Last Updated: January 2025
 
-package frc.robot.commands;
+package frc.robot.commands.autonomous.basic_path_planning;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
