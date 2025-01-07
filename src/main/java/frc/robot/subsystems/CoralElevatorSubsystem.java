@@ -4,8 +4,8 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants;
-import frc.robot.commands.CoralElevatorSetPositionClimbCommand;
-import frc.robot.commands.CoralElevatorSetPositionArmCommand;
+import frc.robot.commands.elevator.CoralElevatorSetPositionArmCommand;
+import frc.robot.commands.elevator.CoralElevatorSetPositionClimbCommand;
 
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;

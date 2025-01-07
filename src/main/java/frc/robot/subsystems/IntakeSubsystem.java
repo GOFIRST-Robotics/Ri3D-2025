@@ -4,7 +4,7 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants;
-import frc.robot.commands.IntakeSetPosition;
+import frc.robot.commands.intake.IntakeSetPosition;
 
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;

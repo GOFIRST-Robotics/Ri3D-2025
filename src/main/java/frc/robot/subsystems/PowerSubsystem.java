@@ -13,7 +13,7 @@ public class PowerSubsystem extends SubsystemBase {
 
   private PowerDistribution m_revPDH;
 
-  private double voltage, temperatureCelsius, totalCurrent, totalPower, totalEnergy;
+  private double voltage, /*temperatureCelsius,*/ totalCurrent, totalPower/*, totalEnergy*/;
   private double currentsArray[]; 
   private boolean switchedChannelState;
 
@@ -30,10 +30,10 @@ public class PowerSubsystem extends SubsystemBase {
   @Override
     public void periodic() {
         voltage = m_revPDH.getVoltage();
-        temperatureCelsius = m_revPDH.getTemperature(); // Retrieves the temperature of the PDP, in degrees Celsius.
         totalCurrent = m_revPDH.getTotalCurrent(); // Get the total current of all channels.
         totalPower = m_revPDH.getTotalPower(); // Get the total power of all channels, the bus voltage multiplied by the current with the units Watts.
-        totalEnergy = m_revPDH.getTotalEnergy(); // Get the total energy of all channels with units Joules.
+        // temperatureCelsius = m_revPDH.getTemperature(); // Retrieves the temperature of the PDP, in degrees Celsius.
+        // totalEnergy = m_revPDH.getTotalEnergy(); // Get the total energy of all channels with units Joules.
 
         SmartDashboard.putNumber("Voltage", voltage);
         SmartDashboard.putNumber("Total Current", totalCurrent);

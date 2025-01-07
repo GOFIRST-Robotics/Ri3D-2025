@@ -1,7 +1,7 @@
 // Author: UMN Robotics Ri3D
 // Last Updated: January 2025
 
-package frc.robot.commands;
+package frc.robot.commands.vision;
 
 import org.photonvision.targeting.PhotonTrackedTarget;
 
