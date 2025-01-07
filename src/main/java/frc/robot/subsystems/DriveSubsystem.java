@@ -10,11 +10,16 @@ import com.studica.frc.AHRS;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -71,6 +76,8 @@ public class DriveSubsystem extends SubsystemBase {
 
 	private static MecanumDrive robotDrive;
 	private static MecanumDriveOdometry odometry;
+
+	private RobotConfig config;
   
   /** Subsystem for controlling the Drivetrain and accessing the NavX Gyroscope */
   public DriveSubsystem() {
@@ -107,6 +114,38 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Right Back Power Pct", 0);
 
     System.out.println("NavX Connected: " + navx.isConnected());
+
+	
+
+
+
+	try {
+		config = RobotConfig.fromGUISettings();
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+
+	AutoBuilder.configure(
+	this::getPose, 
+	this::resetOdometry, 
+	() -> { return kDriveKinematics.toChassisSpeeds(getWheelSpeeds()); }, 
+	(speeds, feedforward) -> {
+		MecanumDriveWheelSpeeds wheelSpeeds = kDriveKinematics.toWheelSpeeds(speeds);
+		setWheelSpeeds(wheelSpeeds);	
+	},
+	new PPHolonomicDriveController(
+		new PIDConstants(3, 0.0, 0.0), 
+		new PIDConstants(3, 0.0, 0.0)
+	),
+	config,
+	() -> {
+		var alliance = DriverStation.getAlliance();
+		if (alliance.isPresent()) {
+			return alliance.get() == DriverStation.Alliance.Red;
+		}
+		return false;
+	},
+	this);
   }
 
 	private void configureSparkMAX(SparkMax max, boolean reverse) {
@@ -222,9 +261,6 @@ public class DriveSubsystem extends SubsystemBase {
 	}
 
 	public void setWheelSpeeds(MecanumDriveWheelSpeeds speeds) {
-		speeds.frontRightMetersPerSecond *= -1;
-		speeds.rearLeftMetersPerSecond *= -1;
-
 		final double frontLeftFeedforward = kFeedforward.calculate(speeds.frontLeftMetersPerSecond);
 		final double frontRightFeedforward = kFeedforward.calculate(speeds.frontRightMetersPerSecond);
 		final double backLeftFeedforward = kFeedforward.calculate(speeds.rearLeftMetersPerSecond);
