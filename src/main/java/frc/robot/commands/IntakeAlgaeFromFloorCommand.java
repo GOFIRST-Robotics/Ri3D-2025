@@ -42,7 +42,9 @@ public class IntakeAlgaeFromFloorCommand extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    (new IntakeSetPosition(Constants.HOLD_ALGAE_ID)).schedule();
+  }
 
   // Returns true when the command should end.
   @Override

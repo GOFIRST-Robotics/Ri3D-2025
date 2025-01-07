@@ -106,9 +106,9 @@ public final class Constants {
 
     // Intake Constants //
     public static final double INTAKE_LIFT_GEAR_RATIO = 7*7*48/29;
-    public static final double INTAKE_DEPLOY_LIMIT = 0.25*INTAKE_LIFT_GEAR_RATIO;
-    public static final double INTAKE_RETURN_LIMIT = 0;
-    public static final double DEPLOY_SPEED = 0.1;
+    public static final double INTAKE_DEPLOY_LIMIT = 0.25*INTAKE_LIFT_GEAR_RATIO; // TODO: NEEDS TUNING
+    public static final double INTAKE_RETURN_LIMIT = 0; // TODO: NEEDS TUNING
+    public static final double DEPLOY_SPEED = 0.1; // TODO: NEEDS TUNING
     public static final boolean INTAKE_BAR_INVERT = false;
     public static final double INTAKE_BAR_SPEED = 0.8; // TODO: NEEDS TUNING
     public static final int HOLD_ALGAE_ID = 0;
@@ -116,11 +116,11 @@ public final class Constants {
     public static final int PICK_UP_ALGAE_ID = 2;
     public static final int PICK_UP_CORAL_ID = 3;
     /* angle estimates: Pick up algae ~45, Pick up Coral ~90, Hold coral ~45, Hold algae ~10 */
-    public static final double PICK_UP_ALGAE = 0.12*INTAKE_LIFT_GEAR_RATIO; 
-    public static final double HOLD_CORAL = 0.125*INTAKE_LIFT_GEAR_RATIO; 
-    public static final double PICK_UP_CORAL = 0.25*INTAKE_LIFT_GEAR_RATIO; 
-    public static final double HOLD_ALGAE = 0.02*INTAKE_LIFT_GEAR_RATIO;
-    public static final double GRAVITY_RESISTANCE = 0.3; // TODO: NEEDS TUNING
+    public static final double PICK_UP_ALGAE = 0.12*INTAKE_LIFT_GEAR_RATIO;
+    public static final double HOLD_CORAL = 0.125*INTAKE_LIFT_GEAR_RATIO; // TODO: NEEDS TUNING
+    public static final double PICK_UP_CORAL = 0.25*INTAKE_LIFT_GEAR_RATIO; // TODO: NEEDS TUNING
+    public static final double HOLD_ALGAE = 0.02*INTAKE_LIFT_GEAR_RATIO; // TODO: NEEDS TUNING
+    public static final double GRAVITY_RESISTANCE = 0; // TODO: NEEDS TUNING
 
     // REV PH Channels //
     // Example: public static final int EXTENSION_SOLENOID_ID = 0;
