@@ -4,57 +4,52 @@
 
 package frc.robot.commands.intake;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.subsystems.IntakeSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class IntakeSetPosition extends Command {
-
-  IntakeSubsystem intake = Robot.m_intakeSubsystem;
-  private double goal;
-  private double error;
-  private double kP = 0.015;
+public class IntakeSetArmPositionCommand extends Command {
+  IntakeSubsystem m_IntakeSubsystem = Robot.m_intakeSubsystem;
+  private double goalPosition;
+  private double positionError;
+  private double kP = Constants.INTAKE_ARM_kP;
 
   /** Creates a new IntakeSetPosition. */
-  public IntakeSetPosition(double position) {
+  public IntakeSetArmPositionCommand(double position) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(intake);
-    goal = position;
+    addRequirements(m_IntakeSubsystem);
+    goalPosition = position;
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    // -
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.error = goal - intake.getPosition();
-    double output = kP * error;
-    if (Math.abs(output) > 0.1) { // Maximum power we want to allow
-      output = Math.copySign(0.1, output);
+    this.positionError = goalPosition - m_IntakeSubsystem.getIntakeArmPosition();
+    double output = kP * positionError;
+    if (Math.abs(output) > 0.25) { // Maximum power we want to allow
+      output = Math.copySign(0.25, output);
     }
     if (Math.abs(output) < 0.05) { // Minimum power we want to allow
       output = Math.copySign(0.05, output);
     }
-    intake.deployIntake(output-intake.getIntakeGravityControl());
-    SmartDashboard.putNumber("OUTPUT", output);
+    m_IntakeSubsystem.setIntakeArmPower(output-m_IntakeSubsystem.getIntakeGravityControl());
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(error) <= 0.5;
+    return Math.abs(positionError) <= 0.5;
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    // Stop the motor
-    intake.deployIntake(0);
+    m_IntakeSubsystem.stopIntakeArm();
   }
 }

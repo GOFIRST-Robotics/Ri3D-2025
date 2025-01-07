@@ -46,11 +46,11 @@ public final class Constants {
     public static final int LEFT_REAR_DRIVE_MOTOR_ID = 11; // NEO motor
     public static final int RIGHT_REAR_DRIVE_MOTOR_ID = 4; // NEO motor
     public static final int INTAKE_BAR_MOTOR_ID = 9; // NEO 550 motor
-    public static final int DEPLOY_INTAKE_MOTOR_ID = 6; // NEO motor
-    public static final int ELEVATOR_STAGE_1_MOTOR_ID = 7; // NEO motor
-    public static final int ELEVATOR_STAGE_2_MOTOR_ID = 8; // NEO 550 motor
-    public static final int END_EFFECTOR_WHEEL_MOTOR_ID = 10; // NEO 550 motor
-    public static final int END_EFFECTOR_ARM_MOTOR_ID = 12; // NEO 550 motor
+    public static final int INTAKE_ARM_MOTOR_ID = 6; // NEO motor
+    public static final int ELEVATOR_STAGE_1_MOTOR_ID = 12; // NEO motor
+    public static final int ELEVATOR_STAGE_2_MOTOR_ID = 10; // NEO 550 motor
+    public static final int END_EFFECTOR_WHEEL_MOTOR_ID = 7; // NEO 550 motor
+    public static final int END_EFFECTOR_ARM_MOTOR_ID = 8; // NEO 550 motor
 
     // Servo IDs //
     public static final int ELEVATOR_DROP_MOTOR_ID = 0;
@@ -91,36 +91,36 @@ public final class Constants {
 	public static final double kMAX_ANGULAR_ACCELERATION_RADIANS_PER_SECOND_SQUARED = 2*Math.PI;
 
     // Coral Elevator Constants //
-    public static final boolean ELEVATOR_INVERT = false;
-    public static final double ELEVATOR_SPEED = 0.25; // TODO: Tune this
-    public static final double ARM_SPEED = 0.25; // TODO: Tune this
-    public static final double WHEEL_SPEED = 0.8; // TODO: Tune this
-    public static final boolean ELEVATOR_UP = true;
-    public static final boolean ELEVATOR_DOWN = false;
-    public static final boolean ARM_UP = true;
-    public static final boolean ARM_DOWN = false;
-    public static final boolean WHEEL_INTAKE = true;
-    public static final boolean WHEEL_OUTTAKE = false;
-    public static final double ARM_GRAVITY_CONST = 0.02; // TODO: Figure this out by measuring the power it takes to stay level
+    public static final boolean ELEVATOR_STAGE_1_INVERT = true;
+    public static final boolean ELEVATOR_STAGE_2_INVERT = true;
+    public static final boolean ELEVATOR_WHEEL_INVERT = true;
+    public static final boolean ELEVATOR_ARM_INVERT = true;
+    public static final double ELEVATOR_SPEED = 0.2;
+    public static final double ARM_SPEED = 0.2;
+    public static final double WHEEL_SPEED = 0.6;
+    public static final double ARM_GRAVITY_CONST = -0.03;
     public static final int ELEVATOR_ROTATIONS_PER_INCH = 13; // Number of rotations elevator climb motor must complete to raise/lower elevator by one inch
 
     // Intake Constants //
     public static final double INTAKE_LIFT_GEAR_RATIO = 3*7*7*48/29;
-    public static final double INTAKE_DEPLOY_LIMIT = 53;
+    
+    public static final double INTAKE_ARM_MAX_POWER = 0.1;
+    public static final double INTAKE_ARM_MIN_POWER = 0.05;
+    public static final double INTAKE_ARM_kP = 0.025;
+
+    public static final double INTAKE_DEPLOY_LIMIT = 51;
     public static final double INTAKE_RETURN_LIMIT = 0;
+
+    public static final boolean INTAKE_ARM_INVERT = true;
     public static final double DEPLOY_SPEED = 0.1;
     public static final boolean INTAKE_BAR_INVERT = false;
-    public static final boolean INTAKE_DEPLOY_INVERT = true;
     public static final double INTAKE_BAR_SPEED = 0.8;
-    public static final int HOLD_ALGAE_ID = 0;
-    public static final int HOLD_CORAL_ID = 1;
-    public static final int PICK_UP_ALGAE_ID = 2;
-    public static final int PICK_UP_CORAL_ID = 3;
-    /* angle estimates: Pick up algae ~45, Pick up Coral ~90, Hold coral ~45, Hold algae ~10 */
-    public static final double PICK_UP_ALGAE = 33;
-    public static final double HOLD_CORAL = 24;
-    public static final double PICK_UP_CORAL = 53;
-    public static final double HOLD_ALGAE = 4.86;
+
+    public static final double PICK_UP_ALGAE_POSITION = 33;
+    public static final double HOLD_ALGAE_POSITION = 2.0;
+    public static final double PICK_UP_CORAL_POSITION = 53;
+    public static final double HOLD_CORAL_POSITION = 24;
+    
     public static final double GRAVITY_RESISTANCE = 0.05;
 
     // REV PH Channels //
