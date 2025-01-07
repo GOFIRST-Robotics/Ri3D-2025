@@ -31,11 +31,14 @@ public class IntakeSetArmPositionCommand extends Command {
   @Override
   public void execute() {
     this.positionError = goalPosition - m_IntakeSubsystem.getIntakeArmPosition();
-
-    double positionValue = kP * positionError;
-    double power = Math.copySign(Math.min(Math.max(Math.abs(positionValue), Constants.INTAKE_ARM_MIN_POWER), Constants.INTAKE_ARM_MAX_POWER), positionValue); // Limit the power
-
-    m_IntakeSubsystem.setIntakeArmPower(power - m_IntakeSubsystem.getIntakeGravityControl());
+    double output = kP * positionError;
+    if (Math.abs(output) > 0.1) { // Maximum power we want to allow
+      output = Math.copySign(0.1, output);
+    }
+    if (Math.abs(output) < 0.05) { // Minimum power we want to allow
+      output = Math.copySign(0.05, output);
+    }
+    m_IntakeSubsystem.setIntakeArmPower(output-m_IntakeSubsystem.getIntakeGravityControl());
   }
 
   // Returns true when the command should end.
