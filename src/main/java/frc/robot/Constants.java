@@ -66,10 +66,10 @@ public final class Constants {
 
     // Drivetrain Constants //
     public static final double DRIVE_GEAR_RATIO = 10;
-    public static final boolean REVERSE_LEFT_FRONT_MOTOR = true;
-    public static final boolean REVERSE_LEFT_BACK_MOTOR = true;
-    public static final boolean REVERSE_RIGHT_FRONT_MOTOR = false;
-    public static final boolean REVERSE_RIGHT_BACK_MOTOR = false;
+    public static final boolean REVERSE_LEFT_FRONT_MOTOR = false;
+    public static final boolean REVERSE_LEFT_BACK_MOTOR = false;
+    public static final boolean REVERSE_RIGHT_FRONT_MOTOR = true;
+    public static final boolean REVERSE_RIGHT_BACK_MOTOR = true;
     public static final double GYRO_TURN_KP = 0.007; // P (Proportional) constant of a PID loop
     public static final double TRACKED_TAG_ROATION_KP = 0.3; // P (Proportional) constant of a PID loop
     public static final double TRACKED_TAG_FORWARD_DRIVE_KP = 0.4; // P (Proportional) constant of a PID loop

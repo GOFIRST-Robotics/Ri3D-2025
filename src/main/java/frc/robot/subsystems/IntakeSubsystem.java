@@ -34,8 +34,6 @@ public class IntakeSubsystem extends SubsystemBase {
     m_DeployIntake = new SparkMax(Constants.DEPLOY_INTAKE_MOTOR_ID, MotorType.kBrushless);
     // Configure the Spark MAX motor controllers using the new 2025 method
     configureSparkMAX(m_IntakeBar, Constants.INTAKE_BAR_INVERT);
-
-    SmartDashboard.putNumber("Intake Bar Speed", Constants.INTAKE_BAR_SPEED);
   }
 
   private void configureSparkMAX(SparkMax max, boolean reverse) {
@@ -83,7 +81,8 @@ public class IntakeSubsystem extends SubsystemBase {
     IntakeBarRPM = m_IntakeBar.getEncoder().getVelocity();
     DeployPosition = m_DeployIntake.getEncoder().getPosition();
 
-    // Add intake bar RPM readings to SmartDashboard for the sake of data logging
+    // Add intake bar RPM and deploy position readings to SmartDashboard for the sake of data logging
     SmartDashboard.putNumber("Intake Bar RPM", IntakeBarRPM);
+    SmartDashboard.putNumber("Intake Deploy Position", DeployPosition);
   }
 }

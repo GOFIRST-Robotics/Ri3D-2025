@@ -11,6 +11,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.Optional;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.FollowPathCommand;
+import com.pathplanner.lib.commands.PathfindingCommand;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -19,8 +23,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.commands.autonomous.Drive1MeterAuto;
-import frc.robot.commands.autonomous.SquareAutonomous;
 import frc.robot.commands.CoralElevatorArmMoveCommand;
 import frc.robot.commands.CoralElevatorHorizontalIntakeCommand;
 import frc.robot.commands.CoralElevatorMoveCommand;
@@ -76,15 +78,18 @@ public class Robot extends TimedRobot {
 
     // Add our Autonomous Routines to the chooser //
 		autonChooser.setDefaultOption("Do Nothing", new InstantCommand());
-    autonChooser.addOption("Drive 1 Meter", new Drive1MeterAuto());
-    autonChooser.addOption("Square Autonomous", new SquareAutonomous());
+    autonChooser.addOption("Test Auto", AutoBuilder.buildAuto("Test Auto"));
 		SmartDashboard.putData("Auto Mode", autonChooser);
 
     // Zero the gyroscope and reset the drive encoders
     m_driveSubsystem.zeroGyro();
     m_driveSubsystem.resetEncoders();
     m_LEDSubsystem.setLEDMode(LEDMode.DISABLED);
+    
     SmartDashboard.putData("m_field", m_Field);
+
+    FollowPathCommand.warmupCommand().schedule();
+    PathfindingCommand.warmupCommand().schedule();
   }
 
   /**

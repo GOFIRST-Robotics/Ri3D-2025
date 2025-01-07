@@ -10,13 +10,17 @@ import com.studica.frc.AHRS;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.controller.PIDController;
@@ -49,10 +53,6 @@ public class DriveSubsystem extends SubsystemBase {
 
 	double leftFrontPositionZero, rightFrontPositionZero, leftBackPositionZero, rightBackPositionZero = 0.0;
 
-	// Create a chooser for selecting the desired drive speed scale
-	SendableChooser<Double> driveScaleChooser = new SendableChooser<Double>();
-	public double CURRENT_DRIVE_SCALE;
-
 	private static final double TRACK_WIDTH = Constants.TRACK_WIDTH;
 	private static final double WHEEL_BASE = Constants.WHEEL_BASE;
 
@@ -71,6 +71,8 @@ public class DriveSubsystem extends SubsystemBase {
 
 	private static MecanumDrive robotDrive;
 	private static MecanumDriveOdometry odometry;
+
+	private RobotConfig config;
   
   /** Subsystem for controlling the Drivetrain and accessing the NavX Gyroscope */
   public DriveSubsystem() {
@@ -94,24 +96,44 @@ public class DriveSubsystem extends SubsystemBase {
     rightFilter = new SlewRateLimiter(5);
     leftFilter = new SlewRateLimiter(5);
 
-    // Drive Scale Options //
-    driveScaleChooser.addOption("100%", 1.0);
-    driveScaleChooser.setDefaultOption("75%", 0.75);
-    driveScaleChooser.addOption("50%", 0.5);
-    driveScaleChooser.addOption("25%", 0.25);
-
-    SmartDashboard.putData("Drivetrain Speed", driveScaleChooser);
-    SmartDashboard.putNumber("Left Front Power Pct", 0);
-    SmartDashboard.putNumber("Left Back Power Pct", 0);
-    SmartDashboard.putNumber("Right Front Power Pct", 0);
-    SmartDashboard.putNumber("Right Back Power Pct", 0);
+	configureAutoBuilder();
 
     System.out.println("NavX Connected: " + navx.isConnected());
   }
 
+  private void configureAutoBuilder() {
+	try {
+		config = RobotConfig.fromGUISettings();
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+
+	AutoBuilder.configure(
+	this::getPose, 
+	this::resetOdometry, 
+	() -> { return kDriveKinematics.toChassisSpeeds(getWheelSpeeds()); }, 
+	(speeds, feedforward) -> {
+		MecanumDriveWheelSpeeds wheelSpeeds = kDriveKinematics.toWheelSpeeds(speeds);
+		setWheelSpeeds(wheelSpeeds);	
+	},
+	new PPHolonomicDriveController(
+		new PIDConstants(3, 0.0, 0.0), 
+		new PIDConstants(3, 0.0, 0.0)
+	),
+	config,
+	() -> {
+		var alliance = DriverStation.getAlliance();
+		if (alliance.isPresent()) {
+			return alliance.get() == DriverStation.Alliance.Red;
+		}
+		return false;
+	},
+	this);
+  }
+
 	private void configureSparkMAX(SparkMax max, boolean reverse) {
 		SparkMaxConfig config = new SparkMaxConfig();
-		config.inverted(reverse).idleMode(IdleMode.kBrake);
+		config.inverted(reverse).idleMode(IdleMode.kCoast);
 		max.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 	}
 
@@ -164,7 +186,10 @@ public class DriveSubsystem extends SubsystemBase {
 		// Update the odometry in the periodic block
 		odometry.update(this.getRotation2d(), getWheelPositions());
 
-		CURRENT_DRIVE_SCALE = driveScaleChooser.getSelected(); // Continously update the desired drive scale
+		SmartDashboard.putNumber("Left Front Position", getLeftFrontPosition());
+		SmartDashboard.putNumber("Right Front Position", getRightFrontPosition());
+		SmartDashboard.putNumber("Left Back Position", getLeftBackPosition());
+		SmartDashboard.putNumber("Right Back Position", getRightBackPosition());
 	}
 
 	//Not Field-Oriented (aka Robot-Oriented)
@@ -181,10 +206,10 @@ public class DriveSubsystem extends SubsystemBase {
 		return (m_leftFrontMotor.getEncoder().getPosition() / DRIVE_GEAR_RATIO - leftFrontPositionZero); // DRIVE_GEAR_RATIO : 1 is our drivetrain gear ratio
 	}
 	public double getRightFrontPosition() { // Position is returned in units of revolutions
-		return -1 * (m_rightFrontMotor.getEncoder().getPosition() / DRIVE_GEAR_RATIO - rightFrontPositionZero); // DRIVE_GEAR_RATIO : 1 is our drivetrain gear ratio
+		return (m_rightFrontMotor.getEncoder().getPosition() / DRIVE_GEAR_RATIO - rightFrontPositionZero); // DRIVE_GEAR_RATIO : 1 is our drivetrain gear ratio
 	}
 	public double getLeftBackPosition() { // Position is returned in units of revolutions
-		return -1 * (m_leftBackMotor.getEncoder().getPosition() / DRIVE_GEAR_RATIO - leftBackPositionZero); // DRIVE_GEAR_RATIO : 1 is our drivetrain gear ratio
+		return (m_leftBackMotor.getEncoder().getPosition() / DRIVE_GEAR_RATIO - leftBackPositionZero); // DRIVE_GEAR_RATIO : 1 is our drivetrain gear ratio
 	}
 	public double getRightBackPosition() { // Position is returned in units of revolutions
 		return (m_rightBackMotor.getEncoder().getPosition() / DRIVE_GEAR_RATIO - rightBackPositionZero); // DRIVE_GEAR_RATIO : 1 is our drivetrain gear ratio
@@ -193,10 +218,10 @@ public class DriveSubsystem extends SubsystemBase {
 		return (m_leftFrontMotor.getEncoder().getVelocity() / DRIVE_GEAR_RATIO); // DRIVE_GEAR_RATIO : 1 is our drivetrain gear ratio
 	}
 	public double getRightFrontSpeed() { // Speed is returned in units of RPM (revolutions per minute)
-		return -1 * (m_rightFrontMotor.getEncoder().getVelocity() / DRIVE_GEAR_RATIO); // DRIVE_GEAR_RATIO : 1 is our drivetrain gear ratio
+		return (m_rightFrontMotor.getEncoder().getVelocity() / DRIVE_GEAR_RATIO); // DRIVE_GEAR_RATIO : 1 is our drivetrain gear ratio
 	}
 	public double getLeftBackSpeed() { // Speed is returned in units of RPM (revolutions per minute)
-		return -1 * (m_leftBackMotor.getEncoder().getVelocity() / DRIVE_GEAR_RATIO); // DRIVE_GEAR_RATIO : 1 is our drivetrain gear ratio
+		return (m_leftBackMotor.getEncoder().getVelocity() / DRIVE_GEAR_RATIO); // DRIVE_GEAR_RATIO : 1 is our drivetrain gear ratio
 	}
 	public double getRightBackSpeed() { // Speed is returned in units of RPM (revolutions per minute)
 		return (m_rightBackMotor.getEncoder().getVelocity() / DRIVE_GEAR_RATIO); // DRIVE_GEAR_RATIO : 1 is our drivetrain gear ratio
@@ -222,9 +247,6 @@ public class DriveSubsystem extends SubsystemBase {
 	}
 
 	public void setWheelSpeeds(MecanumDriveWheelSpeeds speeds) {
-		speeds.frontRightMetersPerSecond *= -1;
-		speeds.rearLeftMetersPerSecond *= -1;
-
 		final double frontLeftFeedforward = kFeedforward.calculate(speeds.frontLeftMetersPerSecond);
 		final double frontRightFeedforward = kFeedforward.calculate(speeds.frontRightMetersPerSecond);
 		final double backLeftFeedforward = kFeedforward.calculate(speeds.rearLeftMetersPerSecond);
