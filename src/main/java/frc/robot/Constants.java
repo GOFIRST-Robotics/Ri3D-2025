@@ -120,7 +120,7 @@ public final class Constants {
     public static final double PICK_UP_ALGAE = 33;
     public static final double HOLD_CORAL = 24;
     public static final double PICK_UP_CORAL = 53;
-    public static final double HOLD_ALGAE = 0.02*INTAKE_LIFT_GEAR_RATIO; // TODO: NEEDS TUNING
+    public static final double HOLD_ALGAE = 4.86;
     public static final double GRAVITY_RESISTANCE = 0.05;
 
     // REV PH Channels //
