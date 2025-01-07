@@ -18,19 +18,18 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.commands.IntakeManualControl;
 import frc.robot.commands.autonomous.example_basic_auto.Drive1MeterAuto;
 import frc.robot.commands.autonomous.example_basic_auto.SquareAutonomous;
 import frc.robot.commands.elevator.CoralElevatorArmMoveCommand;
 import frc.robot.commands.elevator.CoralElevatorHorizontalIntakeCommand;
 import frc.robot.commands.elevator.CoralElevatorMoveCommand;
-import frc.robot.commands.elevator.CoralElevatorNeutralCommand;
 import frc.robot.commands.elevator.CoralElevatorScoreHighCommand;
 import frc.robot.commands.elevator.CoralElevatorScoreLowCommand;
 import frc.robot.commands.elevator.CoralElevatorScoreMidCommand;
 import frc.robot.commands.elevator.CoralElevatorWheelMoveCommand;
 import frc.robot.commands.intake.IntakeCommand;
 import frc.robot.commands.intake.IntakeToggleCommand;
-import frc.robot.commands.vision.DriveToTrackedTargetCommand;
 import frc.robot.subsystems.CoralElevatorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -176,6 +175,8 @@ public class Robot extends TimedRobot {
     // Set Elevator/End Effector inital preset
     m_CoralElevatorSubsystem.climbNeutral();
     m_CoralElevatorSubsystem.armInitial();
+
+    m_intakeSubsystem.setDefaultCommand(new IntakeManualControl(false));
   }
 
   /** This function is called periodically during operator control. */
@@ -244,23 +245,31 @@ public class Robot extends TimedRobot {
    */
   private void configureButtonBindings() {
     // Intake Controls //
-    new Trigger(() -> controller.getRawButton(Constants.RIGHT_BUMPER)).whileTrue(new IntakeCommand()); // Intake or Outake depending on position
-    new Trigger(() -> controller.getRawButton(Constants.B_BUTTON)).onTrue(new IntakeToggleCommand()); // Deploy or Retract Intake
+    new Trigger(() -> controller.getRawButton(Constants.RIGHT_BUMPER)).whileTrue(new IntakeCommand(false)); // Intake 
+    new Trigger(() -> controller.getRawButton(Constants.LEFT_BUMPER)).whileTrue(new IntakeCommand(true)); // Outake 
+
+    new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).onTrue(new IntakeToggleCommand(Constants.HOLD_ALGAE_ID)); // Outake depending on position
+    new Trigger(() -> controller.getRawButton(Constants.B_BUTTON)).onTrue(new IntakeToggleCommand(Constants.HOLD_CORAL_ID)); // Outake depending on position
+    new Trigger(() -> controller.getRawButton(Constants.Y_BUTTON)).onTrue(new IntakeToggleCommand(Constants.PICK_UP_ALGAE_ID)); // Outake depending on position
+    new Trigger(() -> controller.getRawButton(Constants.X_BUTTON)).onTrue(new IntakeToggleCommand(Constants.PICK_UP_CORAL_ID)); // Outake
+
+    // new Trigger(() -> controller.getRawButton(Constants.RIGHT_TRIGGER_BUTTON)).whileTrue(new IntakeAlgaeFromFloorCommand()); // Outake
+    // new Trigger(() -> controller.getRawButton(Constants.LEFT_TRIGGER_BUTTON)).whileTrue(new IntakeCoralFromFloorCommand()); // Outake
 
     // Coral Elevator Controls //
-    new Trigger(() -> controller.getRawButton(Constants.RIGHT_BUMPER)).whileTrue(new CoralElevatorMoveCommand(Constants.ELEVATOR_UP)); // Elevator Up Manual
-    new Trigger(() -> controller.getRawButton(Constants.LEFT_BUMPER)).whileTrue(new CoralElevatorMoveCommand(Constants.ELEVATOR_DOWN)); // Elevator Down Manual
+    new Trigger(() -> controller.getRawButton(Constants.RIGHT_TRIGGER_BUTTON)).whileTrue(new CoralElevatorMoveCommand(Constants.ELEVATOR_UP)); // Elevator Up Manual
+    new Trigger(() -> controller.getRawButton(Constants.LEFT_TRIGGER_BUTTON)).whileTrue(new CoralElevatorMoveCommand(Constants.ELEVATOR_DOWN)); // Elevator Down Manual
     new Trigger(() -> controller.getRawButton(Constants.RIGHT_STICK_BUTTON)).whileTrue(new CoralElevatorArmMoveCommand(Constants.ARM_UP)); // Arm Up Manual
     new Trigger(() -> controller.getRawButton(Constants.LEFT_STICK_BUTTON)).whileTrue(new CoralElevatorArmMoveCommand(Constants.ARM_DOWN)); // Arm Down Manual
     new Trigger(() -> controller.getRawButton(Constants.PREV_BUTTON)).whileTrue(new CoralElevatorWheelMoveCommand(Constants.WHEEL_OUTTAKE)); // Wheel Outtake Manual
     new Trigger(() -> controller.getRawButton(Constants.START_BUTTON)).whileTrue(new CoralElevatorWheelMoveCommand(Constants.WHEEL_INTAKE)); // Weel Intake Manual
-    new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).onTrue(new CoralElevatorNeutralCommand()); // Neutral Preset
+    // new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).onTrue(new CoralElevatorNeutralCommand()); // Neutral Preset
     new POVButton(controller, 0).whileTrue(new CoralElevatorScoreMidCommand()); // Score Mid Preset
     new POVButton(controller, 90).whileTrue(new CoralElevatorScoreHighCommand()); // Score High Preset
     new POVButton(controller, 180).whileTrue(new CoralElevatorHorizontalIntakeCommand()); // Horizontal Intake Preset
     new POVButton(controller, 270).whileTrue(new CoralElevatorScoreLowCommand()); // Score Low Preset
 
     // Test Controls //
-    new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).whileTrue(new DriveToTrackedTargetCommand(0.75)); // Track AprilTag
+    // new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).whileTrue(new DriveToTrackedTargetCommand(0.75)); // Track AprilTag
   }
 }

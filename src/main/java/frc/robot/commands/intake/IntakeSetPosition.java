@@ -4,6 +4,7 @@
 
 package frc.robot.commands.intake;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -14,7 +15,7 @@ public class IntakeSetPosition extends Command {
   IntakeSubsystem intake = Robot.m_intakeSubsystem;
   private double goal;
   private double error;
-  private double kP = 0.1; // TODO: This will need to be tuned
+  private double kP = 0.015;
 
   /** Creates a new IntakeSetPosition. */
   public IntakeSetPosition(double position) {
@@ -34,25 +35,26 @@ public class IntakeSetPosition extends Command {
   public void execute() {
     this.error = goal - intake.getPosition();
     double output = kP * error;
-    if (Math.abs(output) > 0.5) { // Maximum power we want to allow // TODO: Tune this
-      output = Math.copySign(0.5, output);
+    if (Math.abs(output) > 0.1) { // Maximum power we want to allow
+      output = Math.copySign(0.1, output);
     }
-    if (Math.abs(output) < 0.05) { // Minimum power we want to allow  // TODO: Tune this
+    if (Math.abs(output) < 0.05) { // Minimum power we want to allow
       output = Math.copySign(0.05, output);
     }
-    intake.setPower(output);
+    intake.deployIntake(output-intake.getIntakeGravityControl());
+    SmartDashboard.putNumber("OUTPUT", output);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false; // Command will never finish (we don't want it to unless interrupted)
+    return Math.abs(error) <= 0.5;
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     // Stop the motor
-    intake.setPower(0);
+    intake.deployIntake(0);
   }
 }
