@@ -29,7 +29,7 @@ public class CoralElevatorArmMoveCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.setSpeedArm(this.direction ? -1 * Constants.ARM_SPEED : Constants.ARM_SPEED);
+    m_subsystem.setSpeedArm(this.direction ? -1 * Constants.ARM_SPEED : Constants.ARM_SPEED - m_subsystem.getGravityControl());
   }
 
   // Called once the command ends or is interrupted.
