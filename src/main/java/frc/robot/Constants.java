@@ -45,10 +45,10 @@ public final class Constants {
     public static final int RIGHT_FRONT_DRIVE_MOTOR_ID = 2; // NEO motor
     public static final int LEFT_REAR_DRIVE_MOTOR_ID = 11; // NEO motor
     public static final int RIGHT_REAR_DRIVE_MOTOR_ID = 4; // NEO motor
-    public static final int INTAKE_BAR_MOTOR_ID = 8; // NEO 550 motor
+    public static final int INTAKE_BAR_MOTOR_ID = 9; // NEO 550 motor
     public static final int DEPLOY_INTAKE_MOTOR_ID = 6; // NEO motor
     public static final int ELEVATOR_STAGE_1_MOTOR_ID = 7; // NEO motor
-    public static final int ELEVATOR_STAGE_2_MOTOR_ID = 9; // NEO 550 motor
+    public static final int ELEVATOR_STAGE_2_MOTOR_ID = 8; // NEO 550 motor
     public static final int END_EFFECTOR_WHEEL_MOTOR_ID = 10; // NEO 550 motor
     public static final int END_EFFECTOR_ARM_MOTOR_ID = 12; // NEO 550 motor
 
@@ -105,9 +105,9 @@ public final class Constants {
     public static final int ELEVATOR_ROTATIONS_PER_INCH = 13; // Number of rotations elevator climb motor must complete to raise/lower elevator by one inch
 
     // Intake Constants //
-    public static final double INTAKE_LIFT_GEAR_RATIO = 7*7*48/29;
+    public static final double INTAKE_LIFT_GEAR_RATIO = 3*7*7*48/29;
     public static final double INTAKE_DEPLOY_LIMIT = 0.25*INTAKE_LIFT_GEAR_RATIO; // TODO: NEEDS TUNING
-    public static final double INTAKE_RETURN_LIMIT = 0; // TODO: NEEDS TUNING
+    public static final double INTAKE_RETURN_LIMIT = 0;
     public static final double DEPLOY_SPEED = 0.1; // TODO: NEEDS TUNING
     public static final boolean INTAKE_BAR_INVERT = false;
     public static final double INTAKE_BAR_SPEED = 0.8; // TODO: NEEDS TUNING
