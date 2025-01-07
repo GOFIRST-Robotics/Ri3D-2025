@@ -45,7 +45,7 @@ public class IntakePickUpAlgaeCommand extends Command {
   @Override
   public void end(boolean interrupted) {
     m_intakeSubsystem.stopIntakeBar();
-    (new IntakeSetArmPositionCommand(Constants.HOLD_ALGAE_POSITION)).schedule();
+    m_intakeSubsystem.stopIntakeArm();
   }
 
   // Returns true when the command should end.

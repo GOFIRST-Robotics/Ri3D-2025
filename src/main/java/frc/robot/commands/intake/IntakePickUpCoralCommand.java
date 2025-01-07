@@ -45,7 +45,7 @@ public class IntakePickUpCoralCommand extends Command {
   @Override
   public void end(boolean interrupted) {
     m_intakeSubsystem.stopIntakeBar();
-    (new IntakeSetArmPositionCommand(Constants.HOLD_CORAL_POSITION)).schedule();
+    m_intakeSubsystem.stopIntakeArm();
   }
 
   // Returns true when the command should end.

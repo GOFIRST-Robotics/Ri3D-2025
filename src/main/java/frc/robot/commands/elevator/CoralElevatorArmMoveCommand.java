@@ -4,18 +4,17 @@
 package frc.robot.commands.elevator;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.subsystems.CoralElevatorSubsystem;
 
 // This Command causes the Arm to tilt up or down
 public class CoralElevatorArmMoveCommand extends Command {
   private CoralElevatorSubsystem m_subsystem;
-  private boolean direction;
+  private double power;
 
   /** Start command, causes Arm to tilt up. Prev command, causes Arm to tilt down */
-  public CoralElevatorArmMoveCommand(boolean direction) {
-    this.direction = direction;
+  public CoralElevatorArmMoveCommand(double power) {
+    this.power = power;
     m_subsystem = Robot.m_CoralElevatorSubsystem;
     addRequirements(m_subsystem);
   }
@@ -29,7 +28,7 @@ public class CoralElevatorArmMoveCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.setSpeedArm(this.direction ? -1 * Constants.ARM_SPEED : Constants.ARM_SPEED);
+    m_subsystem.setSpeedArm(power);
   }
 
   // Called once the command ends or is interrupted.

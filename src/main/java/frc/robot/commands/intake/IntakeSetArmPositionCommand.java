@@ -32,8 +32,8 @@ public class IntakeSetArmPositionCommand extends Command {
   public void execute() {
     this.positionError = goalPosition - m_IntakeSubsystem.getIntakeArmPosition();
     double output = kP * positionError;
-    if (Math.abs(output) > 0.1) { // Maximum power we want to allow
-      output = Math.copySign(0.1, output);
+    if (Math.abs(output) > 0.25) { // Maximum power we want to allow
+      output = Math.copySign(0.25, output);
     }
     if (Math.abs(output) < 0.05) { // Minimum power we want to allow
       output = Math.copySign(0.05, output);

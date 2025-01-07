@@ -4,18 +4,17 @@
 package frc.robot.commands.elevator;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.subsystems.CoralElevatorSubsystem;
 
 // This Command causes the elevator to ascend or descend
 public class CoralElevatorWheelMoveCommand extends Command {
   private CoralElevatorSubsystem m_subsystem;
-  private boolean direction;
+  private double power;
 
   /** Right Bumper command, causes Elevator to ascend. Left Bumper command, causes Elevator to descend */
-  public CoralElevatorWheelMoveCommand(boolean direction) {
-    this.direction = direction;
+  public CoralElevatorWheelMoveCommand(double power) {
+    this.power = power;
     m_subsystem = Robot.m_CoralElevatorSubsystem;
     addRequirements(m_subsystem);
   }
@@ -23,7 +22,7 @@ public class CoralElevatorWheelMoveCommand extends Command {
   // Called once when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_subsystem.setSpeedWheel(this.direction ? -1 * Constants.WHEEL_SPEED : Constants.WHEEL_SPEED);
+    m_subsystem.setSpeedWheel(power);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
