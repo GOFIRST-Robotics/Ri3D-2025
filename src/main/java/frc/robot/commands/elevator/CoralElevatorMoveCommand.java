@@ -3,6 +3,7 @@
 
 package frc.robot.commands.elevator;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -10,12 +11,11 @@ import frc.robot.subsystems.CoralElevatorSubsystem;
 
 // This Command causes the elevator to ascend or descend
 public class CoralElevatorMoveCommand extends Command {
+  public static final GenericHID controller = new GenericHID(Constants.CONTROLLER_USB_PORT_ID); // Instantiate our controller at the specified USB port
   private CoralElevatorSubsystem m_subsystem;
-  private boolean direction;
 
   /** Right Bumper command, causes Elevator to ascend. Left Bumper command, causes Elevator to descend */
-  public CoralElevatorMoveCommand(boolean direction) {
-    this.direction = direction;
+  public CoralElevatorMoveCommand() {
     m_subsystem = Robot.m_CoralElevatorSubsystem;
     addRequirements(m_subsystem);
   }
@@ -29,7 +29,8 @@ public class CoralElevatorMoveCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.setSpeedClimb(this.direction ? -1 * Constants.ELEVATOR_SPEED : Constants.ELEVATOR_SPEED, this.direction ? -1 * Constants.ELEVATOR_SPEED : Constants.ELEVATOR_SPEED);
+    m_subsystem.setSpeedClimb(-Constants.ARM_SPEED*controller.getRawAxis(Constants.RIGHT_VERTICAL_JOYSTICK_AXIS), -Constants.ARM_SPEED*controller.getRawAxis(Constants.RIGHT_VERTICAL_JOYSTICK_AXIS));
+    m_subsystem.setSpeedArm(-m_subsystem.getGravityControl());
   }
 
   // Called once the command ends or is interrupted.
@@ -41,6 +42,6 @@ public class CoralElevatorMoveCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false; // Command will never finish (we don't want it to)
+    return false;
   }
 }
