@@ -117,8 +117,8 @@ public class DriveSubsystem extends SubsystemBase {
 		setWheelSpeeds(wheelSpeeds);	
 	},
 	new PPHolonomicDriveController(
-		new PIDConstants(3, 0.0, 0.0), 
-		new PIDConstants(3, 0.0, 0.0)
+		new PIDConstants(5, 0.0, 0.0), 
+		new PIDConstants(5, 0.0, 0.0)
 	),
 	config,
 	() -> {
