@@ -113,6 +113,7 @@ public final class Constants {
     public static final double INTAKE_DEPLOY_LIMIT = 53;
     public static final double INTAKE_RETURN_LIMIT = 0;
 
+    public static final boolean INTAKE_ARM_INVERT = true;
     public static final double DEPLOY_SPEED = 0.1;
     public static final boolean INTAKE_BAR_INVERT = false;
     public static final double INTAKE_BAR_SPEED = 0.8;

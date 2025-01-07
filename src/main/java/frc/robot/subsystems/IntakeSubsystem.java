@@ -35,7 +35,7 @@ public class IntakeSubsystem extends SubsystemBase {
     
     // Configure the Spark MAX motor controllers using the new 2025 method
     configureSparkMAX(m_IntakeBar, Constants.INTAKE_BAR_INVERT);
-    configureSparkMAX(m_IntakeArm, false);
+    configureSparkMAX(m_IntakeArm, Constants.INTAKE_ARM_INVERT);
     SmartDashboard.putNumber("Intake Bar Speed", Constants.INTAKE_BAR_SPEED);
   }
 
