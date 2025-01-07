@@ -22,8 +22,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.commands.autonomous.Drive1MeterAuto;
-import frc.robot.commands.autonomous.SquareAutonomous;
 import frc.robot.commands.CoralElevatorArmMoveCommand;
 import frc.robot.commands.CoralElevatorHorizontalIntakeCommand;
 import frc.robot.commands.CoralElevatorMoveCommand;

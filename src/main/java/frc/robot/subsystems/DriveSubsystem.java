@@ -107,6 +107,8 @@ public class DriveSubsystem extends SubsystemBase {
     driveScaleChooser.addOption("50%", 0.5);
     driveScaleChooser.addOption("25%", 0.25);
 
+	configureAutoBuilder();
+
     SmartDashboard.putData("Drivetrain Speed", driveScaleChooser);
     SmartDashboard.putNumber("Left Front Power Pct", 0);
     SmartDashboard.putNumber("Left Back Power Pct", 0);
@@ -114,11 +116,9 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Right Back Power Pct", 0);
 
     System.out.println("NavX Connected: " + navx.isConnected());
+  }
 
-	
-
-
-
+  private void configureAutoBuilder() {
 	try {
 		config = RobotConfig.fromGUISettings();
 	} catch (Exception e) {
@@ -150,7 +150,7 @@ public class DriveSubsystem extends SubsystemBase {
 
 	private void configureSparkMAX(SparkMax max, boolean reverse) {
 		SparkMaxConfig config = new SparkMaxConfig();
-		config.inverted(reverse).idleMode(IdleMode.kBrake);
+		config.inverted(reverse).idleMode(IdleMode.kCoast);
 		max.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 	}
 
@@ -220,10 +220,10 @@ public class DriveSubsystem extends SubsystemBase {
 		return (m_leftFrontMotor.getEncoder().getPosition() / DRIVE_GEAR_RATIO - leftFrontPositionZero); // DRIVE_GEAR_RATIO : 1 is our drivetrain gear ratio
 	}
 	public double getRightFrontPosition() { // Position is returned in units of revolutions
-		return -1 * (m_rightFrontMotor.getEncoder().getPosition() / DRIVE_GEAR_RATIO - rightFrontPositionZero); // DRIVE_GEAR_RATIO : 1 is our drivetrain gear ratio
+		return (m_rightFrontMotor.getEncoder().getPosition() / DRIVE_GEAR_RATIO - rightFrontPositionZero); // DRIVE_GEAR_RATIO : 1 is our drivetrain gear ratio
 	}
 	public double getLeftBackPosition() { // Position is returned in units of revolutions
-		return -1 * (m_leftBackMotor.getEncoder().getPosition() / DRIVE_GEAR_RATIO - leftBackPositionZero); // DRIVE_GEAR_RATIO : 1 is our drivetrain gear ratio
+		return (m_leftBackMotor.getEncoder().getPosition() / DRIVE_GEAR_RATIO - leftBackPositionZero); // DRIVE_GEAR_RATIO : 1 is our drivetrain gear ratio
 	}
 	public double getRightBackPosition() { // Position is returned in units of revolutions
 		return (m_rightBackMotor.getEncoder().getPosition() / DRIVE_GEAR_RATIO - rightBackPositionZero); // DRIVE_GEAR_RATIO : 1 is our drivetrain gear ratio
@@ -232,10 +232,10 @@ public class DriveSubsystem extends SubsystemBase {
 		return (m_leftFrontMotor.getEncoder().getVelocity() / DRIVE_GEAR_RATIO); // DRIVE_GEAR_RATIO : 1 is our drivetrain gear ratio
 	}
 	public double getRightFrontSpeed() { // Speed is returned in units of RPM (revolutions per minute)
-		return -1 * (m_rightFrontMotor.getEncoder().getVelocity() / DRIVE_GEAR_RATIO); // DRIVE_GEAR_RATIO : 1 is our drivetrain gear ratio
+		return (m_rightFrontMotor.getEncoder().getVelocity() / DRIVE_GEAR_RATIO); // DRIVE_GEAR_RATIO : 1 is our drivetrain gear ratio
 	}
 	public double getLeftBackSpeed() { // Speed is returned in units of RPM (revolutions per minute)
-		return -1 * (m_leftBackMotor.getEncoder().getVelocity() / DRIVE_GEAR_RATIO); // DRIVE_GEAR_RATIO : 1 is our drivetrain gear ratio
+		return (m_leftBackMotor.getEncoder().getVelocity() / DRIVE_GEAR_RATIO); // DRIVE_GEAR_RATIO : 1 is our drivetrain gear ratio
 	}
 	public double getRightBackSpeed() { // Speed is returned in units of RPM (revolutions per minute)
 		return (m_rightBackMotor.getEncoder().getVelocity() / DRIVE_GEAR_RATIO); // DRIVE_GEAR_RATIO : 1 is our drivetrain gear ratio
