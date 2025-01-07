@@ -25,12 +25,14 @@ public class CoralElevatorSubsystem extends SubsystemBase {
     private SparkMax m_elevator_arm; // NEO motor
     private SparkMax m_elevator_wheel; // NEO motor
 
+    private double gravityControl;
+
     // Coral Elevator limiters
-    public double climb_max_1 = 3; // TODO: TUNE THIS LIMIT
-    public double climb_max_2 = 3; // TODO: TUNE THIS LIMIT
+    public double climb_max_1 = 10; // TODO: TUNE THIS LIMIT
+    public double climb_max_2 = 10; // TODO: TUNE THIS LIMIT
     public double climb_min_1 = 0; // TODO: TUNE THIS LIMIT
     public double climb_min_2 = 0; // TODO: TUNE THIS LIMIT
-    public double arm_max = 3; // TODO: TUNE THIS LIMIT
+    public double arm_max = 10; // TODO: TUNE THIS LIMIT
     public double arm_min = 0; // TODO: TUNE THIS LIMIT
 
     /** Subsystem for controlling the coral elevator */
@@ -78,6 +80,10 @@ public class CoralElevatorSubsystem extends SubsystemBase {
   /* Set climb motor one speed to 0 */
   public void stopClimbOne() {
     setSpeedClimbOne(0);
+  }
+
+  public double getGravityControl() {
+    return gravityControl;
   }
 
   /* Sets speed of the elevator CLimb motor two. Inbuilt limiters */
@@ -215,6 +221,8 @@ public class CoralElevatorSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    gravityControl = Math.sin(getPositionArm() / 70 * 2 * Math.PI)*Constants.ARM_GRAVITY_CONST;
+
     // Publish encoder values to SmartDashboard
     SmartDashboard.putNumber("Elevator Climb 1 Position", getPositionClimbOne());
     SmartDashboard.putNumber("Elevator Climb 2 Position", getPositionClimbTwo());

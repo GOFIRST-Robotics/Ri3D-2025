@@ -35,20 +35,19 @@ public class CoralElevatorSetPositionArmCommand extends Command {
     double output = kP * error;
 
     if(error > m_subsystem.getPositionArm()) { // Gravity compensator
-      output += Constants.GRAVITY_CONST;
+      output += Constants.ARM_GRAVITY_CONST;
     } else if (error < m_subsystem.getPositionArm()){
-      output -= Constants.GRAVITY_CONST;
+      output -= Constants.ARM_GRAVITY_CONST;
     }
 
-    if (Math.abs(output) > 0.75) { // Max power we want to allow // TODO: Tune this
-      output = Math.copySign(0.75, output);
+    if (Math.abs(output) > 0.5) { // Max power we want to allow // TODO: Tune this
+      output = Math.copySign(0.5, output);
     }
-
     if (Math.abs(output) < 0.05) { // Min power we want to allow // TODO: Tune this
       output = Math.copySign(0.05, output);
     }
 
-    m_subsystem.setSpeedArm(output);
+    m_subsystem.setSpeedArm(output-m_subsystem.getGravityControl());
   }
 
   // Called once the command ends or is interrupted.
@@ -60,6 +59,6 @@ public class CoralElevatorSetPositionArmCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false; // Command will never finish (we don't want it to unless interrupted)
+    return Math.abs(error) <= 0.5;
   }
 }
