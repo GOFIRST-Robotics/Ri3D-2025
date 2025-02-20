@@ -13,6 +13,7 @@ import frc.robot.subsystems.CoralElevatorSubsystem;
 public class CoralElevatorMoveCommand extends Command {
   public static final GenericHID controller = new GenericHID(Constants.CONTROLLER_USB_PORT_ID); // Instantiate our controller at the specified USB port
   private CoralElevatorSubsystem m_subsystem;
+  private double controllerInput=0;
 
   /** Right Bumper command, causes Elevator to ascend. Left Bumper command, causes Elevator to descend */
   public CoralElevatorMoveCommand() {
@@ -29,7 +30,11 @@ public class CoralElevatorMoveCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.setSpeedClimb(-Constants.ARM_SPEED*controller.getRawAxis(Constants.RIGHT_VERTICAL_JOYSTICK_AXIS), -Constants.ARM_SPEED*controller.getRawAxis(Constants.RIGHT_VERTICAL_JOYSTICK_AXIS));
+    controllerInput = controller.getRawAxis(Constants.RIGHT_VERTICAL_JOYSTICK_AXIS);
+    if(Math.abs(controllerInput)<.9){
+      controllerInput=0;
+    }
+    m_subsystem.setSpeedClimb(-Constants.ARM_SPEED*controllerInput, -Constants.ARM_SPEED*controllerInput);
     m_subsystem.setSpeedArm(-m_subsystem.getGravityControl());
   }
 

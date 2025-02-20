@@ -104,9 +104,9 @@ public final class Constants {
     // Intake Constants //
     public static final double INTAKE_LIFT_GEAR_RATIO = 3*7*7*48/29;
     
-    public static final double INTAKE_ARM_MAX_POWER = 0.1;
+    public static final double INTAKE_ARM_MAX_POWER = 0.25;
     public static final double INTAKE_ARM_MIN_POWER = 0.05;
-    public static final double INTAKE_ARM_kP = 0.025;
+    public static final double INTAKE_ARM_kP = 0.035;
 
     public static final double INTAKE_DEPLOY_LIMIT = 51;
     public static final double INTAKE_RETURN_LIMIT = 0;

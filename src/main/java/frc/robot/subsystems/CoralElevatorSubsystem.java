@@ -23,7 +23,7 @@ public class CoralElevatorSubsystem extends SubsystemBase {
     private SparkMax m_elevator_climb_1; // NEO motor
     private SparkMax m_elevator_climb_2; // NEO motor
     private SparkMax m_elevator_arm; // NEO motor
-    private SparkMax m_elevator_wheel; // NEO motor
+    // private SparkMax m_elevator_wheel; // NEO motor
 
     private double gravityControl;
 
@@ -44,8 +44,8 @@ public class CoralElevatorSubsystem extends SubsystemBase {
       configureSparkMAX(m_elevator_climb_2, Constants.ELEVATOR_STAGE_2_INVERT);
       m_elevator_arm = new SparkMax(Constants.END_EFFECTOR_ARM_MOTOR_ID, MotorType.kBrushless);
       configureSparkMAX(m_elevator_arm, Constants.ELEVATOR_ARM_INVERT);
-      m_elevator_wheel = new SparkMax(Constants.END_EFFECTOR_WHEEL_MOTOR_ID, MotorType.kBrushless);
-      configureSparkMAX(m_elevator_wheel, Constants.ELEVATOR_WHEEL_INVERT);
+      // m_elevator_wheel = new SparkMax(Constants.END_EFFECTOR_WHEEL_MOTOR_ID, MotorType.kBrushless);
+      // configureSparkMAX(m_elevator_wheel, Constants.ELEVATOR_WHEEL_INVERT);
   
       // Put the default speed on SmartDashboard if needed
       // SmartDashboard.putNumber("Elevator Speed", Constants.ELEVATOR_SPEED);
@@ -197,21 +197,21 @@ public class CoralElevatorSubsystem extends SubsystemBase {
   // Wheel Motor Methods ------------------------------------------------------------------------------
 
   /* Sets speed of the elevator Wheel motor */
-  public void setSpeedWheel(double speed) {
-    // Spark Max set() method
-    m_elevator_wheel.set(speed);
-  }
+  // public void setSpeedWheel(double speed) {
+  //   // Spark Max set() method
+  //   m_elevator_wheel.set(speed);
+  // }
 
   /* Gets position of the elevator Wheel motor */
-  public double getPositionWheel() {
-    // Spark Max getEncoder().getPosition() method
-    return m_elevator_wheel.getEncoder().getPosition();
-  }
+  // public double getPositionWheel() {
+  //   // Spark Max getEncoder().getPosition() method
+  //   return m_elevator_wheel.getEncoder().getPosition();
+  // }
 
   /* Sets speed of wheel motor to 0 */
-  public void stopWheel() {
-    setSpeedWheel(0);
-  }
+  // public void stopWheel() {
+  //   setSpeedWheel(0);
+  // }
 
   @Override
   public void periodic() {
@@ -221,6 +221,6 @@ public class CoralElevatorSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Elevator Climb 1 Position", getPositionClimbOne());
     SmartDashboard.putNumber("Elevator Climb 2 Position", getPositionClimbTwo());
     SmartDashboard.putNumber("Elevator Arm Position", getPositionArm());
-    SmartDashboard.putNumber("Elevator Wheel Position", getPositionWheel());
+    // SmartDashboard.putNumber("Elevator Wheel Position", getPositionWheel());
   }
 }

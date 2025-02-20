@@ -39,8 +39,8 @@ public class DriveSubsystem extends SubsystemBase {
 	private static SparkMax m_leftBackMotor; // NEO motor
 	private static SparkMax m_rightBackMotor; // NEO motor
 
-	SlewRateLimiter rightFilter;
-	SlewRateLimiter leftFilter;
+	public SlewRateLimiter rightFilter;
+	public SlewRateLimiter leftFilter;
 
 	private double DRIVE_GEAR_RATIO = Constants.DRIVE_GEAR_RATIO;
 
@@ -86,8 +86,8 @@ public class DriveSubsystem extends SubsystemBase {
 
     resetEncoders(); // Zero the drive encoders
 
-    rightFilter = new SlewRateLimiter(5);
-    leftFilter = new SlewRateLimiter(5);
+    rightFilter = new SlewRateLimiter(1.5);
+    leftFilter = new SlewRateLimiter(1.5);
 
     System.out.println("NavX Connected: " + navx.isConnected());
   }

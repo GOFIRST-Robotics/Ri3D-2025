@@ -18,17 +18,22 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.commands.ElevatorWheelSpeedCommand;
+import frc.robot.commands.Speed_Toggle_Command;
+import frc.robot.commands.algae_mode.Coral_Algae_Mode;
 import frc.robot.commands.autonomous.example_basic_auto.Drive1MeterAuto;
 import frc.robot.commands.autonomous.example_basic_auto.SquareAutonomous;
+import frc.robot.commands.elevator.CoralElevatorMoveArmCommand;
 import frc.robot.commands.elevator.CoralElevatorMoveCommand;
 import frc.robot.commands.elevator.CoralElevatorSetPositionArmCommand;
-import frc.robot.commands.elevator.CoralElevatorWheelMoveCommand;
+// import frc.robot.commands.elevator.CoralElevatorWheelMoveCommand;
 import frc.robot.commands.intake.IntakePickUpAlgaeCommand;
 import frc.robot.commands.intake.IntakePickUpCoralCommand;
 import frc.robot.commands.intake.IntakeSetArmPositionCommand;
 import frc.robot.commands.intake.IntakeSetBarPowerCommand;
 import frc.robot.commands.vision.DriveToTrackedTargetCommand;
 import frc.robot.subsystems.CoralElevatorSubsystem;
+import frc.robot.subsystems.CoralWheelSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
@@ -54,9 +59,13 @@ public class Robot extends TimedRobot {
   public static final DriveSubsystem m_driveSubsystem = new DriveSubsystem(); // Drivetrain subsystem
   public static final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(); // Intake subsystem
   public static final CoralElevatorSubsystem m_CoralElevatorSubsystem = new CoralElevatorSubsystem(); // Elevator subsystem
+  public static final CoralWheelSubsystem m_CoralWheelSubsystem = new CoralWheelSubsystem(); // Wheel Subsystem for coral
   public static final PowerSubsystem m_powerSubsystem = new PowerSubsystem(); // Power subsystem for interacting with the Rev PDH
   public static final VisionSubsystem m_visionSubsystem = new VisionSubsystem(); // Subsystem for interacting with Photonvision
   public static final LEDSubsystem m_LEDSubsystem = new LEDSubsystem(); // Subsytem for controlling the REV Blinkin LED module
+  public static int CORAL = 8;
+  public static int ALGAE = 0;
+  public static double Speedlimits=.4;
   
   double goalAngle;
 
@@ -201,13 +210,17 @@ public class Robot extends TimedRobot {
     double zSpeed = -controller.getRawAxis(Constants.RIGHT_HORIZONTAL_JOYSTICK_AXIS);
     
     // Speed limits
-    ySpeed = Math.max(Math.min(ySpeed, 0.4), -0.4);
-    xSpeed = Math.max(Math.min(xSpeed, 0.4), -0.4);
-    zSpeed = Math.max(Math.min(zSpeed, 0.4), -0.4);
+    // ySpeed = Math.max(Math.min(ySpeed, 0.4), -0.4);
+    // xSpeed = Math.max(Math.min(xSpeed, 0.4), -0.4);
+    // zSpeed = Math.max(Math.min(zSpeed, 0.4), -0.4);
+
+    ySpeed*=Speedlimits;
+    xSpeed*=Speedlimits;
+    zSpeed*=Speedlimits;
 
     if (Math.abs(zSpeed) > 0.01) { // If we are telling the robot to rotate, then let it rotate
 			// m_driveSubsystem.driveCartesian(ySpeed, xSpeed, zSpeed, m_driveSubsystem.getRotation2d()); // field-relative
-      m_driveSubsystem.driveCartesian(ySpeed, xSpeed, zSpeed); // robot-relative
+      m_driveSubsystem.driveCartesian(m_driveSubsystem.rightFilter.calculate(ySpeed), m_driveSubsystem.leftFilter.calculate(xSpeed), zSpeed); // robot-relative
 			goalAngle = m_driveSubsystem.getGyroAngle();
 		}
 		else { // Otherwise, use the gyro to maintain our current angle
@@ -219,8 +232,9 @@ public class Robot extends TimedRobot {
       }
 			
 			// m_driveSubsystem.driveCartesian(ySpeed, xSpeed, -1 * correction, m_driveSubsystem.getRotation2d()); // field-relative
-      m_driveSubsystem.driveCartesian(ySpeed, xSpeed, -1 * correction); // robot-relative
-      }
+      // m_driveSubsystem.driveCartesian(ySpeed, xSpeed, -1 * correction); // robot-relative
+      m_driveSubsystem.driveCartesian(m_driveSubsystem.rightFilter.calculate(ySpeed), m_driveSubsystem.leftFilter.calculate(xSpeed), 0); // robot-relative with no corection
+    }
     } else {
       goalAngle = m_driveSubsystem.getGyroAngle();
 		}
@@ -245,27 +259,45 @@ public class Robot extends TimedRobot {
   private void configureButtonBindings() {
     // Intake Controls //
     // new Trigger(() -> controller.getRawButton(Constants.RIGHT_BUMPER)).whileTrue(new IntakeSetBarPowerCommand(Constants.INTAKE_BAR_SPEED)); // Intake 
-    new Trigger(() -> controller.getRawButton(Constants.LEFT_BUMPER)).whileTrue(new IntakeSetBarPowerCommand(-Constants.INTAKE_BAR_SPEED)); // Outake 
 
     // new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).onTrue(new IntakeSetArmPositionCommand(Constants.HOLD_ALGAE_POSITION)); // Set arm position
     // new Trigger(() -> controller.getRawButton(Constants.B_BUTTON)).onTrue(new IntakeSetArmPositionCommand(Constants.HOLD_CORAL_POSITION)); // Set arm position
     // new Trigger(() -> controller.getRawButton(Constants.Y_BUTTON)).onTrue(new IntakeSetArmPositionCommand(Constants.PICK_UP_ALGAE_POSITION)); // Set arm position
     // new Trigger(() -> controller.getRawButton(Constants.X_BUTTON)).onTrue(new IntakeSetArmPositionCommand(Constants.PICK_UP_CORAL_POSITION)); // Set arm position
+    new Trigger(() -> controller.getRawButton(ALGAE)).whileTrue(new IntakePickUpAlgaeCommand()); // Pick Up Algae
+    new Trigger(() -> controller.getRawButton(CORAL)).whileTrue(new IntakePickUpCoralCommand()); // Pick Up Coral
 
-    new Trigger(() -> controller.getRawButton(Constants.RIGHT_BUMPER)).whileTrue(new IntakePickUpAlgaeCommand()); // Pick Up Algae
-    new Trigger(() -> controller.getRawButton(Constants.RIGHT_BUMPER)).onFalse(new IntakeSetArmPositionCommand(Constants.HOLD_ALGAE_POSITION));
-    new Trigger(() -> controller.getRawButton(Constants.RIGHT_TRIGGER_BUTTON)).whileTrue(new IntakePickUpCoralCommand()); // Pick Up Coral
+    new Trigger(() -> controller.getRawButton(Constants.LEFT_TRIGGER_BUTTON)).whileTrue(new IntakeSetBarPowerCommand(-Constants.INTAKE_BAR_SPEED)); // Outake 
     new Trigger(() -> controller.getRawButton(Constants.RIGHT_TRIGGER_BUTTON)).onFalse(new IntakeSetArmPositionCommand(Constants.HOLD_ALGAE_POSITION));
 
+    new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).onTrue(new ElevatorWheelSpeedCommand(Constants.WHEEL_SPEED)); // Wheel Outtake Manual
+    new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).onFalse(new ElevatorWheelSpeedCommand(0)); // Wheel Outtake Manual
+
+    new Trigger(() -> controller.getRawButton(Constants.B_BUTTON)).onTrue(new ElevatorWheelSpeedCommand(-Constants.WHEEL_SPEED)); // Wheel Outtake Manual
+    new Trigger(() -> controller.getRawButton(Constants.B_BUTTON)).onFalse(new ElevatorWheelSpeedCommand(0)); // Wheel Outtake Manual
+
+
+    // new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).whileTrue(new CoralElevatorWheelMoveCommand(-Constants.WHEEL_SPEED)); // Wheel Outtake Manual
+    // new Trigger(() -> controller.getRawButton(Constants.B_BUTTON)).whileTrue(new CoralElevatorWheelMoveCommand(Constants.WHEEL_SPEED)); // Weel Intake Manual
+    // new Trigger(() -> controller.getRawButton(Constants.B_BUTTON)).onFalse(new IntakeSetArmPositionCommand(Constants.HOLD_ALGAE_POSITION));
+
+
     // Coral Elevator Controls //
-    new Trigger(() -> controller.getRawButton(Constants.PREV_BUTTON)).whileTrue(new CoralElevatorWheelMoveCommand(-Constants.WHEEL_SPEED)); // Wheel Outtake Manual
-    new Trigger(() -> controller.getRawButton(Constants.START_BUTTON)).whileTrue(new CoralElevatorWheelMoveCommand(Constants.WHEEL_SPEED)); // Weel Intake Manual
+    new Trigger(() -> controller.getRawButton(Constants.LEFT_BUMPER)).whileTrue(new CoralElevatorMoveArmCommand(.1)); // manual control of elevator arm
+    new Trigger(() -> controller.getRawButton(Constants.X_BUTTON)).whileTrue(new CoralElevatorMoveArmCommand(-.1)); // manual control of elevator arm
+
+
     new POVButton(controller, 0).onTrue(new CoralElevatorSetPositionArmCommand(m_CoralElevatorSubsystem.arm_max)); // Score Mid Preset
     new POVButton(controller, 90).onTrue(new CoralElevatorSetPositionArmCommand(21.33)); // Score High Preset
     new POVButton(controller, 180).onTrue(new CoralElevatorSetPositionArmCommand(29.4)); //  Intake Preset
     new POVButton(controller, 270).onTrue(new CoralElevatorSetPositionArmCommand(m_CoralElevatorSubsystem.arm_max)); // Score Low Preset
 
+    // Speed Controls //
+    new Trigger(() -> controller.getRawButton(Constants.RIGHT_BUMPER)).onTrue(new Speed_Toggle_Command(.2));
+    new Trigger(() -> controller.getRawButton(Constants.RIGHT_BUMPER)).onFalse(new Speed_Toggle_Command(.4));
+
     // Test Controls //
-    new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).whileTrue(new DriveToTrackedTargetCommand(1)); // Track AprilTag
+    new Trigger(() -> controller.getRawButton(Constants.Y_BUTTON)).onTrue(new Coral_Algae_Mode());
+    // new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).whileTrue(new DriveToTrackedTargetCommand(1)); // Track AprilTag
   }
 }

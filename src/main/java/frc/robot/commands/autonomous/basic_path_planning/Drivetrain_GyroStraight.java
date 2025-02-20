@@ -53,7 +53,7 @@ public class Drivetrain_GyroStraight extends Command {
 		correction = Math.min(MAX_CORRECTION, correction);
 		correction = Math.max(-MAX_CORRECTION, correction);
 		
-		drivetrain.driveCartesian(0, forwardPower, -1 * correction);
+		drivetrain.driveCartesian(forwardPower, 0, -1 * correction);
 	}
 	
 	/** isFinished ************************************************************	
