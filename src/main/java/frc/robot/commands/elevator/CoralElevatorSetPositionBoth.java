@@ -31,6 +31,42 @@ public class CoralElevatorSetPositionBoth extends Command {
     addRequirements(m_subsystem);
   }
 
+  public CoralElevatorSetPositionBoth(String x) {
+    System.out.println("/nl/nl/nl/nl/nl/nl/nl/nl");
+    m_subsystem = Robot.m_CoralElevatorSubsystem;
+    switch (x) {
+        case "L1" -> {
+            this.position = m_subsystem.arm_max;
+            this.position_1 = 0;
+            this.position_2 = 0;
+          }
+        case "L2" -> {
+            this.position = m_subsystem.arm_max;
+            this.position_1 = 39.4;
+            this.position_2 = 59.5;
+          }
+        case "L3" -> {
+            this.position = m_subsystem.arm_max;
+            this.position_1 = 84.1;
+            this.position_2 = 133.4;
+          }
+        case "Intake" -> {
+            this.position = 29.4;
+            this.position_1 = 19.7;
+            this.position_2 = 29.7;
+          }
+        case "Drive" -> {
+          this.position = 20;
+          this.position_1 = 19.7;
+          this.position_2 = 29.7;
+        }
+        default -> {
+          }
+            
+    }
+    addRequirements(m_subsystem);
+  }
+
   // Called once when the command is initially scheduled.
   @Override
   public void initialize() {
@@ -44,7 +80,7 @@ public class CoralElevatorSetPositionBoth extends Command {
     double output = kP * error;
     this.error_1 = position_1 - m_subsystem.getPositionClimbOne();
     double output_1 = kP_climb * error_1;
-    this.error_2 = position_2 - m_subsystem.getPositionClimbOne();
+    this.error_2 = position_2 - m_subsystem.getPositionClimbTwo();
     double output_2 = kP_climb * error_2;
 
     if (Math.abs(output) > 0.2) { // Max power we want to allow

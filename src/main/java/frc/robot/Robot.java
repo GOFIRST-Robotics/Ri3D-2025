@@ -18,14 +18,18 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.commands.autonomous.example_basic_auto.Drive1MeterAuto;
+import frc.robot.commands.autonomous.example_basic_auto.DriveAndScore;
 import frc.robot.commands.ElevatorWheelSpeedCommand;
 import frc.robot.commands.Speed_Toggle_Command;
 import frc.robot.commands.algae_mode.Coral_Algae_Mode;
-import frc.robot.commands.autonomous.example_basic_auto.Drive1MeterAuto;
+import frc.robot.commands.autonomous.autos.DriveTurnAndScore;
 import frc.robot.commands.autonomous.example_basic_auto.SquareAutonomous;
 import frc.robot.commands.elevator.CoralElevatorMoveArmCommand;
 import frc.robot.commands.elevator.CoralElevatorMoveCommand;
 import frc.robot.commands.elevator.CoralElevatorSetPositionArmCommand;
+import frc.robot.commands.elevator.CoralElevatorSetPositionBoth;
+import frc.robot.commands.elevator.CoralElevatorSetPositionClimbCommand;
 // import frc.robot.commands.elevator.CoralElevatorWheelMoveCommand;
 import frc.robot.commands.intake.IntakePickUpAlgaeCommand;
 import frc.robot.commands.intake.IntakePickUpCoralCommand;
@@ -81,6 +85,9 @@ public class Robot extends TimedRobot {
 		autonChooser.setDefaultOption("Do Nothing", new InstantCommand());
     autonChooser.addOption("Drive 1 Meter", new Drive1MeterAuto());
     autonChooser.addOption("Square Autonomous", new SquareAutonomous());
+    autonChooser.addOption("Drive and score L3 (START ROBOT ON CLOSE EDGE OF START LINE)", new DriveAndScore("L2"));
+    autonChooser.addOption("Drive, turn LEFT and score L3 (START ROBOT ON CLOSE EDGE OF START LINE INFRONT OF MIDDLE CAGE)", new DriveTurnAndScore("L2",true));
+    autonChooser.addOption("Drive, turn RIGHT and score L3 (START ROBOT ON CLOSE EDGE OF START LINE INFRONT OF MIDDLE CAGE)", new DriveTurnAndScore("L2",false));
 		SmartDashboard.putData("Auto Mode", autonChooser);
 
     // Zero the gyroscope and reset the drive encoders
@@ -132,6 +139,10 @@ public class Robot extends TimedRobot {
     m_driveSubsystem.zeroGyro();
     m_driveSubsystem.resetEncoders();
 
+    // Set Elevator/End Effector inital preset
+    m_CoralElevatorSubsystem.climbNeutral();
+    m_CoralElevatorSubsystem.armInitial();
+
     // schedule the selected autonomous command
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
@@ -140,9 +151,6 @@ public class Robot extends TimedRobot {
     // Set the LED pattern for autonomous mode
     m_LEDSubsystem.setLEDMode(LEDMode.AUTO);
 
-    // Set Elevator/End Effector inital preset
-    m_CoralElevatorSubsystem.climbNeutral();
-    m_CoralElevatorSubsystem.armInitial();
   }
 
   /** This function is called periodically during autonomous. */
@@ -287,10 +295,20 @@ public class Robot extends TimedRobot {
     new Trigger(() -> controller.getRawButton(Constants.X_BUTTON)).whileTrue(new CoralElevatorMoveArmCommand(-.1)); // manual control of elevator arm
 
 
-    new POVButton(controller, 0).onTrue(new CoralElevatorSetPositionArmCommand(m_CoralElevatorSubsystem.arm_max)); // Score Mid Preset
-    new POVButton(controller, 90).onTrue(new CoralElevatorSetPositionArmCommand(21.33)); // Score High Preset
-    new POVButton(controller, 180).onTrue(new CoralElevatorSetPositionArmCommand(29.4)); //  Intake Preset
-    new POVButton(controller, 270).onTrue(new CoralElevatorSetPositionArmCommand(m_CoralElevatorSubsystem.arm_max)); // Score Low Preset
+        // new POVButton(controller, 0).onTrue(new CoralElevatorSetPositionArmCommand(m_CoralElevatorSubsystem.arm_max)); // Score Mid Preset
+    // new POVButton(controller, 90).onTrue(new CoralElevatorSetPositionArmCommand(21.33)); // Score High Preset
+    // new POVButton(controller, 180).onTrue(new CoralElevatorSetPositionArmCommand(29.4)); //  Intake Preset
+    // new POVButton(controller, 270).onTrue(new CoralElevatorSetPositionArmCommand(m_CoralElevatorSubsystem.arm_max)); // Score Low Preset
+
+    // new POVButton(controller, 270).onTrue(new CoralElevatorSetPositionBoth(m_CoralElevatorSubsystem.arm_max,0,0)); // Score Low Preset L1
+    // new POVButton(controller, 0).onTrue(new CoralElevatorSetPositionBoth(m_CoralElevatorSubsystem.arm_max, 39.4, 59.5)); // Score Mid Preset L2
+    // new POVButton(controller, 90).onTrue(new CoralElevatorSetPositionBoth(m_CoralElevatorSubsystem.arm_max, 84.1, 133.4)); // Score High Preset L3
+    // new POVButton(controller, 180).onTrue(new CoralElevatorSetPositionBoth(29.4, 19.7, 29.7)); //  Intake Preset
+
+    new POVButton(controller, 270).onTrue(new CoralElevatorSetPositionBoth("L1")); // Score Low Preset L1
+    new POVButton(controller, 0).onTrue(new CoralElevatorSetPositionBoth("L2")); // Score Mid Preset L2
+    new POVButton(controller, 90).onTrue(new CoralElevatorSetPositionBoth("L3")); // Score High Preset L3
+    new POVButton(controller, 180).onTrue(new CoralElevatorSetPositionBoth("Intake")); //  Intake Preset
 
     // Speed Controls //
     new Trigger(() -> controller.getRawButton(Constants.RIGHT_BUMPER)).onTrue(new Speed_Toggle_Command(.2));
