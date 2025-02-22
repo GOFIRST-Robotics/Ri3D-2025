@@ -22,18 +22,18 @@ public class CoralElevatorSubsystem extends SubsystemBase {
     // Coral Elevator Motor Controllers
     private SparkMax m_elevator_climb_1; // NEO motor
     private SparkMax m_elevator_climb_2; // NEO motor
-    private SparkMax m_elevator_arm; // NEO motor
+    // private SparkMax m_elevator_arm; // NEO motor
     // private SparkMax m_elevator_wheel; // NEO motor
 
-    private double gravityControl;
+    // private double gravityControl;
 
     // Coral Elevator limiters
     public double climb_max_1 = 167.2;
     public double climb_max_2 = 251;
     public double climb_min_1 = 0;
     public double climb_min_2 = 0;
-    public double arm_max = 39.4;
-    public double arm_min = 0;
+    // public double arm_max = 39.4;
+    // public double arm_min = 0;
 
     /** Subsystem for controlling the coral elevator */
     public CoralElevatorSubsystem() {
@@ -42,8 +42,8 @@ public class CoralElevatorSubsystem extends SubsystemBase {
       configureSparkMAX(m_elevator_climb_1, Constants.ELEVATOR_STAGE_1_INVERT);
       m_elevator_climb_2 = new SparkMax(Constants.ELEVATOR_STAGE_2_MOTOR_ID, MotorType.kBrushless);
       configureSparkMAX(m_elevator_climb_2, Constants.ELEVATOR_STAGE_2_INVERT);
-      m_elevator_arm = new SparkMax(Constants.END_EFFECTOR_ARM_MOTOR_ID, MotorType.kBrushless);
-      configureSparkMAX(m_elevator_arm, Constants.ELEVATOR_ARM_INVERT);
+      // m_elevator_arm = new SparkMax(Constants.END_EFFECTOR_ARM_MOTOR_ID, MotorType.kBrushless);
+      // configureSparkMAX(m_elevator_arm, Constants.ELEVATOR_ARM_INVERT);
       // m_elevator_wheel = new SparkMax(Constants.END_EFFECTOR_WHEEL_MOTOR_ID, MotorType.kBrushless);
       // configureSparkMAX(m_elevator_wheel, Constants.ELEVATOR_WHEEL_INVERT);
   
@@ -82,9 +82,9 @@ public class CoralElevatorSubsystem extends SubsystemBase {
     setSpeedClimbOne(0);
   }
 
-  public double getGravityControl() {
-    return gravityControl;
-  }
+  // public double getGravityControl() {
+  //   return gravityControl;
+  // }
 
   /* Sets speed of the elevator CLimb motor two. Inbuilt limiters */
   public void setSpeedClimbTwo(double speed) {
@@ -148,51 +148,51 @@ public class CoralElevatorSubsystem extends SubsystemBase {
   // Arm Motor Methods -------------------------------------------------------------------------------
 
   /* Sets speed of the elevator Arm motor. Inbuilt limiters */
-  public void setSpeedArm(double speed) {
-    // Spark Max set() method with inbuilt limiters
-    if ((speed > 0) && (getPositionArm() > arm_max)) {
-      m_elevator_arm.set(0);
-    } else if ((speed < 0) && (getPositionArm() < arm_min))  {
-      m_elevator_arm.set(0);
-    } else {
-      m_elevator_arm.set(speed);
-    }
-  }
+  // public void setSpeedArm(double speed) {
+  //   // Spark Max set() method with inbuilt limiters
+  //   if ((speed > 0) && (getPositionArm() > arm_max)) {
+  //     m_elevator_arm.set(0);
+  //   } else if ((speed < 0) && (getPositionArm() < arm_min))  {
+  //     m_elevator_arm.set(0);
+  //   } else {
+  //     m_elevator_arm.set(speed);
+  //   }
+  // }
 
-  /* Gets position of the elevator Arm motor */
-  public double getPositionArm() {
-    // Spark Max getEncoder().getPosition() method
-    return m_elevator_arm.getEncoder().getPosition();
-  }
+  // /* Gets position of the elevator Arm motor */
+  // public double getPositionArm() {
+  //   // Spark Max getEncoder().getPosition() method
+  //   return m_elevator_arm.getEncoder().getPosition();
+  // }
 
-  /* Set Arm speed to 0 */
-  public void stopArm() {
-    setSpeedArm(0);
-  }
+  // /* Set Arm speed to 0 */
+  // public void stopArm() {
+  //   setSpeedArm(0);
+  // }
 
   /* Sets position of elevator Arm to Drop preset */
-  public void armDrop() {
-    // Calls CoralElevatorSetPositionArmCommand()
-    (new CoralElevatorSetPositionArmCommand(arm_max)).schedule();
-  }
+  // public void armDrop() {
+  //   // Calls CoralElevatorSetPositionArmCommand()
+  //   (new CoralElevatorSetPositionArmCommand(arm_max)).schedule();
+  // }
 
-  /* Sets position of elevator Arm to Intake preset */
-  public void armPlayerIntake() {
-    // Calls CoralElevatorSetPositionArmCommand()
-    (new CoralElevatorSetPositionArmCommand(29.2)).schedule();
-  }
+  // /* Sets position of elevator Arm to Intake preset */
+  // public void armPlayerIntake() {
+  //   // Calls CoralElevatorSetPositionArmCommand()
+  //   (new CoralElevatorSetPositionArmCommand(29.2)).schedule();
+  // }
 
-  /* Sets position of elevator Arm to Vertical preset */
-  public void armVertical() {
-    // Calls CoralElevatorSetPositionArmCommand()
-    (new CoralElevatorSetPositionArmCommand(17.5)).schedule();
-  }
+  // /* Sets position of elevator Arm to Vertical preset */
+  // public void armVertical() {
+  //   // Calls CoralElevatorSetPositionArmCommand()
+  //   (new CoralElevatorSetPositionArmCommand(17.5)).schedule();
+  // }
 
-  /* Sets position of elevator Arm to Initial preset */
-  public void armInitial() {
-    // Calls CoralElevatorSetPositionArmCommand()
-    (new CoralElevatorSetPositionArmCommand(arm_min)).schedule();
-  }
+  // /* Sets position of elevator Arm to Initial preset */
+  // public void armInitial() {
+  //   // Calls CoralElevatorSetPositionArmCommand()
+  //   (new CoralElevatorSetPositionArmCommand(arm_min)).schedule();
+  // }
 
   // Wheel Motor Methods ------------------------------------------------------------------------------
 
@@ -215,12 +215,12 @@ public class CoralElevatorSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    gravityControl = Math.sin((getPositionArm() / 70 * 2 * Math.PI) + Math.PI/2)*Constants.ARM_GRAVITY_CONST;
+    // gravityControl = Math.sin((getPositionArm() / 70 * 2 * Math.PI) + Math.PI/2)*Constants.ARM_GRAVITY_CONST;
 
     // Publish encoder values to SmartDashboard
     SmartDashboard.putNumber("Elevator Climb 1 Position", getPositionClimbOne());
     SmartDashboard.putNumber("Elevator Climb 2 Position", getPositionClimbTwo());
-    SmartDashboard.putNumber("Elevator Arm Position", getPositionArm());
+    // SmartDashboard.putNumber("Elevator Arm Position", getPositionArm());
     // SmartDashboard.putNumber("Elevator Wheel Position", getPositionWheel());
   }
 }

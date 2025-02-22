@@ -6,18 +6,19 @@ package frc.robot.commands.elevator;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
+import frc.robot.subsystems.CoralElevatorArmSubsystem;
 import frc.robot.subsystems.CoralElevatorSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class CoralElevatorMoveArmCommand extends Command {
-  private CoralElevatorSubsystem m_subsystem;
+  private CoralElevatorArmSubsystem m_subsystem;
   public double velocity;
 
   /** Creates a new CoralElevatorMoveArmCommand. */
   public CoralElevatorMoveArmCommand(double velocity) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.velocity = velocity;
-    m_subsystem = Robot.m_CoralElevatorSubsystem;
+    m_subsystem = Robot.m_CoralElevatorArmSubsystem;
     addRequirements(m_subsystem);
   }
 

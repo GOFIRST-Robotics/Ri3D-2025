@@ -86,8 +86,8 @@ public class DriveSubsystem extends SubsystemBase {
 
     resetEncoders(); // Zero the drive encoders
 
-    rightFilter = new SlewRateLimiter(1.5);
-    leftFilter = new SlewRateLimiter(1.5);
+    rightFilter = new SlewRateLimiter(Constants.SLEW_RATE);
+    leftFilter = new SlewRateLimiter(Constants.SLEW_RATE);
 
     System.out.println("NavX Connected: " + navx.isConnected());
   }

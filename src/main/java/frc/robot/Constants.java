@@ -78,8 +78,8 @@ public final class Constants {
     public static final double APRILTAG_FORWARD_POWER_CAP = 0.3;
     public static final double APRILTAG_STRAFE_POWER_CAP = 0.3;
     public static final double APRILTAG_TRACKING_DISTANCE_THRESHOLD = 0.1;
-    public static final double TURNING_THRESHOLD_DEGREES = 3;
-    public static final double MAX_POWER_GYRO = 0.4;
+    public static final double TURNING_THRESHOLD_DEGREES = 1;
+    public static final double MAX_POWER_GYRO = 0.1;
     public static final double kP_FRONT_RIGHT_VELOCITY = 0.0010269;
 	public static final double kP_FRONT_LEFT_VELOCITY = 0.0010269;
 	public static final double kP_BACK_RIGHT_VELOCITY = 0.0010269;
@@ -89,6 +89,7 @@ public final class Constants {
     public static final double kP_THETA_CONTROLLER = 9.6421;
 	public static final double kMAX_ANGULAR_SPEED_RADIANS_PER_SECOND = 2*Math.PI;
 	public static final double kMAX_ANGULAR_ACCELERATION_RADIANS_PER_SECOND_SQUARED = 2*Math.PI;
+    public static final double SLEW_RATE = 1.5;
 
     // Coral Elevator Constants //
     public static final boolean ELEVATOR_STAGE_1_INVERT = true;

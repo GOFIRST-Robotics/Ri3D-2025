@@ -1,7 +1,7 @@
 // Author: UMN Robotics Ri3D
 // Last Updated: January 2025
 
-package frc.robot.commands.autonomous.example_basic_auto;
+package frc.robot.commands.autonomous.autos;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -18,6 +18,7 @@ public class DriveAndScore extends SequentialCommandGroup {
   // List commands here sequentially
   public DriveAndScore(String x) { // List commands here sequentially
     addCommands(new ParallelCommandGroup(new Drivetrain_GyroStraight(1.4478, 0.15),new CoralElevatorSetPositionBoth(x)),
+                new WaitCommand(1),
                 new ElevatorWheelSpeedCommand(-Constants.WHEEL_SPEED),
                 new WaitCommand(.5),
                 new ElevatorWheelSpeedCommand(0));

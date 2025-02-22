@@ -5,23 +5,26 @@ package frc.robot.commands.elevator;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
+import frc.robot.subsystems.CoralElevatorArmSubsystem;
 import frc.robot.subsystems.CoralElevatorSubsystem;
 
 // This command activates the Neutral Elevator/End Effector preset
 public class CoralElevatorNeutralCommand extends Command {
-  private CoralElevatorSubsystem m_subsystem;
+  private CoralElevatorSubsystem m_subsystem_Elevator;
+  private CoralElevatorArmSubsystem m_subsystem_Arm;
 
   /** A Button command, sets height to Neutral and End Effector to Intake */
   public CoralElevatorNeutralCommand() {
-    m_subsystem = Robot.m_CoralElevatorSubsystem;
-    addRequirements(m_subsystem);
+    m_subsystem_Elevator = Robot.m_CoralElevatorSubsystem;
+    m_subsystem_Arm = Robot.m_CoralElevatorArmSubsystem;
+    addRequirements(m_subsystem_Elevator,m_subsystem_Arm);
   }
 
   // Called once when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_subsystem.armPlayerIntake();
-    m_subsystem.climbNeutral();
+    m_subsystem_Arm.armPlayerIntake();
+    m_subsystem_Elevator.climbNeutral();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

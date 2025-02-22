@@ -5,11 +5,13 @@ package frc.robot.commands.elevator;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
+import frc.robot.subsystems.CoralElevatorArmSubsystem;
 import frc.robot.subsystems.CoralElevatorSubsystem;
 
 // This is a custom Set Position command for the Arm motor
 public class CoralElevatorSetPositionBoth extends Command {
-  private CoralElevatorSubsystem m_subsystem;
+  private CoralElevatorSubsystem m_subsystem_Elevator;
+  private CoralElevatorArmSubsystem m_subsystem_Arm;
   private double position;
   private double error;
   private double kP = 0.02;
@@ -27,33 +29,33 @@ public class CoralElevatorSetPositionBoth extends Command {
     this.position = position;
     this.position_1 = position_1;
     this.position_2 = position_2;
-    m_subsystem = Robot.m_CoralElevatorSubsystem;
-    addRequirements(m_subsystem);
+    m_subsystem_Elevator = Robot.m_CoralElevatorSubsystem;
+    addRequirements(m_subsystem_Elevator);
   }
 
   public CoralElevatorSetPositionBoth(String x) {
-    System.out.println("/nl/nl/nl/nl/nl/nl/nl/nl");
-    m_subsystem = Robot.m_CoralElevatorSubsystem;
+    m_subsystem_Elevator = Robot.m_CoralElevatorSubsystem;
+    m_subsystem_Arm = Robot.m_CoralElevatorArmSubsystem;
     switch (x) {
         case "L1" -> {
-            this.position = m_subsystem.arm_max;
+            this.position = m_subsystem_Arm.arm_max;
             this.position_1 = 0;
             this.position_2 = 0;
           }
         case "L2" -> {
-            this.position = m_subsystem.arm_max;
+            this.position = m_subsystem_Arm.arm_max;
             this.position_1 = 39.4;
             this.position_2 = 59.5;
           }
         case "L3" -> {
-            this.position = m_subsystem.arm_max;
-            this.position_1 = 84.1;
-            this.position_2 = 133.4;
+            this.position = m_subsystem_Arm.arm_max;
+            this.position_1 = 123.4;
+            this.position_2 = 193.73;
           }
         case "Intake" -> {
             this.position = 29.4;
-            this.position_1 = 19.7;
-            this.position_2 = 29.7;
+            this.position_1 = 0;
+            this.position_2 = 0;
           }
         case "Drive" -> {
           this.position = 20;
@@ -64,23 +66,23 @@ public class CoralElevatorSetPositionBoth extends Command {
           }
             
     }
-    addRequirements(m_subsystem);
+    addRequirements(m_subsystem_Elevator);
   }
 
   // Called once when the command is initially scheduled.
   @Override
   public void initialize() {
-    // -
+    m_subsystem_Arm.Elevator = true;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.error = position - m_subsystem.getPositionArm();
+    this.error = position - m_subsystem_Arm.getPositionArm();
     double output = kP * error;
-    this.error_1 = position_1 - m_subsystem.getPositionClimbOne();
+    this.error_1 = position_1 - m_subsystem_Elevator.getPositionClimbOne();
     double output_1 = kP_climb * error_1;
-    this.error_2 = position_2 - m_subsystem.getPositionClimbTwo();
+    this.error_2 = position_2 - m_subsystem_Elevator.getPositionClimbTwo();
     double output_2 = kP_climb * error_2;
 
     if (Math.abs(output) > 0.2) { // Max power we want to allow
@@ -91,9 +93,9 @@ public class CoralElevatorSetPositionBoth extends Command {
     }
 
     if (Math.abs(error) > 0.5) {
-      m_subsystem.setSpeedArm(output-m_subsystem.getGravityControl());
+      m_subsystem_Arm.setSpeedArmElevator(output-m_subsystem_Arm.getGravityControl());
     } else {
-      m_subsystem.setSpeedArm(-m_subsystem.getGravityControl());
+      m_subsystem_Arm.setSpeedArmElevator(-m_subsystem_Arm.getGravityControl());
     }
 
     if (Math.abs(output_1) > 0.2) { // Max power we want to allow
@@ -109,15 +111,16 @@ public class CoralElevatorSetPositionBoth extends Command {
       output_2 = Math.copySign(0.05, output_2);
     }
 
-    m_subsystem.setSpeedClimbOne(output_1);
-    m_subsystem.setSpeedClimbTwo(output_2);
+    m_subsystem_Elevator.setSpeedClimbOne(output_1);
+    m_subsystem_Elevator.setSpeedClimbTwo(output_2);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_subsystem.stopArm();
-    m_subsystem.stopClimb();
+    m_subsystem_Arm.stopArm();
+    m_subsystem_Elevator.stopClimb();
+    m_subsystem_Arm.Elevator = false;
   }
 
   // Returns true when the command should end.

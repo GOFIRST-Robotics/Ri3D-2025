@@ -23,15 +23,18 @@ public class DriveTurnAndScore extends SequentialCommandGroup {
   public DriveTurnAndScore(String scorePosition, boolean left) { // List commands here sequentially
     m_subsystem = Robot.m_CoralElevatorSubsystem;
     addRequirements(m_subsystem);
-    int angle = 60;
+    int angle = 61;
     if(!left){
         angle*=-1;
     }
-    addCommands(new Drivetrain_GyroStraight(1.5748, 0.15), //65.500657in without bumper
+    addCommands(//new Drivetrain_GyroStraight(1.5748, 0.15), //65.500657in without bumper
+                new WaitCommand(.5),
                 new Drivetrain_GyroTurn(angle),
-                new ParallelCommandGroup(new Drivetrain_GyroStraight(0.8636, 0.15),new CoralElevatorSetPositionBoth(scorePosition)), //36.792600in without bumper
+                new WaitCommand(.5),
+                //new ParallelCommandGroup(new Drivetrain_GyroStraight(0.8636, 0.15),new CoralElevatorSetPositionBoth(scorePosition)), //36.792600in without bumper
+                new WaitCommand(1),
                 new ElevatorWheelSpeedCommand(-Constants.WHEEL_SPEED),
-                new WaitCommand(.5), 
+                new WaitCommand(3), 
                 new ElevatorWheelSpeedCommand(0));
   }
 }

@@ -5,23 +5,26 @@ package frc.robot.commands.elevator;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
+import frc.robot.subsystems.CoralElevatorArmSubsystem;
 import frc.robot.subsystems.CoralElevatorSubsystem;
 
 // This command activates the Score High Elevator/End Effector preset
 public class CoralElevatorScoreHighCommand extends Command {
-  private CoralElevatorSubsystem m_subsystem;
+  private CoralElevatorSubsystem m_subsystem_Elevator;
+  private CoralElevatorArmSubsystem m_subsystem_Arm;
 
   /** D Pad right command, sets height to Neutral and End Effector  to Intake */
   public CoralElevatorScoreHighCommand() {
-    m_subsystem = Robot.m_CoralElevatorSubsystem;
-    addRequirements(m_subsystem);
+    m_subsystem_Elevator = Robot.m_CoralElevatorSubsystem;
+    m_subsystem_Arm = Robot.m_CoralElevatorArmSubsystem;
+    addRequirements(m_subsystem_Elevator,m_subsystem_Arm);
   }
 
   // Called once when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_subsystem.climbHighGoal();
-    m_subsystem.armVertical();
+    m_subsystem_Elevator.climbHighGoal();
+    m_subsystem_Arm.armVertical();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

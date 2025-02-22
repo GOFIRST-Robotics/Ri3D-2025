@@ -19,10 +19,10 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.autonomous.example_basic_auto.Drive1MeterAuto;
-import frc.robot.commands.autonomous.example_basic_auto.DriveAndScore;
 import frc.robot.commands.ElevatorWheelSpeedCommand;
 import frc.robot.commands.Speed_Toggle_Command;
 import frc.robot.commands.algae_mode.Coral_Algae_Mode;
+import frc.robot.commands.autonomous.autos.DriveAndScore;
 import frc.robot.commands.autonomous.autos.DriveTurnAndScore;
 import frc.robot.commands.autonomous.example_basic_auto.SquareAutonomous;
 import frc.robot.commands.elevator.CoralElevatorMoveArmCommand;
@@ -36,6 +36,7 @@ import frc.robot.commands.intake.IntakePickUpCoralCommand;
 import frc.robot.commands.intake.IntakeSetArmPositionCommand;
 import frc.robot.commands.intake.IntakeSetBarPowerCommand;
 import frc.robot.commands.vision.DriveToTrackedTargetCommand;
+import frc.robot.subsystems.CoralElevatorArmSubsystem;
 import frc.robot.subsystems.CoralElevatorSubsystem;
 import frc.robot.subsystems.CoralWheelSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -56,6 +57,9 @@ public class Robot extends TimedRobot {
   Command m_autonomousCommand;
 	SendableChooser<Command> autonChooser = new SendableChooser<Command>(); // Create a chooser to select an autonomous command
 
+  String auto_score_position;
+  SendableChooser<String> auto_score_position_Chooser = new SendableChooser<String>();
+
   public static boolean manualDriveControl = true;
 
   public static final GenericHID controller = new GenericHID(Constants.CONTROLLER_USB_PORT_ID); // Instantiate our controller at the specified USB port
@@ -64,6 +68,7 @@ public class Robot extends TimedRobot {
   public static final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(); // Intake subsystem
   public static final CoralElevatorSubsystem m_CoralElevatorSubsystem = new CoralElevatorSubsystem(); // Elevator subsystem
   public static final CoralWheelSubsystem m_CoralWheelSubsystem = new CoralWheelSubsystem(); // Wheel Subsystem for coral
+  public static final CoralElevatorArmSubsystem m_CoralElevatorArmSubsystem = new CoralElevatorArmSubsystem(); // Wheel Subsystem for coral  
   public static final PowerSubsystem m_powerSubsystem = new PowerSubsystem(); // Power subsystem for interacting with the Rev PDH
   public static final VisionSubsystem m_visionSubsystem = new VisionSubsystem(); // Subsystem for interacting with Photonvision
   public static final LEDSubsystem m_LEDSubsystem = new LEDSubsystem(); // Subsytem for controlling the REV Blinkin LED module
@@ -85,9 +90,9 @@ public class Robot extends TimedRobot {
 		autonChooser.setDefaultOption("Do Nothing", new InstantCommand());
     autonChooser.addOption("Drive 1 Meter", new Drive1MeterAuto());
     autonChooser.addOption("Square Autonomous", new SquareAutonomous());
-    autonChooser.addOption("Drive and score L3 (START ROBOT ON CLOSE EDGE OF START LINE)", new DriveAndScore("L2"));
-    autonChooser.addOption("Drive, turn LEFT and score L3 (START ROBOT ON CLOSE EDGE OF START LINE INFRONT OF MIDDLE CAGE)", new DriveTurnAndScore("L2",true));
-    autonChooser.addOption("Drive, turn RIGHT and score L3 (START ROBOT ON CLOSE EDGE OF START LINE INFRONT OF MIDDLE CAGE)", new DriveTurnAndScore("L2",false));
+    autonChooser.addOption("Drive and score L3 (START ROBOT ON CLOSE EDGE OF START LINE)", new DriveAndScore("L3"));
+    autonChooser.addOption("Drive, turn LEFT and score L3 (START ROBOT ON CLOSE EDGE OF START LINE INFRONT OF MIDDLE CAGE)", new DriveTurnAndScore("L3",true));
+    autonChooser.addOption("Drive, turn RIGHT and score L3 (START ROBOT ON CLOSE EDGE OF START LINE INFRONT OF MIDDLE CAGE)", new DriveTurnAndScore("L3",false));
 		SmartDashboard.putData("Auto Mode", autonChooser);
 
     // Zero the gyroscope and reset the drive encoders
@@ -141,7 +146,7 @@ public class Robot extends TimedRobot {
 
     // Set Elevator/End Effector inital preset
     m_CoralElevatorSubsystem.climbNeutral();
-    m_CoralElevatorSubsystem.armInitial();
+    m_CoralElevatorArmSubsystem.armInitial();
 
     // schedule the selected autonomous command
     if (m_autonomousCommand != null) {
@@ -193,6 +198,7 @@ public class Robot extends TimedRobot {
 
     // m_intakeSubsystem.setDefaultCommand(new IntakeManualControl());
     m_CoralElevatorSubsystem.setDefaultCommand(new CoralElevatorMoveCommand());
+    m_CoralElevatorArmSubsystem.setDefaultCommand(new CoralElevatorMoveArmCommand(0));
   }
 
   /** This function is called periodically during operator control. */
@@ -277,6 +283,9 @@ public class Robot extends TimedRobot {
 
     new Trigger(() -> controller.getRawButton(Constants.LEFT_TRIGGER_BUTTON)).whileTrue(new IntakeSetBarPowerCommand(-Constants.INTAKE_BAR_SPEED)); // Outake 
     new Trigger(() -> controller.getRawButton(Constants.RIGHT_TRIGGER_BUTTON)).onFalse(new IntakeSetArmPositionCommand(Constants.HOLD_ALGAE_POSITION));
+
+    new Trigger(() -> controller.getRawButton(Constants.RIGHT_TRIGGER_BUTTON)).onTrue(new CoralElevatorSetPositionArmCommand(10)); //set arm to stowed position
+    new Trigger(() -> controller.getRawButton(Constants.LEFT_TRIGGER_BUTTON)).onTrue(new CoralElevatorSetPositionArmCommand(10)); //set arm to stowed position
 
     new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).onTrue(new ElevatorWheelSpeedCommand(Constants.WHEEL_SPEED)); // Wheel Outtake Manual
     new Trigger(() -> controller.getRawButton(Constants.A_BUTTON)).onFalse(new ElevatorWheelSpeedCommand(0)); // Wheel Outtake Manual

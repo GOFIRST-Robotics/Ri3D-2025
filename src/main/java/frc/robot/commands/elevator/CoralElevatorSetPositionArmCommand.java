@@ -5,11 +5,11 @@ package frc.robot.commands.elevator;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.CoralElevatorSubsystem;
+import frc.robot.subsystems.CoralElevatorArmSubsystem;
 
 // This is a custom Set Position command for the Arm motor
 public class CoralElevatorSetPositionArmCommand extends Command {
-  private CoralElevatorSubsystem m_subsystem;
+  private CoralElevatorArmSubsystem m_subsystem;
   private double position;
   private double error;
   private double kP = 0.04;
@@ -17,7 +17,7 @@ public class CoralElevatorSetPositionArmCommand extends Command {
   /** causes Arm motor to move to given position */
   public CoralElevatorSetPositionArmCommand(double position) {
     this.position = position;
-    m_subsystem = Robot.m_CoralElevatorSubsystem;
+    m_subsystem = Robot.m_CoralElevatorArmSubsystem;
     addRequirements(m_subsystem);
   }
 
@@ -52,6 +52,6 @@ public class CoralElevatorSetPositionArmCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(error) <= 0.5;
+    return Math.abs(error) <= 0.5 || m_subsystem.Elevator;
   }
 }
